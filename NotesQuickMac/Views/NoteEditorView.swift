@@ -6,9 +6,12 @@ struct NoteEditorView: View {
     @Environment(\.openWindow) var openWindow
     @State private var content: String = ""
     @State private var currentNote: Note?
-    @State private var hasUnsavedChanges = false
-    @State private var isLoading = false
+    @State private var loadedContent: String = ""
     @State private var tagQuery: String?
+
+    /// Derived from the content actually loaded from disk, so merely opening a
+    /// note (or SwiftUI re-rendering it) can never mark it dirty on its own.
+    private var hasUnsavedChanges: Bool { content != loadedContent }
 
     private var displayTitle: String {
         let firstLine = content
@@ -119,9 +122,6 @@ struct NoteEditorView: View {
             }
         }
         .navigationTitle(displayTitle)
-        .onChange(of: content) { _, _ in
-            if !isLoading { hasUnsavedChanges = true }
-        }
         .onAppear {
             loadNote()
         }
@@ -147,28 +147,19 @@ struct NoteEditorView: View {
     }
 
     private func loadNote() {
-        isLoading = true
-        defer {
-            hasUnsavedChanges = false
-            DispatchQueue.main.async { isLoading = false }
-        }
-
-        // Find note by noteId passed from the WindowGroup
-        guard let id = noteId,
-              let note = viewModel.notes.first(where: { $0.id == id })
-        else {
-            // Fallback: use selectedNote (for opening from menu bar)
-            guard let note = viewModel.selectedNote else {
-                currentNote = nil
-                content = ""
-                return
-            }
-            currentNote = note
-            content = note.content
+        // Find the note by the id passed from the WindowGroup, falling back to
+        // selectedNote (for opening from the menu bar).
+        let note = noteId.flatMap { id in viewModel.notes.first(where: { $0.id == id }) }
+            ?? viewModel.selectedNote
+        guard let note else {
+            currentNote = nil
+            content = ""
+            loadedContent = ""
             return
         }
         currentNote = note
         content = note.content
+        loadedContent = note.content
     }
 
     private func save(note: Note) {
@@ -177,6 +168,6 @@ struct NoteEditorView: View {
         if let updated = viewModel.notes.first(where: { $0.content == content }) {
             currentNote = updated
         }
-        hasUnsavedChanges = false
+        loadedContent = content
     }
 }

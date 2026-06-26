@@ -5,8 +5,11 @@ struct NoteEditorView: View {
     @EnvironmentObject var viewModel: NotesViewModel
     @State private var content: String = ""
     @State private var currentNote: Note?
-    @State private var hasUnsavedChanges = false
-    @State private var isLoading = false
+    @State private var loadedContent: String = ""
+
+    /// Derived from the content loaded from disk, so opening a note (or a SwiftUI
+    /// re-render) can never mark it dirty on its own.
+    private var hasUnsavedChanges: Bool { content != loadedContent }
 
     private var displayTitle: String {
         let firstLine = content
@@ -42,15 +45,10 @@ struct NoteEditorView: View {
                 }
             }
         }
-        .onChange(of: content) { _, _ in
-            if !isLoading { hasUnsavedChanges = true }
-        }
         .onAppear {
-            isLoading = true
             currentNote = note
             content = note.content
-            hasUnsavedChanges = false
-            DispatchQueue.main.async { isLoading = false }
+            loadedContent = note.content
         }
         .onDisappear {
             guard let note = currentNote else { return }
@@ -66,6 +64,6 @@ struct NoteEditorView: View {
         guard let note = currentNote else { return }
         viewModel.saveNote(note, content: content)
         currentNote = viewModel.selectedNote
-        hasUnsavedChanges = false
+        loadedContent = content
     }
 }

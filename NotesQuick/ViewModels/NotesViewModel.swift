@@ -92,14 +92,21 @@ class NotesViewModel: ObservableObject {
         var counter = 1
         let fm = FileManager.default
 
-        while fm.fileExists(atPath: notesFolder.appendingPathComponent("\(name).\(fileExtension)").path) {
+        func isTaken(_ candidate: String) -> Bool {
+            let url = notesFolder.appendingPathComponent("\(candidate).\(fileExtension)")
+            return fm.fileExists(atPath: url.path) || notes.contains { $0.fileURL == url }
+        }
+
+        while isTaken(name) {
             counter += 1
             name = "Untitled \(counter)"
         }
 
         let url = notesFolder.appendingPathComponent("\(name).\(fileExtension)")
-        try? "".write(to: url, atomically: true, encoding: .utf8)
-
+        // Don't create the file on disk yet — a brand-new note lives only in memory
+        // until it actually has content. Writing an empty "Untitled" file here would
+        // sync it (e.g. to Dropbox) the moment the editor is opened and closed without
+        // typing, leaving phantom empty notes that then delete themselves on reopen.
         let note = Note(fileURL: url, content: "", modifiedDate: Date())
         notes.insert(note, at: 0)
         return note
@@ -115,13 +122,18 @@ class NotesViewModel: ObservableObject {
         let safeName = sanitizeFilename(title.isEmpty ? "Untitled" : title)
 
         let newURL = notesFolder.appendingPathComponent("\(safeName).\(fileExtension)")
+        let fm = FileManager.default
         var targetURL = note.fileURL
 
-        if newURL.lastPathComponent != note.fileURL.lastPathComponent {
-            if !FileManager.default.fileExists(atPath: newURL.path) {
-                try? FileManager.default.moveItem(at: note.fileURL, to: newURL)
-                targetURL = newURL
+        if newURL.lastPathComponent != note.fileURL.lastPathComponent,
+           !fm.fileExists(atPath: newURL.path) {
+            // Rename the file to match the title. A brand-new note has no file on
+            // disk yet, so there's nothing to move — we just write straight to the
+            // title-based name instead of leaving an "Untitled" file behind.
+            if fm.fileExists(atPath: note.fileURL.path) {
+                try? fm.moveItem(at: note.fileURL, to: newURL)
             }
+            targetURL = newURL
         }
 
         // Skip the write when the file on disk already holds this exact content.
