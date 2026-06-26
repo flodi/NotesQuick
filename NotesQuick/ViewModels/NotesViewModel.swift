@@ -124,9 +124,23 @@ class NotesViewModel: ObservableObject {
             }
         }
 
-        try? content.write(to: targetURL, atomically: true, encoding: .utf8)
+        // Skip the write when the file on disk already holds this exact content.
+        // Every save uses an atomic write, which replaces the file (new inode +
+        // modification date); sync engines like Dropbox treat that as a brand-new
+        // version and re-upload it. Since the editor re-saves on every close —
+        // even when the note was only opened and viewed — two devices touching the
+        // same file end up creating "conflicted copies" for no real reason.
+        let unchanged = (try? String(contentsOf: targetURL, encoding: .utf8)) == content
 
-        let updatedNote = Note(fileURL: targetURL, content: content, modifiedDate: Date())
+        if !unchanged {
+            try? content.write(to: targetURL, atomically: true, encoding: .utf8)
+        }
+
+        // Keep the in-memory model in sync (the file may have been renamed above,
+        // or its content updated). When nothing was written, preserve the existing
+        // modification date so the list ordering doesn't jump around spuriously.
+        let modifiedDate = unchanged ? note.modifiedDate : Date()
+        let updatedNote = Note(fileURL: targetURL, content: content, modifiedDate: modifiedDate)
 
         if let index = notes.firstIndex(where: { $0.fileURL == note.fileURL }) {
             notes[index] = updatedNote
