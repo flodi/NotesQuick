@@ -1,0 +1,19 @@
+# Build output
+build/
+DerivedData/
+*.xcarchive
+
+# Xcode user data
+*.xcuserstate
+xcuserdata/
+*.xccheckout
+*.moved-aside
+
+# macOS
+.DS_Store
+
+# Claude Code local settings
+.claude/settings.local.json
+
+# App Store Connect private keys
+*.p8
