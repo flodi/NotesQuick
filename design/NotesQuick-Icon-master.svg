@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs>
+    <linearGradient id="bg" x1="512" y1="0" x2="512" y2="1024" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4F8BF0"></stop>
+      <stop offset="1" stop-color="#1F5AC0"></stop>
+    </linearGradient>
+    <radialGradient id="gloss" cx="286.72" cy="204.8" r="921.6" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0.35"></stop>
+      <stop offset="0.5" stop-color="#FFFFFF" stop-opacity="0.05"></stop>
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"></stop>
+    </radialGradient>
+    <filter id="paperShadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="20" stdDeviation="26" flood-color="#0A1E46" flood-opacity="0.35"></feDropShadow>
+    </filter>
+  </defs>
+
+  
+  <rect x="0" y="0" width="1024" height="1024" fill="url(#bg)"></rect>
+  <rect x="0" y="0" width="1024" height="1024" fill="url(#gloss)"></rect>
+
+  
+  <rect x="296.96" y="245.76" width="430.08" height="532.48" rx="55.9" fill="#FFFFFF" filter="url(#paperShadow)"></rect>
+
+  
+  <g stroke-width="30.72" stroke-linecap="round" fill="none">
+    <line x1="365.77" y1="336.28" x2="658.22" y2="336.28" stroke="#F5842A"></line>
+    <line x1="365.77" y1="445.44" x2="658.22" y2="445.44" stroke="#2F6FDD"></line>
+    <line x1="365.77" y1="554.60" x2="658.22" y2="554.60" stroke="#2F6FDD"></line>
+    <line x1="365.77" y1="663.76" x2="546.37" y2="663.76" stroke="#2F6FDD"></line>
+  </g>
+</svg>
