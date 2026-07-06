@@ -100,8 +100,11 @@
     ctx.clearRect(0, 0, size, size);
 
     if (opts.mono) {
-      // Menu-bar template: black glyph on transparent, larger fill.
-      var T = size * 0.86;
+      // Menu-bar template: black glyph on transparent. There is no colored tile
+      // here, so the paper sheet IS the icon and must fill the canvas. drawGlyph
+      // draws the paper at 42%x52% of its tile T (sized for the app icon), so we
+      // pass an oversized T (paper height = T*0.52 ~= 0.82*size) to fill it out.
+      var T = size * 1.58;
       drawGlyph(ctx, (size - T) / 2, (size - T) / 2, T, variant, true);
       return;
     }
