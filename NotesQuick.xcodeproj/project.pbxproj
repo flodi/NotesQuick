@@ -8,55 +8,117 @@
 
 /* Begin PBXBuildFile section */
 		023B06C89DF8C3DC2AD1550B /* NoteListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1DAB36E4E91ADA469CA8AE /* NoteListView.swift */; };
+		089BB87BA66C89AB529BEBA4 /* NoteFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D4E9F03C3C2BAC33AE9B792 /* NoteFolder.swift */; };
+		097995FA0ECF7C30A8327800 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C99638ED6409A078996744 /* ShareViewController.swift */; };
+		122C4F368D9D9F43003B5A58 /* FolderBookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE1C9858D6EB2209BD55FDB /* FolderBookmark.swift */; };
+		13B23F883F911C1DFFCDB7BF /* NoteFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D4E9F03C3C2BAC33AE9B792 /* NoteFolder.swift */; };
 		24A51B442179747C4B45269E /* QuickLookPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E176AD29615E837CB866A2EA /* QuickLookPreview.swift */; };
 		2D19671E27DC630417E68F05 /* String+Markdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = E78B74475BDF9724CCBD114D /* String+Markdown.swift */; };
 		2FBE44A435346F94F3FC8EC8 /* QuickLookPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E176AD29615E837CB866A2EA /* QuickLookPreview.swift */; };
 		35D7AACB396A40639853B8F6 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8FEC69F1E923353DC1EB43E /* Constants.swift */; };
 		417ACBC176350AC685F3D50C /* MarkdownTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47959E470164A13579C15BD /* MarkdownTextView.swift */; };
 		4463D1332426C46685BB7486 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173D7D67955444C3EE210A0C /* Note.swift */; };
+		596C44658097EB3E07725455 /* FolderBookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE1C9858D6EB2209BD55FDB /* FolderBookmark.swift */; };
 		59A462689C48B04A6F4DFA42 /* FolderBookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE1C9858D6EB2209BD55FDB /* FolderBookmark.swift */; };
 		5E36ED1816D92CD842B21663 /* FolderBookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE1C9858D6EB2209BD55FDB /* FolderBookmark.swift */; };
+		5EFE6AD80F2A5AA3A14298D7 /* NotesQuickShareMac.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7EF395336DAF337BF1EDBD84 /* NotesQuickShareMac.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		68C281DF06BFEBFDDC9B3CBB /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C36E16789984C81537378D3 /* SettingsView.swift */; };
+		6D3C8C1F2A3E80064FAEA34B /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3EA99213527D5E1A929E82 /* AppGroup.swift */; };
 		6E06ED5178B983BB639FC9B7 /* TagCloudView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6BD6996FEDD7EF53F72D /* TagCloudView.swift */; };
 		78419870A4175693B11E7208 /* NoteEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DD7D11C0941CE19DA728AEC /* NoteEditorView.swift */; };
 		838B7ADCA04360D1270F1942 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B905D914973F3E294BAA19 /* AppDelegate.swift */; };
 		97A54C46B66121B10002960C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCCDA45AC032E87137F27FD6 /* Assets.xcassets */; };
 		9E7492A929C06F727F5AC269 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 058D8EC08A6D8B14D2F85ED5 /* SettingsView.swift */; };
+		A2A71334CC9739220529B09E /* NoteFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D4E9F03C3C2BAC33AE9B792 /* NoteFolder.swift */; };
 		A2E24C05B2C1F541BA58CBCA /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8FEC69F1E923353DC1EB43E /* Constants.swift */; };
 		AAF025933BB20D1C230F20AD /* TagCloudView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6BD6996FEDD7EF53F72D /* TagCloudView.swift */; };
+		AD1BA80C0C11130A22293B9B /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3EA99213527D5E1A929E82 /* AppGroup.swift */; };
 		B06F0BED9E6032FB274C3006 /* MarkdownTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AA59557153AD1E1077D8459 /* MarkdownTextView.swift */; };
+		B63F48737A8A67962FB4734F /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3EA99213527D5E1A929E82 /* AppGroup.swift */; };
+		B651CE592379DF49F4C2F8C1 /* NoteFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D4E9F03C3C2BAC33AE9B792 /* NoteFolder.swift */; };
 		BEC813B680F203E0B3921934 /* NotesQuickiOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CAB4527796BD5F18D0482DB /* NotesQuickiOSApp.swift */; };
 		C52495ABE8AC1A5FC637260B /* NoteEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642EE110F9D5794733D76BED /* NoteEditorView.swift */; };
+		C60D67E72B4B67FD82689F43 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A55226004833A809322D534 /* ShareViewController.swift */; };
 		CFEC04649E03C1D4B5F9AB00 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CF89BEEC4084C35A601C48 /* ContentView.swift */; };
 		D4B0601695E3B422CBC284BC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE947392D9463BE63162DECA /* Assets.xcassets */; };
 		D59B833FD1306A6393F83A32 /* NoteIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B63E39FFC0DB9AE3B4B2348 /* NoteIcon.swift */; };
+		DA9EE2BDC2360A3DA200A89E /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3EA99213527D5E1A929E82 /* AppGroup.swift */; };
 		DCFFC74E63C52C7B20C0F760 /* NotesQuickMacApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B43FB9156908CB1DCF8E2EC /* NotesQuickMacApp.swift */; };
 		E2A3D8E4A3F2222B4DD6C942 /* String+Markdown.swift in Sources */ = {isa = PBXBuildFile; fileRef = E78B74475BDF9724CCBD114D /* String+Markdown.swift */; };
 		E6C1F6D6962E4729071755FD /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173D7D67955444C3EE210A0C /* Note.swift */; };
 		EDAE3F67404CD500028D5B9F /* NotesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E007851C97006C190214D1D /* NotesViewModel.swift */; };
 		EDE392C193462E268F8AED8F /* NotesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E007851C97006C190214D1D /* NotesViewModel.swift */; };
+		EEFDB0BA70FB525510F824D2 /* NotesQuickShareiOS.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D987ED2A553A323E730BB343 /* NotesQuickShareiOS.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		FDC0DCD48A16B218CF2A271E /* NoteIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B63E39FFC0DB9AE3B4B2348 /* NoteIcon.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		29308621D4C8F53CF3B7332F /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5B81F981DA0815329AEA2923 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F67700A99197FDE3A54EDF93;
+			remoteInfo = NotesQuickShareiOS;
+		};
+		6F0A3FEB3F7239CD0369DAF5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5B81F981DA0815329AEA2923 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D28375BF6D855A3E49BA1435;
+			remoteInfo = NotesQuickShareMac;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		2EF9D5442FFF9EB39CD11A91 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				EEFDB0BA70FB525510F824D2 /* NotesQuickShareiOS.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		66F6E3856B378A329885A181 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				5EFE6AD80F2A5AA3A14298D7 /* NotesQuickShareMac.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		058D8EC08A6D8B14D2F85ED5 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		06CF89BEEC4084C35A601C48 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		15E5D09354A2F93E754453C2 /* NotesQuickMac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = NotesQuickMac.entitlements; sourceTree = "<group>"; };
 		173D7D67955444C3EE210A0C /* Note.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Note.swift; sourceTree = "<group>"; };
+		23C99638ED6409A078996744 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		2B63E39FFC0DB9AE3B4B2348 /* NoteIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteIcon.swift; sourceTree = "<group>"; };
+		2F3EA99213527D5E1A929E82 /* AppGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGroup.swift; sourceTree = "<group>"; };
+		5A55226004833A809322D534 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		5E007851C97006C190214D1D /* NotesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesViewModel.swift; sourceTree = "<group>"; };
 		642EE110F9D5794733D76BED /* NoteEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteEditorView.swift; sourceTree = "<group>"; };
 		76B905D914973F3E294BAA19 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7AA59557153AD1E1077D8459 /* MarkdownTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownTextView.swift; sourceTree = "<group>"; };
 		7C87E27F207A0A2330EC9845 /* NotesQuickMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NotesQuickMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7EE1C9858D6EB2209BD55FDB /* FolderBookmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderBookmark.swift; sourceTree = "<group>"; };
+		7EF395336DAF337BF1EDBD84 /* NotesQuickShareMac.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotesQuickShareMac.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		8B43FB9156908CB1DCF8E2EC /* NotesQuickMacApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesQuickMacApp.swift; sourceTree = "<group>"; };
+		8D4E9F03C3C2BAC33AE9B792 /* NoteFolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteFolder.swift; sourceTree = "<group>"; };
 		9C36E16789984C81537378D3 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		9CAB4527796BD5F18D0482DB /* NotesQuickiOSApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesQuickiOSApp.swift; sourceTree = "<group>"; };
 		9DD7D11C0941CE19DA728AEC /* NoteEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteEditorView.swift; sourceTree = "<group>"; };
 		B8222FB8F4288FF4FA5D56E4 /* NotesQuickiOS.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = NotesQuickiOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8FEC69F1E923353DC1EB43E /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CE947392D9463BE63162DECA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D987ED2A553A323E730BB343 /* NotesQuickShareiOS.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = NotesQuickShareiOS.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB1DAB36E4E91ADA469CA8AE /* NoteListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteListView.swift; sourceTree = "<group>"; };
 		DCCDA45AC032E87137F27FD6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DE5E6BD6996FEDD7EF53F72D /* TagCloudView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagCloudView.swift; sourceTree = "<group>"; };
@@ -90,12 +152,22 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		5D38AF3171193DFC10C5BF85 /* NotesQuickShareMac */ = {
+			isa = PBXGroup;
+			children = (
+				23C99638ED6409A078996744 /* ShareViewController.swift */,
+			);
+			path = NotesQuickShareMac;
+			sourceTree = "<group>";
+		};
 		5FF5D82EA9C8BC7EEDEA831A = {
 			isa = PBXGroup;
 			children = (
 				FB8A12AA18BF29892936D2EF /* NotesQuick */,
 				ECBB54F4EA27B60CB1C4FDA7 /* NotesQuickiOS */,
 				CF5C2C41A2470835AAA6E8DA /* NotesQuickMac */,
+				F32DFF6A75B8BB74DAF08622 /* NotesQuickShareiOS */,
+				5D38AF3171193DFC10C5BF85 /* NotesQuickShareMac */,
 				DCA6513F715173D37B3033C0 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -125,8 +197,10 @@
 		A06B1771B7FF3D59478C0088 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				2F3EA99213527D5E1A929E82 /* AppGroup.swift */,
 				C8FEC69F1E923353DC1EB43E /* Constants.swift */,
 				7EE1C9858D6EB2209BD55FDB /* FolderBookmark.swift */,
+				8D4E9F03C3C2BAC33AE9B792 /* NoteFolder.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -182,6 +256,8 @@
 			children = (
 				B8222FB8F4288FF4FA5D56E4 /* NotesQuickiOS.app */,
 				7C87E27F207A0A2330EC9845 /* NotesQuickMac.app */,
+				D987ED2A553A323E730BB343 /* NotesQuickShareiOS.appex */,
+				7EF395336DAF337BF1EDBD84 /* NotesQuickShareMac.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -202,6 +278,14 @@
 				8B99B1B0AEBC53574572451A /* Views */,
 			);
 			path = NotesQuickiOS;
+			sourceTree = "<group>";
+		};
+		F32DFF6A75B8BB74DAF08622 /* NotesQuickShareiOS */ = {
+			isa = PBXGroup;
+			children = (
+				5A55226004833A809322D534 /* ShareViewController.swift */,
+			);
+			path = NotesQuickShareiOS;
 			sourceTree = "<group>";
 		};
 		FB8A12AA18BF29892936D2EF /* NotesQuick */ = {
@@ -225,10 +309,12 @@
 			buildPhases = (
 				B3CDD0B116DC6A1D3463509E /* Sources */,
 				C2DE1AE51E7950B5F0A33F84 /* Resources */,
+				2EF9D5442FFF9EB39CD11A91 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				5DF812AC1A8EB98A62CA7270 /* PBXTargetDependency */,
 			);
 			name = NotesQuickiOS;
 			packageProductDependencies = (
@@ -237,16 +323,35 @@
 			productReference = B8222FB8F4288FF4FA5D56E4 /* NotesQuickiOS.app */;
 			productType = "com.apple.product-type.application";
 		};
+		D28375BF6D855A3E49BA1435 /* NotesQuickShareMac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A9A00D853CFF9DAC7B535B6A /* Build configuration list for PBXNativeTarget "NotesQuickShareMac" */;
+			buildPhases = (
+				D199458E125384AE5B7612ED /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NotesQuickShareMac;
+			packageProductDependencies = (
+			);
+			productName = NotesQuickShareMac;
+			productReference = 7EF395336DAF337BF1EDBD84 /* NotesQuickShareMac.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		D38E6333C7ACBD587C8D9DE2 /* NotesQuickMac */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 70AC8A3A2C1EDFD8CF96FD4C /* Build configuration list for PBXNativeTarget "NotesQuickMac" */;
 			buildPhases = (
 				49786475087E88B62C14B194 /* Sources */,
 				25C80EFF4D660040BC3F0420 /* Resources */,
+				66F6E3856B378A329885A181 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				5744E00386D5DF9C1D4C1B07 /* PBXTargetDependency */,
 			);
 			name = NotesQuickMac;
 			packageProductDependencies = (
@@ -254,6 +359,23 @@
 			productName = NotesQuickMac;
 			productReference = 7C87E27F207A0A2330EC9845 /* NotesQuickMac.app */;
 			productType = "com.apple.product-type.application";
+		};
+		F67700A99197FDE3A54EDF93 /* NotesQuickShareiOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3BAA8A7CE6DB300469633E95 /* Build configuration list for PBXNativeTarget "NotesQuickShareiOS" */;
+			buildPhases = (
+				ADB780DA2A8E5D0A63D44665 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = NotesQuickShareiOS;
+			packageProductDependencies = (
+			);
+			productName = NotesQuickShareiOS;
+			productReference = D987ED2A553A323E730BB343 /* NotesQuickShareiOS.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -268,7 +390,15 @@
 						DevelopmentTeam = P87G25W6U3;
 						ProvisioningStyle = Automatic;
 					};
+					D28375BF6D855A3E49BA1435 = {
+						DevelopmentTeam = P87G25W6U3;
+						ProvisioningStyle = Automatic;
+					};
 					D38E6333C7ACBD587C8D9DE2 = {
+						DevelopmentTeam = P87G25W6U3;
+						ProvisioningStyle = Automatic;
+					};
+					F67700A99197FDE3A54EDF93 = {
 						DevelopmentTeam = P87G25W6U3;
 						ProvisioningStyle = Automatic;
 					};
@@ -289,6 +419,8 @@
 			projectRoot = "";
 			targets = (
 				D38E6333C7ACBD587C8D9DE2 /* NotesQuickMac */,
+				D28375BF6D855A3E49BA1435 /* NotesQuickShareMac */,
+				F67700A99197FDE3A54EDF93 /* NotesQuickShareiOS */,
 				CBD4BA34E129F07906602827 /* NotesQuickiOS */,
 			);
 		};
@@ -319,11 +451,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				838B7ADCA04360D1270F1942 /* AppDelegate.swift in Sources */,
+				AD1BA80C0C11130A22293B9B /* AppGroup.swift in Sources */,
 				A2E24C05B2C1F541BA58CBCA /* Constants.swift in Sources */,
 				59A462689C48B04A6F4DFA42 /* FolderBookmark.swift in Sources */,
 				417ACBC176350AC685F3D50C /* MarkdownTextView.swift in Sources */,
 				4463D1332426C46685BB7486 /* Note.swift in Sources */,
 				C52495ABE8AC1A5FC637260B /* NoteEditorView.swift in Sources */,
+				A2A71334CC9739220529B09E /* NoteFolder.swift in Sources */,
 				FDC0DCD48A16B218CF2A271E /* NoteIcon.swift in Sources */,
 				023B06C89DF8C3DC2AD1550B /* NoteListView.swift in Sources */,
 				DCFFC74E63C52C7B20C0F760 /* NotesQuickMacApp.swift in Sources */,
@@ -335,16 +469,29 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		ADB780DA2A8E5D0A63D44665 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B63F48737A8A67962FB4734F /* AppGroup.swift in Sources */,
+				596C44658097EB3E07725455 /* FolderBookmark.swift in Sources */,
+				089BB87BA66C89AB529BEBA4 /* NoteFolder.swift in Sources */,
+				C60D67E72B4B67FD82689F43 /* ShareViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B3CDD0B116DC6A1D3463509E /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6D3C8C1F2A3E80064FAEA34B /* AppGroup.swift in Sources */,
 				35D7AACB396A40639853B8F6 /* Constants.swift in Sources */,
 				CFEC04649E03C1D4B5F9AB00 /* ContentView.swift in Sources */,
 				5E36ED1816D92CD842B21663 /* FolderBookmark.swift in Sources */,
 				B06F0BED9E6032FB274C3006 /* MarkdownTextView.swift in Sources */,
 				E6C1F6D6962E4729071755FD /* Note.swift in Sources */,
 				78419870A4175693B11E7208 /* NoteEditorView.swift in Sources */,
+				13B23F883F911C1DFFCDB7BF /* NoteFolder.swift in Sources */,
 				D59B833FD1306A6393F83A32 /* NoteIcon.swift in Sources */,
 				BEC813B680F203E0B3921934 /* NotesQuickiOSApp.swift in Sources */,
 				EDE392C193462E268F8AED8F /* NotesViewModel.swift in Sources */,
@@ -355,9 +502,58 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		D199458E125384AE5B7612ED /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DA9EE2BDC2360A3DA200A89E /* AppGroup.swift in Sources */,
+				122C4F368D9D9F43003B5A58 /* FolderBookmark.swift in Sources */,
+				B651CE592379DF49F4C2F8C1 /* NoteFolder.swift in Sources */,
+				097995FA0ECF7C30A8327800 /* ShareViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		5744E00386D5DF9C1D4C1B07 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D28375BF6D855A3E49BA1435 /* NotesQuickShareMac */;
+			targetProxy = 6F0A3FEB3F7239CD0369DAF5 /* PBXContainerItemProxy */;
+		};
+		5DF812AC1A8EB98A62CA7270 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F67700A99197FDE3A54EDF93 /* NotesQuickShareiOS */;
+			targetProxy = 29308621D4C8F53CF3B7332F /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		1226B99421899CD078F1CE79 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = NotesQuickShareMac.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 20;
+				DEVELOPMENT_TEAM = P87G25W6U3;
+				INFOPLIST_FILE = NotesQuickShareMac/Info.plist;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.notesquick.app.sharemac;
+				PRODUCT_NAME = NotesQuickShareMac;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
 		404E66746BC784A77B2FA80B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -418,6 +614,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = NotesQuickiOS.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20;
@@ -446,6 +643,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = NotesQuickiOS.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 20;
@@ -464,6 +662,31 @@
 				MARKETING_VERSION = 1.0.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.notesquick.app;
 				PRODUCT_NAME = NotesQuick;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		8766331C8E994ABF511B0ED6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = NotesQuickShareiOS.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 20;
+				DEVELOPMENT_TEAM = P87G25W6U3;
+				INFOPLIST_FILE = NotesQuickShareiOS/Info.plist;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.notesquick.app.shareios;
+				PRODUCT_NAME = NotesQuickShareiOS;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.9;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -560,6 +783,56 @@
 			};
 			name = Debug;
 		};
+		AA5F2AD86C2679050DCB3C82 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = NotesQuickShareMac.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 20;
+				DEVELOPMENT_TEAM = P87G25W6U3;
+				INFOPLIST_FILE = NotesQuickShareMac/Info.plist;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.notesquick.app.sharemac;
+				PRODUCT_NAME = NotesQuickShareMac;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+		C09E396876FB29A77A9B6802 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = NotesQuickShareiOS.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 20;
+				DEVELOPMENT_TEAM = P87G25W6U3;
+				INFOPLIST_FILE = NotesQuickShareiOS/Info.plist;
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.notesquick.app.shareios;
+				PRODUCT_NAME = NotesQuickShareiOS;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
 		FFCC654AF5537A7F02C22BD6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -590,11 +863,29 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		3BAA8A7CE6DB300469633E95 /* Build configuration list for PBXNativeTarget "NotesQuickShareiOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C09E396876FB29A77A9B6802 /* Debug */,
+				8766331C8E994ABF511B0ED6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
 		70AC8A3A2C1EDFD8CF96FD4C /* Build configuration list for PBXNativeTarget "NotesQuickMac" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				95BE662745F5C96A681383DE /* Debug */,
 				FFCC654AF5537A7F02C22BD6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		A9A00D853CFF9DAC7B535B6A /* Build configuration list for PBXNativeTarget "NotesQuickShareMac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1226B99421899CD078F1CE79 /* Debug */,
+				AA5F2AD86C2679050DCB3C82 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

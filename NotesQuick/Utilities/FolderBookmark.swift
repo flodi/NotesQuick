@@ -5,10 +5,10 @@ import Foundation
 /// scoped access is reference-counted, so holding an extra start/stop pair
 /// alongside the view model's own access is safe.
 enum FolderBookmark {
-    static let key = "notesFolderBookmark"
+    static let key = AppGroup.bookmarkKey
 
     static func resolvedURL() -> URL? {
-        guard let data = UserDefaults.standard.data(forKey: key) else { return nil }
+        guard let data = AppGroup.defaults.data(forKey: key) else { return nil }
         var isStale = false
         #if os(macOS)
         let options: URL.BookmarkResolutionOptions = [.withSecurityScope]

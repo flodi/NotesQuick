@@ -8,7 +8,7 @@ class NotesViewModel: ObservableObject {
 
     @Published var notesFolderPath: String {
         didSet {
-            UserDefaults.standard.set(notesFolderPath, forKey: "notesFolderPath")
+            AppGroup.defaults.set(notesFolderPath, forKey: AppGroup.pathKey)
             ensureFolderExists()
             loadNotes()
         }
@@ -16,7 +16,7 @@ class NotesViewModel: ObservableObject {
 
     @Published var fileExtension: String {
         didSet {
-            UserDefaults.standard.set(fileExtension, forKey: "fileExtension")
+            AppGroup.defaults.set(fileExtension, forKey: AppGroup.extensionKey)
             loadNotes()
         }
     }
@@ -42,10 +42,11 @@ class NotesViewModel: ObservableObject {
     }
 
     init() {
+        AppGroup.migrateFromStandardIfNeeded()
         let docsDir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         let defaultPath = docsDir.appendingPathComponent("NotesQuick").path
-        self.notesFolderPath = UserDefaults.standard.string(forKey: "notesFolderPath") ?? defaultPath
-        self.fileExtension = UserDefaults.standard.string(forKey: "fileExtension") ?? "md"
+        self.notesFolderPath = AppGroup.defaults.string(forKey: AppGroup.pathKey) ?? defaultPath
+        self.fileExtension = AppGroup.defaults.string(forKey: AppGroup.extensionKey) ?? "md"
         self.hideTagsInEditor = UserDefaults.standard.bool(forKey: "hideTagsInEditor")
         ensureFolderExists()
         loadNotes()
@@ -258,14 +259,14 @@ class NotesViewModel: ObservableObject {
             includingResourceValuesForKeys: nil,
             relativeTo: nil
         ) {
-            UserDefaults.standard.set(bookmark, forKey: "notesFolderBookmark")
+            AppGroup.defaults.set(bookmark, forKey: AppGroup.bookmarkKey)
         }
 
         notesFolderPath = url.path
     }
 
     func startFolderAccess() {
-        guard let data = UserDefaults.standard.data(forKey: "notesFolderBookmark") else { return }
+        guard let data = AppGroup.defaults.data(forKey: AppGroup.bookmarkKey) else { return }
         var isStale = false
 
         #if os(macOS)
@@ -296,7 +297,7 @@ class NotesViewModel: ObservableObject {
                 includingResourceValuesForKeys: nil,
                 relativeTo: nil
             ) {
-                UserDefaults.standard.set(newData, forKey: "notesFolderBookmark")
+                AppGroup.defaults.set(newData, forKey: AppGroup.bookmarkKey)
             }
         }
     }
