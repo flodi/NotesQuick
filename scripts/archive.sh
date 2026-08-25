@@ -51,9 +51,6 @@ xcodebuild -project "$PROJECT" \
     -configuration Release \
     -archivePath "$ARCHIVE_DIR/NotesQuickMac-$NEW_BUILD.xcarchive" \
     -allowProvisioningUpdates \
-    -authenticationKeyPath "$API_KEY_PATH" \
-    -authenticationKeyID "$API_KEY" \
-    -authenticationKeyIssuerID "$API_ISSUER" \
     archive
 
 echo "==> Mac archive complete"
@@ -67,9 +64,6 @@ xcodebuild -project "$PROJECT" \
     -destination 'generic/platform=iOS' \
     -archivePath "$ARCHIVE_DIR/NotesQuickiOS-$NEW_BUILD.xcarchive" \
     -allowProvisioningUpdates \
-    -authenticationKeyPath "$API_KEY_PATH" \
-    -authenticationKeyID "$API_KEY" \
-    -authenticationKeyIssuerID "$API_ISSUER" \
     archive
 
 echo "==> iOS archive complete"
@@ -85,10 +79,7 @@ if $UPLOAD; then
         -archivePath "$ARCHIVE_DIR/NotesQuickMac-$NEW_BUILD.xcarchive" \
         -exportOptionsPlist scripts/ExportOptions-Mac.plist \
         -exportPath "$EXPORT_DIR/Mac" \
-        -allowProvisioningUpdates \
-        -authenticationKeyPath "$API_KEY_PATH" \
-        -authenticationKeyID "$API_KEY" \
-        -authenticationKeyIssuerID "$API_ISSUER"
+        -allowProvisioningUpdates
 
     echo ""
     echo "==> Exporting iOS..."
@@ -96,10 +87,7 @@ if $UPLOAD; then
         -archivePath "$ARCHIVE_DIR/NotesQuickiOS-$NEW_BUILD.xcarchive" \
         -exportOptionsPlist scripts/ExportOptions-iOS.plist \
         -exportPath "$EXPORT_DIR/iOS" \
-        -allowProvisioningUpdates \
-        -authenticationKeyPath "$API_KEY_PATH" \
-        -authenticationKeyID "$API_KEY" \
-        -authenticationKeyIssuerID "$API_ISSUER"
+        -allowProvisioningUpdates
 
     echo ""
     echo "==> Uploading Mac to TestFlight..."

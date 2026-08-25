@@ -25,7 +25,7 @@ targets:
         PRODUCT_NAME: NotesQuick
         PRODUCT_BUNDLE_IDENTIFIER: com.notesquick.app
         MARKETING_VERSION: "1.0.0"
-        CURRENT_PROJECT_VERSION: "20"
+        CURRENT_PROJECT_VERSION: "23"
         SWIFT_VERSION: "5.9"
         MACOSX_DEPLOYMENT_TARGET: "14.0"
         GENERATE_INFOPLIST_FILE: YES
@@ -68,7 +68,7 @@ targets:
         PRODUCT_NAME: NotesQuickShareMac
         PRODUCT_BUNDLE_IDENTIFIER: com.notesquick.app.sharemac
         MARKETING_VERSION: "1.0.0"
-        CURRENT_PROJECT_VERSION: "20"
+        CURRENT_PROJECT_VERSION: "23"
         SWIFT_VERSION: "5.9"
         MACOSX_DEPLOYMENT_TARGET: "14.0"
         INFOPLIST_KEY_ITSAppUsesNonExemptEncryption: NO
@@ -94,7 +94,7 @@ targets:
         PRODUCT_NAME: NotesQuick
         PRODUCT_BUNDLE_IDENTIFIER: com.notesquick.app
         MARKETING_VERSION: "1.0.0"
-        CURRENT_PROJECT_VERSION: "20"
+        CURRENT_PROJECT_VERSION: "23"
         SWIFT_VERSION: "5.9"
         IPHONEOS_DEPLOYMENT_TARGET: "17.0"
         GENERATE_INFOPLIST_FILE: YES
@@ -140,7 +140,7 @@ targets:
         PRODUCT_NAME: NotesQuickShareiOS
         PRODUCT_BUNDLE_IDENTIFIER: com.notesquick.app.shareios
         MARKETING_VERSION: "1.0.0"
-        CURRENT_PROJECT_VERSION: "20"
+        CURRENT_PROJECT_VERSION: "23"
         SWIFT_VERSION: "5.9"
         IPHONEOS_DEPLOYMENT_TARGET: "17.0"
         INFOPLIST_KEY_ITSAppUsesNonExemptEncryption: NO
