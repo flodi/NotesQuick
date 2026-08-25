@@ -36,7 +36,8 @@ class NotesViewModel: ObservableObject {
         guard !searchText.isEmpty else { return sorted }
         return sorted.filter {
             $0.title.localizedCaseInsensitiveContains(searchText) ||
-            $0.content.localizedCaseInsensitiveContains(searchText)
+            $0.content.localizedCaseInsensitiveContains(searchText) ||
+            $0.fileURL.lastPathComponent.localizedCaseInsensitiveContains(searchText)
         }
     }
 
@@ -73,12 +74,22 @@ class NotesViewModel: ObservableObject {
         }
 
         notes = files.compactMap { url -> Note? in
-            guard url.pathExtension == fileExtension else { return nil }
-            guard let content = try? String(contentsOf: url, encoding: .utf8),
-                  let attrs = try? fm.attributesOfItem(atPath: url.path),
+            // Skip subdirectories (e.g. a Trash folder).
+            var isDir: ObjCBool = false
+            fm.fileExists(atPath: url.path, isDirectory: &isDir)
+            if isDir.boolValue { return nil }
+
+            guard let attrs = try? fm.attributesOfItem(atPath: url.path),
                   let modDate = attrs[.modificationDate] as? Date
             else { return nil }
-            return Note(fileURL: url, content: content, modifiedDate: modDate)
+
+            if Note.textExtensions.contains(url.pathExtension.lowercased()) {
+                let content = (try? String(contentsOf: url, encoding: .utf8)) ?? ""
+                return Note(fileURL: url, content: content, modifiedDate: modDate, isText: true)
+            } else {
+                // Any other file (PDF, image, Office/iWork, …) is a file item.
+                return Note(fileURL: url, content: "", modifiedDate: modDate, isText: false)
+            }
         }
     }
 
@@ -107,7 +118,62 @@ class NotesViewModel: ObservableObject {
         // until it actually has content. Writing an empty "Untitled" file here would
         // sync it (e.g. to Dropbox) the moment the editor is opened and closed without
         // typing, leaving phantom empty notes that then delete themselves on reopen.
-        let note = Note(fileURL: url, content: "", modifiedDate: Date())
+        let note = Note(fileURL: url, content: "", modifiedDate: Date(), isText: true)
+        notes.insert(note, at: 0)
+        return note
+    }
+
+    /// Save a shared/added URL as a one-line markdown-link text note.
+    @discardableResult
+    func addLink(_ url: URL, title: String?) -> Note {
+        startFolderAccess()
+        defer { stopFolderAccess() }
+        ensureFolderExists()
+
+        let display = (title?.trimmingCharacters(in: .whitespacesAndNewlines)).flatMap { $0.isEmpty ? nil : $0 }
+            ?? url.host
+            ?? "Link"
+        let content = "[\(display)](\(url.absoluteString))"
+        let safe = sanitizeFilename(display)
+        let fm = FileManager.default
+
+        var fileURL = notesFolder.appendingPathComponent("\(safe).\(fileExtension)")
+        var counter = 2
+        while fm.fileExists(atPath: fileURL.path) {
+            fileURL = notesFolder.appendingPathComponent("\(safe) \(counter).\(fileExtension)")
+            counter += 1
+        }
+
+        try? content.write(to: fileURL, atomically: true, encoding: .utf8)
+        let note = Note(fileURL: fileURL, content: content, modifiedDate: Date(), isText: true)
+        notes.insert(note, at: 0)
+        return note
+    }
+
+    /// Copy an external file into the notes folder as a file item.
+    @discardableResult
+    func importFile(at sourceURL: URL) -> Note? {
+        startFolderAccess()
+        defer { stopFolderAccess() }
+        ensureFolderExists()
+
+        let accessed = sourceURL.startAccessingSecurityScopedResource()
+        defer { if accessed { sourceURL.stopAccessingSecurityScopedResource() } }
+
+        let fm = FileManager.default
+        let base = sourceURL.deletingPathExtension().lastPathComponent
+        let ext = sourceURL.pathExtension
+
+        var dest = notesFolder.appendingPathComponent(sourceURL.lastPathComponent)
+        var counter = 2
+        while fm.fileExists(atPath: dest.path) {
+            let name = ext.isEmpty ? "\(base) \(counter)" : "\(base) \(counter).\(ext)"
+            dest = notesFolder.appendingPathComponent(name)
+            counter += 1
+        }
+
+        guard (try? fm.copyItem(at: sourceURL, to: dest)) != nil else { return nil }
+        let note = Note(fileURL: dest, content: "", modifiedDate: Date(), isText: false)
         notes.insert(note, at: 0)
         return note
     }
@@ -152,7 +218,7 @@ class NotesViewModel: ObservableObject {
         // or its content updated). When nothing was written, preserve the existing
         // modification date so the list ordering doesn't jump around spuriously.
         let modifiedDate = unchanged ? note.modifiedDate : Date()
-        let updatedNote = Note(fileURL: targetURL, content: content, modifiedDate: modifiedDate)
+        let updatedNote = Note(fileURL: targetURL, content: content, modifiedDate: modifiedDate, isText: true)
 
         if let index = notes.firstIndex(where: { $0.fileURL == note.fileURL }) {
             notes[index] = updatedNote

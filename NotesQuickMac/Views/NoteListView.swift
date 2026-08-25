@@ -1,4 +1,5 @@
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct NoteListView: View {
     @EnvironmentObject var viewModel: NotesViewModel
@@ -24,13 +25,13 @@ struct NoteListView: View {
 
             Divider()
 
-            // Notes list
+            // Items list
             if viewModel.filteredNotes.isEmpty {
                 VStack(spacing: 8) {
-                    Image(systemName: "note.text")
+                    Image(systemName: "tray")
                         .font(.system(size: 32))
                         .foregroundColor(.secondary)
-                    Text(viewModel.searchText.isEmpty ? "No notes yet" : "No results")
+                    Text(viewModel.searchText.isEmpty ? "Nothing here yet" : "No results")
                         .font(.subheadline)
                         .foregroundColor(.secondary)
                 }
@@ -40,8 +41,7 @@ struct NoteListView: View {
                     LazyVStack(spacing: 0) {
                         ForEach(viewModel.filteredNotes) { note in
                             NoteRow(note: note) {
-                                openWindow(id: "note-editor", value: note.id)
-                                NSApplication.shared.activate(ignoringOtherApps: true)
+                                open(note)
                             } onDelete: {
                                 confirmDelete(note: note)
                             }
@@ -55,14 +55,19 @@ struct NoteListView: View {
 
             // Bottom bar
             HStack {
-                Button {
-                    let note = viewModel.createNote()
-                    openWindow(id: "note-editor", value: note.id)
-                    NSApplication.shared.activate(ignoringOtherApps: true)
+                Menu {
+                    Button {
+                        let note = viewModel.createNote()
+                        openWindow(id: "note-editor", value: note.id)
+                        NSApplication.shared.activate(ignoringOtherApps: true)
+                    } label: { Label("New Note", systemImage: "note.text") }
+                    Button { addLink() } label: { Label("Add Link…", systemImage: "link") }
+                    Button { addFile() } label: { Label("Add File…", systemImage: "doc") }
                 } label: {
-                    Label("New Note", systemImage: "plus")
+                    Label("New", systemImage: "plus")
                 }
-                .buttonStyle(.plain)
+                .menuStyle(.borderlessButton)
+                .fixedSize()
 
                 Spacer()
 
@@ -94,13 +99,54 @@ struct NoteListView: View {
         }
     }
 
+    private func open(_ note: Note) {
+        if note.kind == .link, let url = note.linkURL {
+            NSWorkspace.shared.open(url)
+        } else {
+            openWindow(id: "note-editor", value: note.id)
+            NSApplication.shared.activate(ignoringOtherApps: true)
+        }
+    }
+
+    private func addLink() {
+        let alert = NSAlert()
+        alert.messageText = "Add Link"
+        alert.informativeText = "Paste a URL to save it as a note."
+        let field = NSTextField(frame: NSRect(x: 0, y: 0, width: 300, height: 24))
+        field.placeholderString = "https://example.com"
+        alert.accessoryView = field
+        alert.addButton(withTitle: "Add")
+        alert.addButton(withTitle: "Cancel")
+        if alert.runModal() == .alertFirstButtonReturn {
+            let text = field.stringValue.trimmingCharacters(in: .whitespacesAndNewlines)
+            let normalized = text.contains("://") ? text : "https://\(text)"
+            if !text.isEmpty, let url = URL(string: normalized) {
+                let note = viewModel.addLink(url, title: nil)
+                _ = note
+            }
+        }
+    }
+
+    private func addFile() {
+        let panel = NSOpenPanel()
+        panel.canChooseFiles = true
+        panel.canChooseDirectories = false
+        panel.allowsMultipleSelection = true
+        panel.message = "Choose file(s) to add"
+        if panel.runModal() == .OK {
+            for url in panel.urls {
+                viewModel.importFile(at: url)
+            }
+        }
+    }
+
     private func showAbout() {
         let alert = NSAlert()
         alert.messageText = "NotesQuick"
         alert.informativeText = """
         Version 1.0.0
 
-        A simple menu bar notes app with live Markdown editing.
+        A menu bar app for quick notes, links and files with live Markdown editing.
 
         App Icon: "Bloc Notes SZ" by Fmaunier
         Licensed under Creative Commons Attribution-ShareAlike 3.0 (CC BY-SA 3.0)
@@ -114,7 +160,7 @@ struct NoteListView: View {
 
     private func confirmDelete(note: Note) {
         let alert = NSAlert()
-        alert.messageText = "Delete Note"
+        alert.messageText = "Delete"
         alert.informativeText = "Are you sure you want to delete '\(note.title)'?"
         alert.alertStyle = .warning
         alert.addButton(withTitle: "Delete")
@@ -136,15 +182,22 @@ struct NoteRow: View {
     @State private var isHovering = false
 
     var body: some View {
-        HStack {
+        HStack(spacing: 8) {
             Button(action: onTap) {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(note.title)
-                        .font(.headline)
-                        .lineLimit(1)
-                    Text(note.modifiedDate, style: .relative)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
+                HStack(spacing: 8) {
+                    Image(systemName: NoteIcon.symbol(for: note))
+                        .font(.body)
+                        .foregroundColor(NoteIcon.color(for: note))
+                        .frame(width: 18)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(note.title)
+                            .font(.headline)
+                            .lineLimit(1)
+                        Text(note.modifiedDate, style: .relative)
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                    Spacer(minLength: 0)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .contentShape(Rectangle())

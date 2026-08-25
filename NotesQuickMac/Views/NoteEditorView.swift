@@ -35,7 +35,10 @@ struct NoteEditorView: View {
 
     var body: some View {
         Group {
-            if currentNote != nil {
+            if let note = currentNote, !note.isText {
+                // File item: native Quick Look preview.
+                FilePreviewScreen(url: note.fileURL)
+            } else if currentNote != nil {
                 VStack(spacing: 0) {
                     ZStack(alignment: .topTrailing) {
                         MarkdownTextView(text: $content, hidesTags: viewModel.hideTagsInEditor)
@@ -121,12 +124,14 @@ struct NoteEditorView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
-        .navigationTitle(displayTitle)
+        .navigationTitle(currentNote.map { $0.isText ? displayTitle : $0.title } ?? displayTitle)
         .onAppear {
             loadNote()
         }
         .onDisappear {
-            guard let note = currentNote else { return }
+            // Only text notes have the delete-empty / autosave lifecycle; file
+            // items must never be deleted just because their text content is empty.
+            guard let note = currentNote, note.isText else { return }
             if content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
                 viewModel.deleteNote(note)
             } else if hasUnsavedChanges {
@@ -134,7 +139,7 @@ struct NoteEditorView: View {
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: .saveCurrentNote)) { _ in
-            if let current = currentNote {
+            if let current = currentNote, current.isText {
                 save(note: current)
             }
         }
