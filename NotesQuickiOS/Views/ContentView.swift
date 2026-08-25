@@ -9,6 +9,7 @@ struct ContentView: View {
     @State private var showFileImporter = false
     @State private var showLinkPrompt = false
     @State private var linkText = ""
+    @State private var scheduleTarget: Note?
 
     private var selectedNote: Note? {
         guard let id = selectedNoteID else { return nil }
@@ -18,7 +19,7 @@ struct ContentView: View {
     var body: some View {
         NavigationSplitView {
             List(viewModel.filteredNotes, selection: $selectedNoteID) { note in
-                NoteRow(note: note)
+                NoteRow(note: note, schedule: viewModel.schedule(for: note))
                     .tag(note.id)
                     .swipeActions(edge: .trailing, allowsFullSwipe: true) {
                         Button(role: .destructive) {
@@ -27,6 +28,17 @@ struct ContentView: View {
                         } label: {
                             Label("Delete", systemImage: "trash")
                         }
+                    }
+                    .swipeActions(edge: .leading) {
+                        Button {
+                            scheduleTarget = note
+                        } label: {
+                            Label("Pianifica", systemImage: "clock")
+                        }
+                        .tint(.orange)
+                    }
+                    .contextMenu {
+                        Button { scheduleTarget = note } label: { Label("Pianifica…", systemImage: "clock") }
                     }
             }
             .searchable(text: $viewModel.searchText, prompt: "Search")
@@ -47,6 +59,13 @@ struct ContentView: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button { showSettings = true } label: {
                         Image(systemName: "gear")
+                    }
+                }
+                if viewModel.snoozedCount > 0 || viewModel.showSnoozed {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button { viewModel.showSnoozed.toggle() } label: {
+                            Image(systemName: viewModel.showSnoozed ? "moon.zzz.fill" : "moon.zzz")
+                        }
                     }
                 }
             }
@@ -123,6 +142,13 @@ struct ContentView: View {
         } message: {
             Text("Paste a URL to save it as a note.")
         }
+        .sheet(item: $scheduleTarget) { note in
+            NavigationStack {
+                SchedulePicker(note: note)
+                    .environmentObject(viewModel)
+            }
+            .presentationDetents([.medium, .large])
+        }
         .onAppear {
             viewModel.loadNotes()
         }
@@ -133,6 +159,7 @@ struct ContentView: View {
 
 struct NoteRow: View {
     let note: Note
+    var schedule: ItemSchedule?
 
     var body: some View {
         HStack(spacing: 10) {
@@ -143,9 +170,14 @@ struct NoteRow: View {
                 Text(note.title)
                     .font(.headline)
                     .lineLimit(1)
-                Text(note.modifiedDate, style: .relative)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                HStack(spacing: 8) {
+                    Text(note.modifiedDate, style: .relative)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    if let schedule, !schedule.isEmpty {
+                        ScheduleBadge(schedule: schedule)
+                    }
+                }
             }
         }
         .padding(.vertical, 2)

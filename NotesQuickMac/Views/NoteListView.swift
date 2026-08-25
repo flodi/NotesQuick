@@ -4,6 +4,7 @@ import UniformTypeIdentifiers
 struct NoteListView: View {
     @EnvironmentObject var viewModel: NotesViewModel
     @Environment(\.openWindow) var openWindow
+    @State private var scheduleTarget: Note?
 
     var body: some View {
         VStack(spacing: 0) {
@@ -40,10 +41,12 @@ struct NoteListView: View {
                 ScrollView {
                     LazyVStack(spacing: 0) {
                         ForEach(viewModel.filteredNotes) { note in
-                            NoteRow(note: note) {
+                            NoteRow(note: note, schedule: viewModel.schedule(for: note)) {
                                 open(note)
                             } onDelete: {
                                 confirmDelete(note: note)
+                            } onSchedule: {
+                                scheduleTarget = note
                             }
                             Divider()
                         }
@@ -71,6 +74,14 @@ struct NoteListView: View {
 
                 Spacer()
 
+                if viewModel.snoozedCount > 0 || viewModel.showSnoozed {
+                    Button { viewModel.showSnoozed.toggle() } label: {
+                        Image(systemName: viewModel.showSnoozed ? "moon.zzz.fill" : "moon.zzz")
+                    }
+                    .buttonStyle(.plain)
+                    .help(viewModel.showSnoozed ? "Nascondi sospesi" : "Mostra sospesi (\(viewModel.snoozedCount))")
+                }
+
                 Button { showAbout() } label: {
                     Image(systemName: "info.circle")
                 }
@@ -96,6 +107,10 @@ struct NoteListView: View {
         .frame(width: 300, height: 400)
         .onAppear {
             viewModel.loadNotes()
+        }
+        .sheet(item: $scheduleTarget) { note in
+            SchedulePicker(note: note)
+                .environmentObject(viewModel)
         }
     }
 
@@ -176,8 +191,10 @@ struct NoteListView: View {
 
 struct NoteRow: View {
     let note: Note
+    let schedule: ItemSchedule?
     let onTap: () -> Void
     let onDelete: () -> Void
+    let onSchedule: () -> Void
 
     @State private var isHovering = false
 
@@ -193,9 +210,14 @@ struct NoteRow: View {
                         Text(note.title)
                             .font(.headline)
                             .lineLimit(1)
-                        Text(note.modifiedDate, style: .relative)
-                            .font(.caption)
-                            .foregroundColor(.secondary)
+                        HStack(spacing: 8) {
+                            Text(note.modifiedDate, style: .relative)
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                            if let schedule, !schedule.isEmpty {
+                                ScheduleBadge(schedule: schedule)
+                            }
+                        }
                     }
                     Spacer(minLength: 0)
                 }
@@ -205,6 +227,14 @@ struct NoteRow: View {
             .buttonStyle(.plain)
 
             if isHovering {
+                Button(action: onSchedule) {
+                    Image(systemName: "clock")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+                .buttonStyle(.plain)
+                .help("Pianifica (nascondi / ricorda)")
+
                 Button(action: onDelete) {
                     Image(systemName: "trash")
                         .font(.caption)
@@ -218,6 +248,10 @@ struct NoteRow: View {
         .background(isHovering ? Color.primary.opacity(0.05) : Color.clear)
         .onHover { hovering in
             isHovering = hovering
+        }
+        .contextMenu {
+            Button { onSchedule() } label: { Label("Pianifica…", systemImage: "clock") }
+            Button(role: .destructive) { onDelete() } label: { Label("Elimina", systemImage: "trash") }
         }
     }
 }

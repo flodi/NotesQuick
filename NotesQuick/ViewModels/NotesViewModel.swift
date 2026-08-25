@@ -6,6 +6,11 @@ class NotesViewModel: ObservableObject {
     @Published var selectedNote: Note?
     @Published var searchText: String = ""
 
+    /// Per-item schedules (hide-until / remind-at), keyed by file name.
+    @Published var schedules: [String: ItemSchedule] = [:]
+    /// When true, snoozed ("hide until") items are shown too.
+    @Published var showSnoozed: Bool = false
+
     @Published var notesFolderPath: String {
         didSet {
             AppGroup.defaults.set(notesFolderPath, forKey: AppGroup.pathKey)
@@ -32,13 +37,29 @@ class NotesViewModel: ObservableObject {
     }
 
     var filteredNotes: [Note] {
-        let sorted = notes.sorted { $0.modifiedDate > $1.modifiedDate }
+        let now = Date()
+        var items = notes
+        // Hide snoozed items whose "hide until" is still in the future.
+        if !showSnoozed {
+            items = items.filter { !(schedule(for: $0)?.isHidden(now: now) ?? false) }
+        }
+        let sorted = items.sorted { $0.modifiedDate > $1.modifiedDate }
         guard !searchText.isEmpty else { return sorted }
         return sorted.filter {
             $0.title.localizedCaseInsensitiveContains(searchText) ||
             $0.content.localizedCaseInsensitiveContains(searchText) ||
             $0.fileURL.lastPathComponent.localizedCaseInsensitiveContains(searchText)
         }
+    }
+
+    /// Number of items currently hidden by a "hide until" in the future.
+    var snoozedCount: Int {
+        let now = Date()
+        return notes.filter { schedule(for: $0)?.isHidden(now: now) ?? false }.count
+    }
+
+    func schedule(for note: Note) -> ItemSchedule? {
+        schedules[note.fileURL.lastPathComponent]
     }
 
     init() {
@@ -50,6 +71,7 @@ class NotesViewModel: ObservableObject {
         self.hideTagsInEditor = UserDefaults.standard.bool(forKey: "hideTagsInEditor")
         ensureFolderExists()
         loadNotes()
+        Reminders.requestAuthorization()
     }
 
     func ensureFolderExists() {
@@ -92,6 +114,56 @@ class NotesViewModel: ObservableObject {
                 return Note(fileURL: url, content: "", modifiedDate: modDate, isText: false)
             }
         }
+        loadSchedules()
+    }
+
+    // MARK: - Schedules (hide-until / remind-at)
+
+    private var scheduleIndexURL: URL {
+        notesFolder.appendingPathComponent(ScheduleIndex.fileName)
+    }
+
+    private func loadSchedules() {
+        startFolderAccess()
+        defer { stopFolderAccess() }
+        if let data = try? Data(contentsOf: scheduleIndexURL) {
+            schedules = ScheduleIndex.decode(data)
+        } else {
+            schedules = [:]
+        }
+        // Drop entries for items that no longer exist, then reconcile reminders.
+        let names = Set(notes.map { $0.fileURL.lastPathComponent })
+        schedules = schedules.filter { names.contains($0.key) }
+        reconcileReminders()
+    }
+
+    private func saveSchedules() {
+        startFolderAccess()
+        defer { stopFolderAccess() }
+        let pruned = schedules.filter { !$0.value.isEmpty }
+        schedules = pruned
+        if pruned.isEmpty {
+            try? FileManager.default.removeItem(at: scheduleIndexURL)
+        } else if let data = ScheduleIndex.encode(pruned) {
+            try? data.write(to: scheduleIndexURL, options: .atomic)
+        }
+        reconcileReminders()
+    }
+
+    private func reconcileReminders() {
+        let titles = Dictionary(uniqueKeysWithValues: notes.map { ($0.fileURL.lastPathComponent, $0.title) })
+        Reminders.sync(schedules) { name in titles[name] ?? name }
+    }
+
+    /// Set (or clear) the schedule for an item and persist it.
+    func setSchedule(_ schedule: ItemSchedule, for note: Note) {
+        let name = note.fileURL.lastPathComponent
+        if schedule.isEmpty {
+            schedules.removeValue(forKey: name)
+        } else {
+            schedules[name] = schedule
+        }
+        saveSchedules()
     }
 
     @discardableResult
@@ -225,6 +297,15 @@ class NotesViewModel: ObservableObject {
             notes[index] = updatedNote
         }
 
+        // Follow the schedule to the renamed file.
+        let oldName = note.fileURL.lastPathComponent
+        let newName = targetURL.lastPathComponent
+        if oldName != newName, let sched = schedules[oldName] {
+            schedules.removeValue(forKey: oldName)
+            schedules[newName] = sched
+            saveSchedules()
+        }
+
         if selectedNote?.fileURL == note.fileURL {
             selectedNote = updatedNote
         }
@@ -235,6 +316,11 @@ class NotesViewModel: ObservableObject {
         defer { stopFolderAccess() }
         try? FileManager.default.removeItem(at: note.fileURL)
         notes.removeAll { $0.fileURL == note.fileURL }
+        let name = note.fileURL.lastPathComponent
+        if schedules[name] != nil {
+            schedules.removeValue(forKey: name)
+            saveSchedules()
+        }
         if selectedNote?.fileURL == note.fileURL {
             selectedNote = nil
         }
