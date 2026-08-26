@@ -4,6 +4,7 @@ import UniformTypeIdentifiers
 struct ContentView: View {
     @EnvironmentObject var viewModel: NotesViewModel
     @Environment(\.openURL) private var openURL
+    @Environment(\.scenePhase) private var scenePhase
     @State private var selectedNoteID: String?
     @State private var showSettings = false
     @State private var showFileImporter = false
@@ -151,6 +152,9 @@ struct ContentView: View {
         }
         .onAppear {
             viewModel.loadNotes()
+        }
+        .onChange(of: scenePhase) { _, phase in
+            if phase == .active { viewModel.loadNotes() }
         }
     }
 }

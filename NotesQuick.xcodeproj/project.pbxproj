@@ -17,6 +17,7 @@
 		2FBE44A435346F94F3FC8EC8 /* QuickLookPreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E176AD29615E837CB866A2EA /* QuickLookPreview.swift */; };
 		34839DB8778A40F479114EF0 /* Reminders.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77DE5CD5E30769DA939113B /* Reminders.swift */; };
 		35D7AACB396A40639853B8F6 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8FEC69F1E923353DC1EB43E /* Constants.swift */; };
+		37350CEFEECAED4524DACB53 /* FolderWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF96CF89A426C7E574D5B61 /* FolderWatcher.swift */; };
 		3E4F8EB6FCAFD62F70F4E428 /* SchedulePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F6E2E35780963B1EF52875 /* SchedulePicker.swift */; };
 		417ACBC176350AC685F3D50C /* MarkdownTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47959E470164A13579C15BD /* MarkdownTextView.swift */; };
 		4463D1332426C46685BB7486 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173D7D67955444C3EE210A0C /* Note.swift */; };
@@ -55,6 +56,7 @@
 		EDAE3F67404CD500028D5B9F /* NotesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E007851C97006C190214D1D /* NotesViewModel.swift */; };
 		EDE392C193462E268F8AED8F /* NotesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E007851C97006C190214D1D /* NotesViewModel.swift */; };
 		EEFDB0BA70FB525510F824D2 /* NotesQuickShareiOS.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = D987ED2A553A323E730BB343 /* NotesQuickShareiOS.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		FD862EF3010D1EB612A0A7CD /* FolderWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF96CF89A426C7E574D5B61 /* FolderWatcher.swift */; };
 		FDC0DCD48A16B218CF2A271E /* NoteIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B63E39FFC0DB9AE3B4B2348 /* NoteIcon.swift */; };
 /* End PBXBuildFile section */
 
@@ -134,6 +136,7 @@
 		E77DE5CD5E30769DA939113B /* Reminders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reminders.swift; sourceTree = "<group>"; };
 		E78B74475BDF9724CCBD114D /* String+Markdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Markdown.swift"; sourceTree = "<group>"; };
 		F47959E470164A13579C15BD /* MarkdownTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownTextView.swift; sourceTree = "<group>"; };
+		FFF96CF89A426C7E574D5B61 /* FolderWatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderWatcher.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -210,6 +213,7 @@
 				2F3EA99213527D5E1A929E82 /* AppGroup.swift */,
 				C8FEC69F1E923353DC1EB43E /* Constants.swift */,
 				7EE1C9858D6EB2209BD55FDB /* FolderBookmark.swift */,
+				FFF96CF89A426C7E574D5B61 /* FolderWatcher.swift */,
 				8D4E9F03C3C2BAC33AE9B792 /* NoteFolder.swift */,
 				E77DE5CD5E30769DA939113B /* Reminders.swift */,
 			);
@@ -466,6 +470,7 @@
 				AD1BA80C0C11130A22293B9B /* AppGroup.swift in Sources */,
 				A2E24C05B2C1F541BA58CBCA /* Constants.swift in Sources */,
 				59A462689C48B04A6F4DFA42 /* FolderBookmark.swift in Sources */,
+				FD862EF3010D1EB612A0A7CD /* FolderWatcher.swift in Sources */,
 				9E43F76EA9A8432FEF9B8A85 /* ItemSchedule.swift in Sources */,
 				417ACBC176350AC685F3D50C /* MarkdownTextView.swift in Sources */,
 				4463D1332426C46685BB7486 /* Note.swift in Sources */,
@@ -503,6 +508,7 @@
 				35D7AACB396A40639853B8F6 /* Constants.swift in Sources */,
 				CFEC04649E03C1D4B5F9AB00 /* ContentView.swift in Sources */,
 				5E36ED1816D92CD842B21663 /* FolderBookmark.swift in Sources */,
+				37350CEFEECAED4524DACB53 /* FolderWatcher.swift in Sources */,
 				B763F11E3E1FC72AB0770870 /* ItemSchedule.swift in Sources */,
 				B06F0BED9E6032FB274C3006 /* MarkdownTextView.swift in Sources */,
 				E6C1F6D6962E4729071755FD /* Note.swift in Sources */,

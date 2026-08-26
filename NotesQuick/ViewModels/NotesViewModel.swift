@@ -16,6 +16,7 @@ class NotesViewModel: ObservableObject {
             AppGroup.defaults.set(notesFolderPath, forKey: AppGroup.pathKey)
             ensureFolderExists()
             loadNotes()
+            startWatching()
         }
     }
 
@@ -34,6 +35,13 @@ class NotesViewModel: ObservableObject {
 
     var notesFolder: URL {
         URL(fileURLWithPath: notesFolderPath)
+    }
+
+    private let folderWatcher = FolderWatcher()
+
+    private func startWatching() {
+        folderWatcher.onChange = { [weak self] in self?.loadNotes() }
+        folderWatcher.start(path: notesFolderPath)
     }
 
     var filteredNotes: [Note] {
@@ -71,6 +79,7 @@ class NotesViewModel: ObservableObject {
         self.hideTagsInEditor = UserDefaults.standard.bool(forKey: "hideTagsInEditor")
         ensureFolderExists()
         loadNotes()
+        startWatching()
         Reminders.requestAuthorization()
     }
 
@@ -96,7 +105,7 @@ class NotesViewModel: ObservableObject {
             return
         }
 
-        notes = files.compactMap { url -> Note? in
+        let loaded = files.compactMap { url -> Note? in
             // Skip subdirectories (e.g. a Trash folder).
             var isDir: ObjCBool = false
             fm.fileExists(atPath: url.path, isDirectory: &isDir)
@@ -114,6 +123,10 @@ class NotesViewModel: ObservableObject {
                 return Note(fileURL: url, content: "", modifiedDate: modDate, isText: false)
             }
         }
+        // Preserve brand-new notes that live only in memory (no file on disk yet),
+        // so a folder-watch reload doesn't wipe an unsaved new note.
+        let pending = notes.filter { !FileManager.default.fileExists(atPath: $0.fileURL.path) }
+        notes = pending + loaded.filter { l in !pending.contains(where: { $0.fileURL == l.fileURL }) }
         loadSchedules()
     }
 
