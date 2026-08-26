@@ -58,48 +58,58 @@ final class ShareViewController: UIViewController {
     }
 
     private func process(_ provider: NSItemProvider, completion: @escaping (Bool) -> Void) {
-        let url = UTType.url.identifier
-        let fileURL = UTType.fileURL.identifier
-        let text = UTType.plainText.identifier
+        let urlType = UTType.url.identifier
+        let fileURLType = UTType.fileURL.identifier
+        let textType = UTType.plainText.identifier
 
-        // A web link (not a file URL).
-        if provider.hasItemConformingToTypeIdentifier(url),
-           !provider.hasItemConformingToTypeIdentifier(fileURL) {
-            provider.loadItem(forTypeIdentifier: url, options: nil) { item, _ in
-                if let u = item as? URL, !u.isFileURL {
+        // 1. A real file (fileURL) — load the actual URL so we copy the real file
+        //    with its real name, not a representation of the URL string.
+        if provider.hasItemConformingToTypeIdentifier(fileURLType) {
+            provider.loadItem(forTypeIdentifier: fileURLType, options: nil) { item, _ in
+                let src = ShareViewController.fileURL(from: item)
+                completion(src.map { NoteFolder.copyFile(at: $0) != nil } ?? false)
+            }
+            return
+        }
+
+        // 2. A web link.
+        if provider.hasItemConformingToTypeIdentifier(urlType) {
+            provider.loadItem(forTypeIdentifier: urlType, options: nil) { item, _ in
+                if let u = item as? URL {
                     completion(NoteFolder.saveLink(u, title: nil) != nil)
-                } else if let u = item as? URL {
-                    completion(NoteFolder.copyFile(at: u) != nil)
-                } else {
-                    completion(false)
-                }
+                } else { completion(false) }
             }
             return
         }
 
-        // Any file (image, PDF, document, …). loadFileRepresentation gives a temp
-        // URL valid only inside the closure, so copy synchronously there.
-        for typeId in [fileURL, UTType.image.identifier, UTType.data.identifier] where provider.hasItemConformingToTypeIdentifier(typeId) {
-            provider.loadFileRepresentation(forTypeIdentifier: typeId) { tempURL, _ in
-                let ok = tempURL.map { NoteFolder.copyFile(at: $0) != nil } ?? false
-                completion(ok)
-            }
-            return
-        }
-
-        // Plain text.
-        if provider.hasItemConformingToTypeIdentifier(text) {
-            provider.loadItem(forTypeIdentifier: text, options: nil) { item, _ in
+        // 3. Plain text (check before generic data — text conforms to data).
+        if provider.hasItemConformingToTypeIdentifier(textType) {
+            provider.loadItem(forTypeIdentifier: textType, options: nil) { item, _ in
                 if let s = item as? String {
                     completion(NoteFolder.saveText(s, title: nil) != nil)
-                } else {
-                    completion(false)
-                }
+                } else if let d = item as? Data, let s = String(data: d, encoding: .utf8) {
+                    completion(NoteFolder.saveText(s, title: nil) != nil)
+                } else { completion(false) }
+            }
+            return
+        }
+
+        // 4. Image or other data → copy as a file (temp URL valid only in the closure).
+        for typeId in [UTType.image.identifier, UTType.data.identifier]
+        where provider.hasItemConformingToTypeIdentifier(typeId) {
+            provider.loadFileRepresentation(forTypeIdentifier: typeId) { tempURL, _ in
+                completion(tempURL.map { NoteFolder.copyFile(at: $0) != nil } ?? false)
             }
             return
         }
 
         completion(false)
+    }
+
+    private static func fileURL(from item: NSSecureCoding?) -> URL? {
+        if let u = item as? URL, u.isFileURL { return u }
+        if let d = item as? Data, let u = URL(dataRepresentation: d, relativeTo: nil), u.isFileURL { return u }
+        return nil
     }
 
     private func finish(count: Int) {
