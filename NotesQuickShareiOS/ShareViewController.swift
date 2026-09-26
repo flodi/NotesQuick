@@ -61,8 +61,12 @@ final class ShareViewController: UIViewController {
         }
 
         group.notify(queue: .main) {
-            self.finish(saved > 0 ? "Salvato in NotesQuick (\(saved))"
-                                  : "Scrittura fallita (\(providers.count) elementi)")
+            if saved > 0 {
+                self.finish("Salvato in NotesQuick (\(saved))")
+            } else {
+                let types = providers.first?.registeredTypeIdentifiers.prefix(4).joined(separator: ", ") ?? "?"
+                self.finish("Fallito · tipi: \(types) · \(NoteFolder.lastError ?? "nessun ramo")")
+            }
         }
     }
 

@@ -12,6 +12,9 @@ enum NoteFolder {
 
     static func folderURL() -> URL? { AppGroup.inboxURL() }
 
+    /// Last failure reason, for diagnostics.
+    static var lastError: String?
+
     /// Save a URL as a one-line markdown-link note.
     @discardableResult
     static func saveLink(_ url: URL, title: String?) -> URL? {
@@ -29,22 +32,36 @@ enum NoteFolder {
     /// Copy an external file into the Inbox.
     @discardableResult
     static func copyFile(at source: URL) -> URL? {
-        guard let inbox = folderURL() else { return nil }
+        guard let inbox = folderURL() else { lastError = "inbox nil"; return nil }
         let srcAccess = source.startAccessingSecurityScopedResource()
         defer { if srcAccess { source.stopAccessingSecurityScopedResource() } }
 
         let dest = uniqueURL(in: inbox,
                              base: source.deletingPathExtension().lastPathComponent,
                              ext: source.pathExtension)
-        return (try? FileManager.default.copyItem(at: source, to: dest)) != nil ? dest : nil
+        do {
+            try FileManager.default.copyItem(at: source, to: dest)
+            lastError = nil
+            return dest
+        } catch {
+            lastError = "copy: \(error.localizedDescription)"
+            return nil
+        }
     }
 
     // MARK: - Private
 
     private static func writeNote(text: String, baseName: String) -> URL? {
-        guard let inbox = folderURL() else { return nil }
+        guard let inbox = folderURL() else { lastError = "inbox nil"; return nil }
         let dest = uniqueURL(in: inbox, base: sanitize(baseName), ext: fileExtension)
-        return (try? text.write(to: dest, atomically: true, encoding: .utf8)) != nil ? dest : nil
+        do {
+            try text.write(to: dest, atomically: false, encoding: .utf8)
+            lastError = nil
+            return dest
+        } catch {
+            lastError = "write \(dest.lastPathComponent): \(error.localizedDescription)"
+            return nil
+        }
     }
 
     private static func uniqueURL(in folder: URL, base: String, ext: String) -> URL {

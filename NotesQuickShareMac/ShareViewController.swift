@@ -8,15 +8,18 @@ final class ShareViewController: NSViewController {
     private let label = NSTextField(labelWithString: "Saving to NotesQuick…")
 
     override func loadView() {
-        let container = NSView(frame: NSRect(x: 0, y: 0, width: 320, height: 110))
-        label.font = .boldSystemFont(ofSize: 14)
+        let container = NSView(frame: NSRect(x: 0, y: 0, width: 460, height: 160))
+        label.font = .systemFont(ofSize: 13)
         label.alignment = .center
+        label.maximumNumberOfLines = 0
+        label.lineBreakMode = .byWordWrapping
         label.translatesAutoresizingMaskIntoConstraints = false
         container.addSubview(label)
         NSLayoutConstraint.activate([
             label.centerXAnchor.constraint(equalTo: container.centerXAnchor),
             label.centerYAnchor.constraint(equalTo: container.centerYAnchor),
-            label.leadingAnchor.constraint(greaterThanOrEqualTo: container.leadingAnchor, constant: 20),
+            label.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 20),
+            label.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -20),
         ])
         self.view = container
     }
@@ -50,8 +53,12 @@ final class ShareViewController: NSViewController {
         }
 
         group.notify(queue: .main) {
-            self.finish(saved > 0 ? "Salvato in NotesQuick (\(saved))"
-                                  : "Scrittura fallita (\(providers.count) elementi)")
+            if saved > 0 {
+                self.finish("Salvato in NotesQuick (\(saved))")
+            } else {
+                let types = providers.first?.registeredTypeIdentifiers.prefix(4).joined(separator: ", ") ?? "?"
+                self.finish("Fallito · tipi: \(types) · \(NoteFolder.lastError ?? "nessun ramo")")
+            }
         }
     }
 
