@@ -29,7 +29,13 @@ final class ShareViewController: NSViewController {
     private func handleShare() {
         let items = (extensionContext?.inputItems as? [NSExtensionItem]) ?? []
         let providers = items.flatMap { $0.attachments ?? [] }
-        guard !providers.isEmpty else { return finish(count: 0) }
+
+        guard AppGroup.inboxURL() != nil else {
+            return finish("Errore: App Group non accessibile")
+        }
+        guard !providers.isEmpty else {
+            return finish("Niente da salvare (0 elementi ricevuti)")
+        }
 
         let group = DispatchGroup()
         var saved = 0
@@ -43,7 +49,10 @@ final class ShareViewController: NSViewController {
             }
         }
 
-        group.notify(queue: .main) { self.finish(count: saved) }
+        group.notify(queue: .main) {
+            self.finish(saved > 0 ? "Salvato in NotesQuick (\(saved))"
+                                  : "Scrittura fallita (\(providers.count) elementi)")
+        }
     }
 
     private func process(_ provider: NSItemProvider, completion: @escaping (Bool) -> Void) {
@@ -100,9 +109,9 @@ final class ShareViewController: NSViewController {
         return nil
     }
 
-    private func finish(count: Int) {
-        label.stringValue = count > 0 ? "Saved to NotesQuick" : "Nothing to save"
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
+    private func finish(_ message: String) {
+        label.stringValue = message
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.4) {
             self.extensionContext?.completeRequest(returningItems: [], completionHandler: nil)
         }
     }
