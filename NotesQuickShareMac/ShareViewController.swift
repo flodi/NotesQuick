@@ -63,37 +63,48 @@ final class ShareViewController: NSViewController {
     }
 
     private func process(_ provider: NSItemProvider, completion: @escaping (Bool) -> Void) {
-        let urlType = UTType.url.identifier
         let fileURLType = UTType.fileURL.identifier
         let textType = UTType.plainText.identifier
 
-        // 1. A real file — load the actual URL, copy the real file with its name.
+        // 1. A real file — copy the actual file with its name.
         if provider.hasItemConformingToTypeIdentifier(fileURLType) {
             provider.loadItem(forTypeIdentifier: fileURLType, options: nil) { item, _ in
-                let src = ShareViewController.fileURL(from: item)
-                completion(src.map { NoteFolder.copyFile(at: $0) != nil } ?? false)
+                if let src = ShareViewController.fileURL(from: item) {
+                    completion(NoteFolder.copyFile(at: src) != nil)
+                } else {
+                    NoteFolder.lastError = "file item non URL"
+                    completion(false)
+                }
             }
             return
         }
 
-        // 2. A web link.
-        if provider.hasItemConformingToTypeIdentifier(urlType) {
-            provider.loadItem(forTypeIdentifier: urlType, options: nil) { item, _ in
-                if let u = item as? URL {
-                    completion(NoteFolder.saveLink(u, title: nil) != nil)
-                } else { completion(false) }
+        // 2. A URL — loadObject(URL) is the reliable way to read public.url.
+        if provider.canLoadObject(ofClass: URL.self) {
+            _ = provider.loadObject(ofClass: URL.self) { url, err in
+                if let url = url, !url.isFileURL {
+                    completion(NoteFolder.saveLink(url, title: nil) != nil)
+                } else if let url = url {
+                    completion(NoteFolder.copyFile(at: url) != nil)
+                } else {
+                    NoteFolder.lastError = "loadObject URL: \(err?.localizedDescription ?? "nil")"
+                    completion(false)
+                }
             }
             return
         }
 
-        // 3. Plain text (before generic data — text conforms to data).
+        // 3. Plain text.
         if provider.hasItemConformingToTypeIdentifier(textType) {
             provider.loadItem(forTypeIdentifier: textType, options: nil) { item, _ in
                 if let s = item as? String {
                     completion(NoteFolder.saveText(s, title: nil) != nil)
                 } else if let d = item as? Data, let s = String(data: d, encoding: .utf8) {
                     completion(NoteFolder.saveText(s, title: nil) != nil)
-                } else { completion(false) }
+                } else {
+                    NoteFolder.lastError = "text item non String"
+                    completion(false)
+                }
             }
             return
         }
@@ -101,12 +112,18 @@ final class ShareViewController: NSViewController {
         // 4. Image or other data → copy as a file.
         for typeId in [UTType.image.identifier, UTType.data.identifier]
         where provider.hasItemConformingToTypeIdentifier(typeId) {
-            provider.loadFileRepresentation(forTypeIdentifier: typeId) { tempURL, _ in
-                completion(tempURL.map { NoteFolder.copyFile(at: $0) != nil } ?? false)
+            provider.loadFileRepresentation(forTypeIdentifier: typeId) { tempURL, err in
+                if let tempURL {
+                    completion(NoteFolder.copyFile(at: tempURL) != nil)
+                } else {
+                    NoteFolder.lastError = "fileRep: \(err?.localizedDescription ?? "nil")"
+                    completion(false)
+                }
             }
             return
         }
 
+        NoteFolder.lastError = "tipo non gestito"
         completion(false)
     }
 
