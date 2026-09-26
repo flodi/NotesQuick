@@ -11,10 +11,11 @@ final class FolderWatcher {
 
     var onChange: (() -> Void)?
 
-    func start(path: String) {
+    func start(path: String, scoped: Bool = true) {
         stop()
-        // Hold security-scoped access to the folder for the watcher's lifetime.
-        scopedURL = FolderBookmark.beginAccess()
+        // Hold security-scoped access to the folder for the watcher's lifetime
+        // (not needed for the App Group container, which we own).
+        if scoped { scopedURL = FolderBookmark.beginAccess() }
         let watchPath = scopedURL?.path ?? path
         fd = open(watchPath, O_EVTONLY)
         guard fd >= 0 else {

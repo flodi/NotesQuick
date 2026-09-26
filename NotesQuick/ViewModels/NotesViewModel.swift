@@ -38,10 +38,46 @@ class NotesViewModel: ObservableObject {
     }
 
     private let folderWatcher = FolderWatcher()
+    private let inboxWatcher = FolderWatcher()
 
     private func startWatching() {
         folderWatcher.onChange = { [weak self] in self?.loadNotes() }
         folderWatcher.start(path: notesFolderPath)
+        // Also watch the App Group Inbox so items shared while the app is open
+        // appear right away.
+        if let inbox = AppGroup.inboxURL() {
+            inboxWatcher.onChange = { [weak self] in self?.loadNotes() }
+            inboxWatcher.start(path: inbox.path, scoped: false)
+        }
+    }
+
+    /// Move any items the Share extension staged in the App Group Inbox into the
+    /// user's notes folder. Runs before every load so shared items appear.
+    private func drainInbox() {
+        guard let inbox = AppGroup.inboxURL() else { return }
+        let fm = FileManager.default
+        guard let files = try? fm.contentsOfDirectory(
+            at: inbox, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles]
+        ), !files.isEmpty else { return }
+
+        startFolderAccess()
+        defer { stopFolderAccess() }
+        ensureFolderExists()
+
+        for src in files {
+            let base = src.deletingPathExtension().lastPathComponent
+            let ext = src.pathExtension
+            var dest = notesFolder.appendingPathComponent(src.lastPathComponent)
+            var counter = 2
+            while fm.fileExists(atPath: dest.path) {
+                let name = ext.isEmpty ? "\(base) \(counter)" : "\(base) \(counter).\(ext)"
+                dest = notesFolder.appendingPathComponent(name)
+                counter += 1
+            }
+            if (try? fm.moveItem(at: src, to: dest)) == nil {
+                try? fm.removeItem(at: src)  // give up on this one, don't loop on it
+            }
+        }
     }
 
     var filteredNotes: [Note] {
@@ -93,6 +129,7 @@ class NotesViewModel: ObservableObject {
     }
 
     func loadNotes() {
+        drainInbox()
         startFolderAccess()
         defer { stopFolderAccess() }
         let fm = FileManager.default

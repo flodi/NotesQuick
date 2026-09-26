@@ -10,6 +10,17 @@ enum AppGroup {
         UserDefaults(suiteName: id) ?? .standard
     }
 
+    /// A staging folder inside the shared App Group container. The Share
+    /// extension writes here (no security-scoped bookmark needed, so it works on
+    /// macOS too) and the main app drains it into the user's notes folder.
+    static func inboxURL() -> URL? {
+        guard let container = FileManager.default
+            .containerURL(forSecurityApplicationGroupIdentifier: id) else { return nil }
+        let inbox = container.appendingPathComponent("Inbox", isDirectory: true)
+        try? FileManager.default.createDirectory(at: inbox, withIntermediateDirectories: true)
+        return inbox
+    }
+
     // Keys shared with extensions.
     static let bookmarkKey = "notesFolderBookmark"
     static let pathKey = "notesFolderPath"

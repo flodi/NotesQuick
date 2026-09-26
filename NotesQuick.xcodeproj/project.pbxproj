@@ -436,8 +436,8 @@
 			targets = (
 				D38E6333C7ACBD587C8D9DE2 /* NotesQuickMac */,
 				D28375BF6D855A3E49BA1435 /* NotesQuickShareMac */,
-				F67700A99197FDE3A54EDF93 /* NotesQuickShareiOS */,
 				CBD4BA34E129F07906602827 /* NotesQuickiOS */,
+				F67700A99197FDE3A54EDF93 /* NotesQuickShareiOS */,
 			);
 		};
 /* End PBXProject section */

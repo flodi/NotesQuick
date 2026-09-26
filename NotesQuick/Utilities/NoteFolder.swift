@@ -1,20 +1,16 @@
 import Foundation
 
-/// Writes items into the user's notes folder, resolving the shared security-
-/// scoped bookmark. Standalone (no SwiftUI / view model) so Share extensions can
-/// use it as-is. The main app has its own view-model methods for live UI updates.
+/// Writes shared items into the App Group "Inbox" staging folder. The Share
+/// extensions use this: writing to the shared container needs no security-scoped
+/// bookmark, so it works on macOS too (where resolving the folder bookmark from
+/// an extension is unreliable). The main app drains the Inbox into the notes
+/// folder. Standalone (Foundation only) so the extensions can link it directly.
 enum NoteFolder {
     static var fileExtension: String {
         AppGroup.defaults.string(forKey: AppGroup.extensionKey) ?? "md"
     }
 
-    static func folderURL() -> URL? {
-        if let url = FolderBookmark.resolvedURL() { return url }
-        if let path = AppGroup.defaults.string(forKey: AppGroup.pathKey) {
-            return URL(fileURLWithPath: path)
-        }
-        return nil
-    }
+    static func folderURL() -> URL? { AppGroup.inboxURL() }
 
     /// Save a URL as a one-line markdown-link note.
     @discardableResult
@@ -30,18 +26,14 @@ enum NoteFolder {
         return writeNote(text: text, baseName: base)
     }
 
-    /// Copy an external file into the notes folder.
+    /// Copy an external file into the Inbox.
     @discardableResult
     static func copyFile(at source: URL) -> URL? {
-        guard let folder = folderURL() else { return nil }
-        let folderAccess = folder.startAccessingSecurityScopedResource()
-        defer { if folderAccess { folder.stopAccessingSecurityScopedResource() } }
-
+        guard let inbox = folderURL() else { return nil }
         let srcAccess = source.startAccessingSecurityScopedResource()
         defer { if srcAccess { source.stopAccessingSecurityScopedResource() } }
 
-        ensureExists(folder)
-        let dest = uniqueURL(in: folder,
+        let dest = uniqueURL(in: inbox,
                              base: source.deletingPathExtension().lastPathComponent,
                              ext: source.pathExtension)
         return (try? FileManager.default.copyItem(at: source, to: dest)) != nil ? dest : nil
@@ -50,20 +42,9 @@ enum NoteFolder {
     // MARK: - Private
 
     private static func writeNote(text: String, baseName: String) -> URL? {
-        guard let folder = folderURL() else { return nil }
-        let access = folder.startAccessingSecurityScopedResource()
-        defer { if access { folder.stopAccessingSecurityScopedResource() } }
-
-        ensureExists(folder)
-        let dest = uniqueURL(in: folder, base: sanitize(baseName), ext: fileExtension)
+        guard let inbox = folderURL() else { return nil }
+        let dest = uniqueURL(in: inbox, base: sanitize(baseName), ext: fileExtension)
         return (try? text.write(to: dest, atomically: true, encoding: .utf8)) != nil ? dest : nil
-    }
-
-    private static func ensureExists(_ folder: URL) {
-        let fm = FileManager.default
-        if !fm.fileExists(atPath: folder.path) {
-            try? fm.createDirectory(at: folder, withIntermediateDirectories: true)
-        }
     }
 
     private static func uniqueURL(in folder: URL, base: String, ext: String) -> URL {
