@@ -76,8 +76,11 @@ struct SchedulePicker: View {
 
     private func load() {
         let s = viewModel.schedule(for: note)
-        if let h = s?.hideUntil { hideOn = true; hideDate = h }
-        if let r = s?.remindAt { remindOn = true; remindDate = r }
+        // Clamp loaded dates to "now or later": a DatePicker with an `in: Date()...`
+        // range and a selection in the past can crash on iOS.
+        let now = Date()
+        if let h = s?.hideUntil { hideOn = true; hideDate = max(h, now) }
+        if let r = s?.remindAt { remindOn = true; remindDate = max(r, now) }
     }
 
     private func save() {
