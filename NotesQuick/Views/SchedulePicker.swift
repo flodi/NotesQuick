@@ -25,11 +25,11 @@ struct SchedulePicker: View {
                     .font(Q.F.title)
                     .lineLimit(1)
                 Spacer(minLength: 8)
-                QIconButton(symbol: "checkmark", kind: .primary, help: "Salva") { save() }
+                QIconButton(symbol: "checkmark", kind: .primary, help: L("Salva")) { save() }
                     .keyboardShortcut(.defaultAction)
-                QIconButton(symbol: "xmark", kind: .gray, help: "Annulla") { dismiss() }
+                QIconButton(symbol: "xmark", kind: .gray, help: L("Annulla")) { dismiss() }
                     .keyboardShortcut(.cancelAction)
-                QIconButton(symbol: "trash", kind: .plain, help: "Cancella pianificazione") {
+                QIconButton(symbol: "trash", kind: .plain, help: L("Cancella pianificazione")) {
                     viewModel.setSchedule(ItemSchedule(), for: note)
                     dismiss()
                 }
@@ -65,11 +65,9 @@ struct SchedulePicker: View {
                     Text("Ricevi una notifica a questa data.")
                 }
             }
-            #if os(macOS)
-            .padding(.horizontal, 4)
-            #endif
+            .formStyle(.grouped)
         }
-        .frame(minWidth: 340, minHeight: 320)
+        .frame(minWidth: 360, minHeight: 340)
         .onAppear(perform: load)
     }
 

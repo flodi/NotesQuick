@@ -5,7 +5,7 @@ import UniformTypeIdentifiers
 /// NotesQuick folder, then dismisses.
 final class ShareViewController: NSViewController {
 
-    private let label = NSTextField(labelWithString: "Salvataggio in NotesQuick…")
+    private let label = NSTextField(labelWithString: L("Salvataggio in NotesQuick…"))
 
     override func loadView() {
         let container = NSView(frame: NSRect(x: 0, y: 0, width: 460, height: 160))
@@ -34,10 +34,10 @@ final class ShareViewController: NSViewController {
         let providers = items.flatMap { $0.attachments ?? [] }
 
         guard AppGroup.inboxURL() != nil else {
-            return finish("Errore: App Group non accessibile")
+            return finish(L("Errore: App Group non accessibile"))
         }
         guard !providers.isEmpty else {
-            return finish("Niente da salvare (0 elementi ricevuti)")
+            return finish(L("Niente da salvare (0 elementi ricevuti)"))
         }
 
         let group = DispatchGroup()
@@ -54,10 +54,10 @@ final class ShareViewController: NSViewController {
 
         group.notify(queue: .main) {
             if saved > 0 {
-                self.finish("Salvato in NotesQuick (\(saved))")
+                self.finish(L("Salvato in NotesQuick (%@)", "\(saved)"))
             } else {
                 let types = providers.first?.registeredTypeIdentifiers.prefix(4).joined(separator: ", ") ?? "?"
-                self.finish("Fallito · tipi: \(types) · \(NoteFolder.lastError ?? "nessun ramo")")
+                self.finish(L("Fallito · tipi: %@ · %@", "\(types)", NoteFolder.lastError ?? L("nessun ramo")))
             }
         }
     }

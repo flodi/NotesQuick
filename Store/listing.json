@@ -1,0 +1,68 @@
+{
+ "app": {
+  "appId": "6788065433",
+  "version": "1.0.0",
+  "copyright": "2026 Fabrizio Lodi",
+  "primaryCategory": "PRODUCTIVITY",
+  "secondaryCategory": "UTILITIES",
+  "supportUrl": "https://quickmac.in/notes/",
+  "privacyPolicyUrl": "https://quickmac.in/notes/privacy.html"
+ },
+ "locales": {
+  "it": {
+   "name": "NotesQuick",
+   "subtitle": "Note Markdown in una cartella",
+   "keywords": "note,markdown,appunti,testo,barra dei menu,cartella,file,link,tag,promemoria,icloud,editor,veloce",
+   "promotionalText": "Note in semplici file Markdown, in una cartella che scegli tu. Su Mac nella barra dei menu, su iPhone e iPad con elenco ed editor. Nessun account.",
+   "description": "NotesQuick tiene le tue note in semplici file di testo Markdown, dentro una cartella che scegli tu. Nessun database, nessun formato proprietario, nessun account: i file restano tuoi e li apri con qualsiasi altra app.\n\nSu Mac vive nella barra dei menu: un clic e hai l'elenco, un altro e stai scrivendo. Su iPhone e iPad trovi le stesse note, con elenco ed editor.\n\nSCRIVERE\n\n• Markdown evidenziato mentre scrivi: titoli, grassetto, corsivo, elenchi, link, codice, citazioni\n• Il titolo della nota è la sua prima riga, e il file prende lo stesso nome\n• Gli elenchi continuano da soli quando vai a capo\n• I #tag vengono riconosciuti nel testo e raccolti sotto la nota\n• Salvataggio automatico alla chiusura; le note vuote spariscono da sole\n\nNON SOLO NOTE\n\n• Salva un link: un tocco e si apre nel browser\n• Aggiungi file come PDF, immagini e documenti, con anteprima\n• Manda testo, link e file a NotesQuick dal menu Condividi delle altre app\n\nRITROVARE\n\n• Ricerca nel titolo e nel contenuto\n• Elenco ordinato per ultima modifica, con data breve\n• Nascondi un elemento fino a una data, quando non ti serve adesso\n• Fatti ricordare un elemento con una notifica\n\nDOVE STANNO I FILE\n\nScegli una cartella qualsiasi, anche in iCloud Drive o in un altro servizio dell'app File: se la cartella è sincronizzata, le note ti seguono su Mac, iPad e iPhone. Puoi usare l'estensione .md, .markdown o .txt.\n\nPRIVACY\n\nNotesQuick legge e scrive solo nella cartella che scegli tu. Non fa richieste di rete, non ha account, non raccoglie dati.\n\nGRATUITA\n\nL'app è gratuita e completa, senza pubblicità e senza acquisti."
+  },
+  "en-US": {
+   "name": "NotesQuick",
+   "subtitle": "Markdown notes in a folder",
+   "keywords": "notes,markdown,plain text,menu bar,folder,files,links,tags,reminders,snooze,icloud,editor,quick",
+   "promotionalText": "Notes as plain Markdown files, in a folder you choose. In the menu bar on Mac, with a list and an editor on iPhone and iPad. No account.",
+   "description": "NotesQuick keeps your notes as plain Markdown text files, in a folder you choose. No database, no proprietary format, no account: the files stay yours and open in any other app.\n\nOn Mac it lives in the menu bar: one click for the list, another and you are writing. On iPhone and iPad you find the same notes, with a list and an editor.\n\nWRITING\n\n• Markdown highlighted as you type: headings, bold, italic, lists, links, code, quotes\n• A note's title is its first line, and the file takes the same name\n• Lists continue by themselves when you press Return\n• #tags are recognised in the text and collected under the note\n• Notes save automatically on close; empty notes go away by themselves\n\nNOT ONLY NOTES\n\n• Save a link: one tap opens it in the browser\n• Add files such as PDFs, images and documents, with a preview\n• Send text, links and files to NotesQuick from the Share menu of other apps\n\nFINDING THINGS\n\n• Search in titles and content\n• List sorted by last change, with a short date\n• Hide an item until a date, when you do not need it now\n• Get reminded of an item with a notification\n\nWHERE THE FILES LIVE\n\nPick any folder, including one in iCloud Drive or another service in the Files app: if the folder syncs, your notes follow you across Mac, iPad and iPhone. You can use the .md, .markdown or .txt extension.\n\nPRIVACY\n\nNotesQuick only reads and writes the folder you choose. It makes no network requests, has no account and collects no data.\n\nFREE\n\nThe app is free and complete, with no ads and no purchases.",
+   "supportUrl": "https://quickmac.in/en/notes/",
+   "privacyPolicyUrl": "https://quickmac.in/en/notes/privacy.html"
+  }
+ },
+ "review": {
+  "contactFirstName": "Fabrizio",
+  "contactLastName": "Lodi",
+  "contactEmail": "io@fabriziolodi.com",
+  "demoAccountRequired": false,
+  "notes": "Notes app for Mac, iPhone and iPad. No account, no login, no in-app purchases, no ads, no network requests made by the app.\n\nPURPOSE AND AUDIENCE\nNotesQuick keeps notes as plain Markdown text files in a folder the user chooses, plus saved links and files (PDF, images, documents) shown with Quick Look. For anyone who wants quick notes that stay ordinary files.\n\nHOW TO TEST - macOS\nThe Mac app is a menu bar app: it has no Dock icon and opens no window at launch. Look for the NotesQuick icon (a small page with text lines) on the right side of the menu bar.\n1. Click that icon: a panel opens with the list (empty at first: \"No items\").\n2. Click the orange \"+\" > \"New note\": an editor window opens. Type a first line (it becomes the title), some Markdown such as \"## Heading\", \"**bold**\", \"- item\", and a \"#tag\". Close the window: the note is saved and appears in the list.\n3. \"+\" > \"Add link…\" saves a URL (clicking it opens the browser). \"+\" > \"Add file…\" imports a file, previewed with Quick Look.\n4. Hover a row: the clock button opens the schedule sheet (\"Hide until\" / \"Remind me on\"), the trash button deletes.\n5. The \"…\" button: Preferences… (open at login, notes folder, file extension, hide tags), About, Quit.\nNo sample files or credentials are needed: by default notes are stored in the app's own Documents folder.\n\nHOW TO TEST - iOS / iPadOS\n1. Launch the app: the list is shown. Tap \"+\" > \"New note\", type some text, go back: the note is in the list.\n2. Swipe a row left to delete, right to schedule. The gear opens Settings (notes folder, file extension, hide tags).\n3. From any other app (for example a web page in the browser), Share > NotesQuick saves the link or file as an item.\n\nNOTIFICATIONS\nLocal notifications only, used for the optional \"Remind me on\" date of an item. No push notifications, no server.\n\nEXTERNAL SERVICES\nNone. No backend, no analytics, no third-party SDKs. Apple frameworks only.\n\nREGIONS\nIdentical everywhere, no geo-gating. Localised in English and Italian.\n\nREGULATED / THIRD-PARTY MATERIAL\nNeither applies. The app shows only the user's own files.\n\nSANDBOX AND ENTITLEMENTS\nApp Sandbox is on. File access is limited to the folder the user picks (user-selected read/write, remembered with a security-scoped bookmark). The App Group is used only to pass items from the Share extension to the app."
+ },
+ "screenshots": {
+  "it": {
+   "APP_IPHONE_67": [
+    "Store/screenshots/it-iphone-1-list-1320x2868.png",
+    "Store/screenshots/it-iphone-2-editor-1320x2868.png",
+    "Store/screenshots/it-iphone-3-schedule-1320x2868.png"
+   ],
+   "APP_IPAD_PRO_3GEN_129": [
+    "Store/screenshots/it-ipad-1-editor-2064x2752.png",
+    "Store/screenshots/it-ipad-2-schedule-2064x2752.png"
+   ],
+   "APP_DESKTOP": [
+    "Store/screenshots/it-mac-1-notes-2880x1800.png",
+    "Store/screenshots/it-mac-2-schedule-2880x1800.png"
+   ]
+  },
+  "en-US": {
+   "APP_IPHONE_67": [
+    "Store/screenshots/en-iphone-1-list-1320x2868.png",
+    "Store/screenshots/en-iphone-2-editor-1320x2868.png",
+    "Store/screenshots/en-iphone-3-schedule-1320x2868.png"
+   ],
+   "APP_IPAD_PRO_3GEN_129": [
+    "Store/screenshots/en-ipad-1-editor-2064x2752.png",
+    "Store/screenshots/en-ipad-2-schedule-2064x2752.png"
+   ],
+   "APP_DESKTOP": [
+    "Store/screenshots/en-mac-1-notes-2880x1800.png",
+    "Store/screenshots/en-mac-2-schedule-2880x1800.png"
+   ]
+  }
+ }
+}

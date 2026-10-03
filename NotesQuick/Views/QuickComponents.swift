@@ -37,15 +37,15 @@ struct QEmptyState: View {
 extension Date {
     private static let quickRelative: RelativeDateTimeFormatter = {
         let f = RelativeDateTimeFormatter()
-        f.locale = Locale(identifier: "it_IT")
+        f.locale = Locale(identifier: appIsEnglish ? "en_US" : "it_IT")
         f.unitsStyle = .full
         return f
     }()
 
     private static let quickShort: DateFormatter = {
         let f = DateFormatter()
-        f.locale = Locale(identifier: "it_IT")
-        f.dateFormat = "d MMM"
+        f.locale = Locale(identifier: appIsEnglish ? "en_US" : "it_IT")
+        f.dateFormat = appIsEnglish ? "MMM d" : "d MMM"
         return f
     }()
 
@@ -56,7 +56,7 @@ extension Date {
     var quickMeta: String {
         let now = Date()
         let relative = now.timeIntervalSince(self) < 60
-            ? "ORA"
+            ? L("ORA")
             : Date.quickRelative.localizedString(for: self, relativeTo: now).uppercased()
         return "\(relative) · \(quickShort)"
     }

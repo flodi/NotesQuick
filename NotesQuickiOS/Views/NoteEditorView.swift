@@ -16,7 +16,7 @@ struct NoteEditorView: View {
             .components(separatedBy: .newlines)
             .first(where: { !$0.trimmingCharacters(in: .whitespaces).isEmpty }) ?? ""
         let stripped = firstLine.strippingMarkdown()
-        return stripped.isEmpty ? "Nuova nota" : stripped
+        return stripped.isEmpty ? L("Nuova nota") : stripped
     }
 
     private var tags: [String] {

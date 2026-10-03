@@ -11,6 +11,7 @@ struct ContentView: View {
     @State private var showLinkPrompt = false
     @State private var linkText = ""
     @State private var scheduleTarget: Note?
+    @State private var columnVisibility: NavigationSplitViewVisibility = .automatic
 
     private var selectedNote: Note? {
         guard let id = selectedNoteID else { return nil }
@@ -18,7 +19,7 @@ struct ContentView: View {
     }
 
     var body: some View {
-        NavigationSplitView {
+        NavigationSplitView(columnVisibility: $columnVisibility) {
             List(viewModel.filteredNotes, selection: $selectedNoteID) { note in
                 NoteRow(note: note, schedule: viewModel.schedule(for: note))
                     .tag(note.id)
@@ -69,7 +70,7 @@ struct ContentView: View {
                         Button { viewModel.showSnoozed.toggle() } label: {
                             Image(systemName: viewModel.showSnoozed ? "moon.zzz.fill" : "moon.zzz")
                         }
-                        .accessibilityLabel(viewModel.showSnoozed ? "Nascondi sospesi" : "Mostra sospesi")
+                        .accessibilityLabel(viewModel.showSnoozed ? L("Nascondi sospesi") : L("Mostra sospesi"))
                     }
                 }
             }
@@ -85,10 +86,13 @@ struct ContentView: View {
                         .ignoresSafeArea(edges: .bottom)
                 }
             } else {
-                QEmptyState(title: "Nessun elemento aperto",
-                            message: "La nota o il file che scegli dall'elenco compare qui.")
+                QEmptyState(title: L("Nessun elemento aperto"),
+                            message: L("La nota o il file che scegli dall'elenco compare qui."))
             }
         }
+        #if DEBUG
+        .modifier(ScreenshotSplitStyle())
+        #endif
         .onChange(of: selectedNoteID) { _, newID in
             let note = newID.flatMap { id in viewModel.notes.first(where: { $0.id == id }) }
             // Tapping a saved link opens it instead of showing a detail view.
@@ -150,6 +154,18 @@ struct ContentView: View {
         }
         .onAppear {
             viewModel.loadNotes()
+            #if DEBUG
+            if UserDefaults.standard.bool(forKey: "screenshotMode") { columnVisibility = .all }
+            // Store screenshots: `-screenshotNote <title>` opens that item, `-screenshotSchedule YES` its schedule sheet.
+            if let wanted = UserDefaults.standard.string(forKey: "screenshotNote"),
+               let note = viewModel.notes.first(where: { $0.title.localizedCaseInsensitiveContains(wanted) }) {
+                if UserDefaults.standard.bool(forKey: "screenshotSchedule") {
+                    scheduleTarget = note
+                } else {
+                    selectedNoteID = note.id
+                }
+            }
+            #endif
         }
         .onChange(of: scenePhase) { _, phase in
             if phase == .active { viewModel.loadNotes() }
@@ -177,6 +193,7 @@ struct NoteRow: View {
                         .font(Q.F.data(12, .regular))
                         .foregroundStyle(.secondary)
                         .lineLimit(1)
+                        .layoutPriority(1)
                     if let schedule, !schedule.isEmpty {
                         ScheduleBadge(schedule: schedule)
                     }
@@ -186,3 +203,16 @@ struct NoteRow: View {
         .padding(.vertical, 2)
     }
 }
+
+#if DEBUG
+/// Store screenshots on iPad in portrait: list and editor side by side.
+private struct ScreenshotSplitStyle: ViewModifier {
+    func body(content: Content) -> some View {
+        if UserDefaults.standard.bool(forKey: "screenshotMode") {
+            content.navigationSplitViewStyle(.balanced)
+        } else {
+            content
+        }
+    }
+}
+#endif

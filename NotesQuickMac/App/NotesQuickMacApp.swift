@@ -16,7 +16,7 @@ struct NotesQuickMacApp: App {
             SettingsView()
                 .environmentObject(viewModel)
         }
-        .defaultSize(width: 450, height: 260)
+        .defaultSize(width: 450, height: 520)
         .windowResizability(.contentSize)
 
         WindowGroup("Nota", id: "note-editor", for: String.self) { $noteId in

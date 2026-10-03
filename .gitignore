@@ -17,3 +17,6 @@ xcuserdata/
 
 # App Store Connect private keys
 *.p8
+
+# Python
+__pycache__/

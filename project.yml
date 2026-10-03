@@ -6,6 +6,8 @@ options:
     iOS: "17.0"
   xcodeVersion: "16.0"
   createIntermediateGroups: true
+  # Bilingual app (NotesQuick/Resources/Localizable.xcstrings: it + en). English is the fallback language.
+  developmentLanguage: en
 
 targets:
   NotesQuickMac:
@@ -20,6 +22,7 @@ targets:
       - NotesQuickMac/App
       - NotesQuickMac/Views
       - NotesQuickMac/Resources
+      - NotesQuick/Resources
     settings:
       base:
         PRODUCT_NAME: NotesQuick
@@ -49,6 +52,8 @@ targets:
       - NotesQuick/Utilities/AppGroup.swift
       - NotesQuick/Utilities/FolderBookmark.swift
       - NotesQuick/Utilities/NoteFolder.swift
+      - NotesQuick/Utilities/Localization.swift
+      - NotesQuick/Resources
     info:
       path: NotesQuickShareMac/Info.plist
       properties:
@@ -90,6 +95,7 @@ targets:
       - NotesQuickiOS/App
       - NotesQuickiOS/Views
       - NotesQuickiOS/Resources
+      - NotesQuick/Resources
     settings:
       base:
         PRODUCT_NAME: NotesQuick
@@ -122,6 +128,8 @@ targets:
       - NotesQuick/Utilities/AppGroup.swift
       - NotesQuick/Utilities/FolderBookmark.swift
       - NotesQuick/Utilities/NoteFolder.swift
+      - NotesQuick/Utilities/Localization.swift
+      - NotesQuick/Resources
     info:
       path: NotesQuickShareiOS/Info.plist
       properties:

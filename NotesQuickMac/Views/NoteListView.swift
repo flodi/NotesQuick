@@ -16,7 +16,7 @@ struct NoteListView: View {
                     QIconButton(
                         symbol: viewModel.showSnoozed ? "moon.zzz.fill" : "moon.zzz",
                         kind: viewModel.showSnoozed ? .tinted : .plain,
-                        help: viewModel.showSnoozed ? "Nascondi sospesi" : "Mostra sospesi (\(viewModel.snoozedCount))"
+                        help: viewModel.showSnoozed ? L("Nascondi sospesi") : L("Mostra sospesi (%@)", "\(viewModel.snoozedCount)")
                     ) { viewModel.showSnoozed.toggle() }
                     .padding(.leading, 4)
                 }
@@ -38,8 +38,8 @@ struct NoteListView: View {
                 .buttonStyle(.plain)
                 .menuIndicator(.hidden)
                 .fixedSize()
-                .help("Nuovo elemento")
-                .accessibilityLabel("Nuovo elemento")
+                .help(L("Nuovo elemento"))
+                .accessibilityLabel(L("Nuovo elemento"))
 
                 Menu {
                     Button {
@@ -56,8 +56,8 @@ struct NoteListView: View {
                 .buttonStyle(.plain)
                 .menuIndicator(.hidden)
                 .fixedSize()
-                .help("Altro")
-                .accessibilityLabel("Altro")
+                .help(L("Altro"))
+                .accessibilityLabel(L("Altro"))
             }
             .padding(.leading, 12)
             .padding(.trailing, 8)
@@ -79,8 +79,8 @@ struct NoteListView: View {
                             .foregroundStyle(.tertiary)
                     }
                     .buttonStyle(.plain)
-                    .help("Cancella ricerca")
-                    .accessibilityLabel("Cancella ricerca")
+                    .help(L("Cancella ricerca"))
+                    .accessibilityLabel(L("Cancella ricerca"))
                 }
             }
             .padding(.horizontal, 9)
@@ -88,7 +88,7 @@ struct NoteListView: View {
             .background(RoundedRectangle(cornerRadius: Q.R.control).fill(Q.C.fill1))
             .padding(.horizontal, 10)
 
-            QSectionHeader(title: "Elementi", count: viewModel.filteredNotes.count) { EmptyView() }
+            QSectionHeader(title: L("Elementi"), count: viewModel.filteredNotes.count) { EmptyView() }
                 .padding(.horizontal, 14)
                 .padding(.top, 12)
                 .padding(.bottom, 4)
@@ -96,10 +96,10 @@ struct NoteListView: View {
             // Items list
             if viewModel.filteredNotes.isEmpty {
                 if viewModel.searchText.isEmpty {
-                    QEmptyState(title: "Nessun elemento",
-                                message: "Le note, i link e i file che aggiungi compaiono qui.")
+                    QEmptyState(title: L("Nessun elemento"),
+                                message: L("Le note, i link e i file che aggiungi compaiono qui."))
                 } else {
-                    QEmptyState(symbol: "magnifyingglass", title: "Nessun risultato")
+                    QEmptyState(symbol: "magnifyingglass", title: L("Nessun risultato"))
                 }
             } else {
                 ScrollView {
@@ -150,13 +150,13 @@ struct NoteListView: View {
 
     private func addLink() {
         let alert = NSAlert()
-        alert.messageText = "Aggiungi link"
-        alert.informativeText = "Incolla un URL per salvarlo tra gli elementi."
+        alert.messageText = L("Aggiungi link")
+        alert.informativeText = L("Incolla un URL per salvarlo tra gli elementi.")
         let field = NSTextField(frame: NSRect(x: 0, y: 0, width: 300, height: 24))
         field.placeholderString = "https://example.com"
         alert.accessoryView = field
-        alert.addButton(withTitle: "Aggiungi")
-        alert.addButton(withTitle: "Annulla")
+        alert.addButton(withTitle: L("Aggiungi"))
+        alert.addButton(withTitle: L("Annulla"))
         if alert.runModal() == .alertFirstButtonReturn {
             let text = field.stringValue.trimmingCharacters(in: .whitespacesAndNewlines)
             let normalized = text.contains("://") ? text : "https://\(text)"
@@ -172,7 +172,7 @@ struct NoteListView: View {
         panel.canChooseFiles = true
         panel.canChooseDirectories = false
         panel.allowsMultipleSelection = true
-        panel.message = "Scegli i file da aggiungere"
+        panel.message = L("Scegli i file da aggiungere")
         if panel.runModal() == .OK {
             for url in panel.urls {
                 viewModel.importFile(at: url)
@@ -186,11 +186,8 @@ struct NoteListView: View {
         let build = info?["CFBundleVersion"] as? String ?? ""
         let alert = NSAlert()
         alert.messageText = "NotesQuick"
-        alert.informativeText = """
-        Versione \(version) (\(build))
-
-        Note, link e file a portata di barra dei menu, con Markdown in tempo reale.
-        """
+        alert.informativeText = L("Versione %@ (%@)", version, build) + "\n\n"
+            + L("Note, link e file a portata di barra dei menu, con Markdown in tempo reale.")
         alert.icon = NSImage(named: "AppIcon")
         alert.addButton(withTitle: "OK")
         alert.runModal()
@@ -198,11 +195,11 @@ struct NoteListView: View {
 
     private func confirmDelete(note: Note) {
         let alert = NSAlert()
-        alert.messageText = "Elimina"
-        alert.informativeText = "Vuoi eliminare «\(note.title)»?"
+        alert.messageText = L("Elimina")
+        alert.informativeText = L("Vuoi eliminare «%@»?", note.title)
         alert.alertStyle = .warning
-        alert.addButton(withTitle: "Elimina")
-        alert.addButton(withTitle: "Annulla")
+        alert.addButton(withTitle: L("Elimina"))
+        alert.addButton(withTitle: L("Annulla"))
 
         if alert.runModal() == .alertFirstButtonReturn {
             viewModel.deleteNote(note)
@@ -252,8 +249,8 @@ struct NoteRow: View {
 
             // Desktop: row actions appear on hover only.
             if isHovering {
-                QIconButton(symbol: "clock", kind: .plain, help: "Pianifica", action: onSchedule)
-                QIconButton(symbol: "trash", kind: .plain, help: "Elimina", action: onDelete)
+                QIconButton(symbol: "clock", kind: .plain, help: L("Pianifica"), action: onSchedule)
+                QIconButton(symbol: "trash", kind: .plain, help: L("Elimina"), action: onDelete)
             }
         }
         .padding(.leading, 8)

@@ -18,7 +18,7 @@ struct NoteEditorView: View {
             .components(separatedBy: .newlines)
             .first(where: { !$0.trimmingCharacters(in: .whitespaces).isEmpty }) ?? ""
         let stripped = firstLine.strippingMarkdown()
-        return stripped.isEmpty ? "Nuova nota" : stripped
+        return stripped.isEmpty ? L("Nuova nota") : stripped
     }
 
     private var tags: [String] {
@@ -56,8 +56,8 @@ struct NoteEditorView: View {
                     if let tag = tagQuery {
                         VStack(spacing: 0) {
                             Divider()
-                            QSectionHeader(title: "Note con #\(tag)", count: tagResults.count) {
-                                QIconButton(symbol: "xmark", kind: .plain, help: "Chiudi") { tagQuery = nil }
+                            QSectionHeader(title: L("Note con #%@", tag), count: tagResults.count) {
+                                QIconButton(symbol: "xmark", kind: .plain, help: L("Chiudi")) { tagQuery = nil }
                             }
                             .padding(.leading, 12)
                             .padding(.trailing, 4)
@@ -103,8 +103,8 @@ struct NoteEditorView: View {
                     }
                 }
             } else {
-                QEmptyState(symbol: "note.text", title: "Nessuna nota aperta",
-                            message: "La nota che apri dalla barra dei menu compare qui.")
+                QEmptyState(symbol: "note.text", title: L("Nessuna nota aperta"),
+                            message: L("La nota che apri dalla barra dei menu compare qui."))
             }
         }
         .navigationTitle(currentNote.map { $0.isText ? displayTitle : $0.title } ?? displayTitle)

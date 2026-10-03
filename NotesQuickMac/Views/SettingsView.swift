@@ -65,7 +65,7 @@ struct SettingsView: View {
             }
         }
         .formStyle(.grouped)
-        .frame(width: 450, height: 300)
+        .frame(width: 450, height: 520)
     }
 
     private func chooseFolder() {
@@ -73,7 +73,7 @@ struct SettingsView: View {
         panel.canChooseFiles = false
         panel.canChooseDirectories = true
         panel.allowsMultipleSelection = false
-        panel.message = "Scegli la cartella delle note"
+        panel.message = L("Scegli la cartella delle note")
 
         if panel.runModal() == .OK, let url = panel.url {
             viewModel.setNotesFolderFromPicker(url)

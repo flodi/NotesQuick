@@ -16,7 +16,7 @@ final class ShareViewController: UIViewController {
         card.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(card)
 
-        label.text = "Salvataggio in NotesQuick…"
+        label.text = L("Salvataggio in NotesQuick…")
         label.font = .preferredFont(forTextStyle: .headline)
         label.textColor = .label
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -42,10 +42,10 @@ final class ShareViewController: UIViewController {
         let providers = items.flatMap { $0.attachments ?? [] }
 
         guard AppGroup.inboxURL() != nil else {
-            return finish("Errore: App Group non accessibile")
+            return finish(L("Errore: App Group non accessibile"))
         }
         guard !providers.isEmpty else {
-            return finish("Niente da salvare (0 elementi ricevuti)")
+            return finish(L("Niente da salvare (0 elementi ricevuti)"))
         }
 
         let group = DispatchGroup()
@@ -62,10 +62,10 @@ final class ShareViewController: UIViewController {
 
         group.notify(queue: .main) {
             if saved > 0 {
-                self.finish("Salvato in NotesQuick (\(saved))")
+                self.finish(L("Salvato in NotesQuick (%@)", "\(saved)"))
             } else {
                 let types = providers.first?.registeredTypeIdentifiers.prefix(4).joined(separator: ", ") ?? "?"
-                self.finish("Fallito · tipi: \(types) · \(NoteFolder.lastError ?? "nessun ramo")")
+                self.finish(L("Fallito · tipi: %@ · %@", "\(types)", NoteFolder.lastError ?? L("nessun ramo")))
             }
         }
     }
