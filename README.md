@@ -117,3 +117,17 @@ Uploading requires an App Store Connect API key at `~/.appstoreconnect/private_k
 ## Sandbox & privacy
 
 Both apps run sandboxed and request only **user‑selected read/write** file access (`com.apple.security.files.user-selected.read-write`). All notes stay in the folder you choose — nothing is sent anywhere; there is no network access and no analytics.
+
+---
+
+## Localization
+
+The app is bilingual, Italian and English. Translations live in [`NotesQuick/Resources/Localizable.xcstrings`](NotesQuick/Resources/Localizable.xcstrings), written by hand: the key is the Italian text, with an `en` and an `it` entry. Literals inside `Text("…")`, `Button("…")`, `Label("…")` are translated by SwiftUI; where the text travels as a `String` (tooltips, alerts, computed titles) use `L("…")` from `NotesQuick/Utilities/Localization.swift`. Every new string must be added to the catalog, or it stays Italian in English.
+
+## Design
+
+The look follows the shared Quick design system: tokens and base components are in `NotesQuick/Views/QuickDesign.swift`, the app icons in `design/`.
+
+## App Store
+
+Listing texts, screenshots and the publishing procedure are in [`Store/`](Store/metadata.md).

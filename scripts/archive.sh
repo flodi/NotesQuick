@@ -89,21 +89,33 @@ if $UPLOAD; then
         -exportPath "$EXPORT_DIR/iOS" \
         -allowProvisioningUpdates
 
+    # altool sometimes times out while looking the app up: retry instead of failing the whole run.
+    upload() {
+        local file="$1" type="$2" try
+        for try in 1 2 3 4; do
+            # altool exits 0 even when it fails: look for its success line instead.
+            if xcrun altool --upload-app -f "$file" -t "$type" \
+                --apiKey "$API_KEY" --apiIssuer "$API_ISSUER" 2>&1 | tee /dev/stderr | grep -q "No errors uploading"; then
+                return 0
+            fi
+            echo "==> Upload ($type) failed, attempt $try. Retrying..."
+            sleep 10
+        done
+        return 1
+    }
+
     echo ""
     echo "==> Uploading Mac to TestFlight..."
-    xcrun altool --upload-app \
-        -f "$EXPORT_DIR/Mac/NotesQuick.pkg" \
-        -t macos \
-        --apiKey "$API_KEY" \
-        --apiIssuer "$API_ISSUER"
+    upload "$EXPORT_DIR/Mac/NotesQuick.pkg" macos
 
     echo ""
     echo "==> Uploading iOS to TestFlight..."
-    xcrun altool --upload-app \
-        -f "$EXPORT_DIR/iOS/NotesQuick.ipa" \
-        -t ios \
-        --apiKey "$API_KEY" \
-        --apiIssuer "$API_ISSUER"
+    upload "$EXPORT_DIR/iOS/NotesQuick.ipa" ios
+
+    # Uploaded builds do not reach the testers until they are added to the internal group.
+    echo ""
+    echo "==> Waiting for processing and adding build $NEW_BUILD to the internal testers..."
+    python3 scripts/asc.py finalize "$NEW_BUILD"
 
     echo ""
     echo "==> Both apps uploaded to TestFlight!"

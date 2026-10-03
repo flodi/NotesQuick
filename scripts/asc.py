@@ -5,7 +5,10 @@ Credentials never live in this repository:
   ASC_API_ISSUER   Issuer ID (required)
   the .p8 key is looked up in ~/.appstoreconnect/private_keys/ (the first one valid for the team)
 
-  asc.py key      prints the Key ID of the valid .p8
+  asc.py key                prints the Key ID of the valid .p8
+  asc.py finalize <build>   waits until both builds (iOS and macOS) are processed and adds them to the
+                            internal TestFlight groups; without this step a build is uploaded but never
+                            reaches the testers
 """
 import base64, glob, json, os, re, socket, sys, time, urllib.error, urllib.request
 
@@ -68,8 +71,42 @@ def find_key():
     sys.exit("No valid App Store Connect key for the team on this machine.")
 
 
+BUNDLE_ID = "com.notesquick.app"
+
+
+def finalize(version):
+    _, token = find_key()
+    st, apps = api(token, "GET", f"/v1/apps?filter[bundleId]={BUNDLE_ID}")
+    if st != 200 or not apps["data"]:
+        sys.exit(f"App {BUNDLE_ID} not found on App Store Connect.")
+    app_id = apps["data"][0]["id"]
+    builds = []
+    for _ in range(60):  # up to 30 minutes
+        st, d = api(token, "GET", f"/v1/builds?filter[app]={app_id}&filter[version]={version}"
+                                  "&fields[builds]=version,processingState")
+        builds = d["data"] if st == 200 else []
+        states = [b["attributes"]["processingState"] for b in builds]
+        print(f"build {version}: {states or 'not visible yet'}", flush=True)
+        if len(builds) >= 2 and all(s != "PROCESSING" for s in states):
+            break
+        time.sleep(30)
+    valid = [b for b in builds if b["attributes"]["processingState"] == "VALID"]
+    if len(valid) < 2:
+        sys.exit("Builds not ready: check App Store Connect > TestFlight.")
+    st, groups = api(token, "GET", f"/v1/apps/{app_id}/betaGroups")
+    for group in groups["data"]:
+        if not group["attributes"].get("isInternalGroup") or group["attributes"].get("hasAccessToAllBuilds"):
+            continue
+        st, resp = api(token, "POST", f"/v1/betaGroups/{group['id']}/relationships/builds",
+                       {"data": [{"type": "builds", "id": b["id"]} for b in valid]})
+        print(f"added to group '{group['attributes']['name']}' ->", st, resp if st >= 300 else "")
+    print("Ready on TestFlight.")
+
+
 if __name__ == "__main__":
     if len(sys.argv) >= 2 and sys.argv[1] == "key":
         print(find_key()[0])
+    elif len(sys.argv) >= 3 and sys.argv[1] == "finalize":
+        finalize(sys.argv[2])
     else:
         sys.exit(__doc__)
