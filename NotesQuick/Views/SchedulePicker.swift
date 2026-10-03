@@ -19,10 +19,26 @@ struct SchedulePicker: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            Text(note.title)
-                .font(.headline)
-                .lineLimit(1)
-                .padding()
+            // Riga del titolo: i comandi stanno a destra, primaria per prima.
+            HStack(spacing: 6) {
+                Text(note.title)
+                    .font(Q.F.title)
+                    .lineLimit(1)
+                Spacer(minLength: 8)
+                QIconButton(symbol: "checkmark", kind: .primary, help: "Salva") { save() }
+                    .keyboardShortcut(.defaultAction)
+                QIconButton(symbol: "xmark", kind: .gray, help: "Annulla") { dismiss() }
+                    .keyboardShortcut(.cancelAction)
+                QIconButton(symbol: "trash", kind: .plain, help: "Cancella pianificazione") {
+                    viewModel.setSchedule(ItemSchedule(), for: note)
+                    dismiss()
+                }
+                .disabled(!hideOn && !remindOn)
+                .opacity(!hideOn && !remindOn ? 0.4 : 1)
+            }
+            .padding(.leading, 16)
+            .padding(.trailing, 12)
+            .padding(.vertical, 10)
 
             Divider()
 
@@ -52,23 +68,6 @@ struct SchedulePicker: View {
             #if os(macOS)
             .padding(.horizontal, 4)
             #endif
-
-            Divider()
-
-            HStack {
-                Button("Cancella pianificazione", role: .destructive) {
-                    viewModel.setSchedule(ItemSchedule(), for: note)
-                    dismiss()
-                }
-                .disabled(!hideOn && !remindOn)
-
-                Spacer()
-
-                Button("Annulla") { dismiss() }
-                Button("Salva") { save() }
-                    .keyboardShortcut(.defaultAction)
-            }
-            .padding()
         }
         .frame(minWidth: 340, minHeight: 320)
         .onAppear(perform: load)
@@ -100,15 +99,20 @@ struct ScheduleBadge: View {
     var body: some View {
         HStack(spacing: 6) {
             if let h = schedule.hideUntil, h > Date() {
-                Label(h.formatted(.dateTime.day().month(.abbreviated)), systemImage: "moon.zzz")
-                    .foregroundStyle(.orange)
+                Label(h.quickShort, systemImage: "moon.zzz")
             }
             if let r = schedule.remindAt, r > Date() {
-                Label(r.formatted(.dateTime.day().month(.abbreviated)), systemImage: "bell")
-                    .foregroundStyle(.blue)
+                Label(r.quickShort, systemImage: "bell")
             }
         }
-        .font(.caption2)
+        .font(Q.F.data(ScheduleBadge.size, .regular))
+        .foregroundStyle(.secondary)
         .labelStyle(.titleAndIcon)
     }
+
+    #if os(macOS)
+    private static let size: CGFloat = 10.5
+    #else
+    private static let size: CGFloat = 12
+    #endif
 }

@@ -16,7 +16,7 @@ struct NoteEditorView: View {
             .components(separatedBy: .newlines)
             .first(where: { !$0.trimmingCharacters(in: .whitespaces).isEmpty }) ?? ""
         let stripped = firstLine.strippingMarkdown()
-        return stripped.isEmpty ? "New Note" : stripped
+        return stripped.isEmpty ? "Nuova nota" : stripped
     }
 
     private var tags: [String] {
@@ -33,7 +33,7 @@ struct NoteEditorView: View {
                     viewModel.searchText = "#\(tag)"
                 }
                 .fixedSize(horizontal: false, vertical: true)
-                .background(Color(uiColor: .secondarySystemBackground))
+                .background(Q.C.band)
             }
         }
         .navigationTitle(displayTitle)
@@ -41,7 +41,7 @@ struct NoteEditorView: View {
         .toolbar {
             if hasUnsavedChanges {
                 ToolbarItem(placement: .primaryAction) {
-                    Button("Save") { save() }
+                    Button("Salva") { save() }
                 }
             }
         }

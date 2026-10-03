@@ -27,7 +27,7 @@ struct ContentView: View {
                             if selectedNoteID == note.id { selectedNoteID = nil }
                             viewModel.deleteNote(note)
                         } label: {
-                            Label("Delete", systemImage: "trash")
+                            Label("Elimina", systemImage: "trash")
                         }
                     }
                     .swipeActions(edge: .leading) {
@@ -36,13 +36,13 @@ struct ContentView: View {
                         } label: {
                             Label("Pianifica", systemImage: "clock")
                         }
-                        .tint(.orange)
+                        .tint(Q.C.accent)
                     }
                     .contextMenu {
                         Button { scheduleTarget = note } label: { Label("Pianifica…", systemImage: "clock") }
                     }
             }
-            .searchable(text: $viewModel.searchText, prompt: "Search")
+            .searchable(text: $viewModel.searchText, prompt: "Cerca")
             .navigationTitle("NotesQuick")
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
@@ -50,23 +50,26 @@ struct ContentView: View {
                         Button {
                             let note = viewModel.createNote()
                             selectedNoteID = note.id
-                        } label: { Label("New Note", systemImage: "note.text") }
-                        Button { showLinkPrompt = true } label: { Label("Add Link", systemImage: "link") }
-                        Button { showFileImporter = true } label: { Label("Add File", systemImage: "doc") }
+                        } label: { Label("Nuova nota", systemImage: "note.text") }
+                        Button { showLinkPrompt = true } label: { Label("Aggiungi link", systemImage: "link") }
+                        Button { showFileImporter = true } label: { Label("Aggiungi file", systemImage: "doc") }
                     } label: {
                         Image(systemName: "plus")
                     }
+                    .accessibilityLabel("Nuovo elemento")
                 }
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button { showSettings = true } label: {
                         Image(systemName: "gear")
                     }
+                    .accessibilityLabel("Impostazioni")
                 }
                 if viewModel.snoozedCount > 0 || viewModel.showSnoozed {
                     ToolbarItem(placement: .navigationBarLeading) {
                         Button { viewModel.showSnoozed.toggle() } label: {
                             Image(systemName: viewModel.showSnoozed ? "moon.zzz.fill" : "moon.zzz")
                         }
+                        .accessibilityLabel(viewModel.showSnoozed ? "Nascondi sospesi" : "Mostra sospesi")
                     }
                 }
             }
@@ -82,11 +85,8 @@ struct ContentView: View {
                         .ignoresSafeArea(edges: .bottom)
                 }
             } else {
-                ContentUnavailableView(
-                    "Select an Item",
-                    systemImage: "tray",
-                    description: Text("Choose a note, link or file — or add a new one")
-                )
+                QEmptyState(title: "Nessun elemento aperto",
+                            message: "La nota o il file che scegli dall'elenco compare qui.")
             }
         }
         .onChange(of: selectedNoteID) { _, newID in
@@ -109,11 +109,11 @@ struct ContentView: View {
             NavigationStack {
                 SettingsView()
                     .environmentObject(viewModel)
-                    .navigationTitle("Settings")
+                    .navigationTitle("Impostazioni")
                     .navigationBarTitleDisplayMode(.inline)
                     .toolbar {
                         ToolbarItem(placement: .confirmationAction) {
-                            Button("Done") { showSettings = false }
+                            Button("Fine") { showSettings = false }
                         }
                     }
             }
@@ -127,11 +127,11 @@ struct ContentView: View {
                 for url in urls { viewModel.importFile(at: url) }
             }
         }
-        .alert("Add Link", isPresented: $showLinkPrompt) {
+        .alert("Aggiungi link", isPresented: $showLinkPrompt) {
             TextField("https://example.com", text: $linkText)
                 .textInputAutocapitalization(.never)
                 .keyboardType(.URL)
-            Button("Add") {
+            Button("Aggiungi") {
                 let text = linkText.trimmingCharacters(in: .whitespacesAndNewlines)
                 let normalized = text.contains("://") ? text : "https://\(text)"
                 if !text.isEmpty, let url = URL(string: normalized) {
@@ -139,16 +139,14 @@ struct ContentView: View {
                 }
                 linkText = ""
             }
-            Button("Cancel", role: .cancel) { linkText = "" }
+            Button("Annulla", role: .cancel) { linkText = "" }
         } message: {
-            Text("Paste a URL to save it as a note.")
+            Text("Incolla un URL per salvarlo tra gli elementi.")
         }
         .sheet(item: $scheduleTarget) { note in
-            NavigationStack {
-                SchedulePicker(note: note)
-                    .environmentObject(viewModel)
-            }
-            .presentationDetents([.medium, .large])
+            SchedulePicker(note: note)
+                .environmentObject(viewModel)
+                .presentationDetents([.medium, .large])
         }
         .onAppear {
             viewModel.loadNotes()
@@ -168,16 +166,17 @@ struct NoteRow: View {
     var body: some View {
         HStack(spacing: 10) {
             Image(systemName: NoteIcon.symbol(for: note))
-                .foregroundStyle(NoteIcon.color(for: note))
+                .foregroundStyle(.secondary)
                 .frame(width: 22)
             VStack(alignment: .leading, spacing: 4) {
                 Text(note.title)
-                    .font(.headline)
+                    .font(.body)
                     .lineLimit(1)
                 HStack(spacing: 8) {
-                    Text(note.modifiedDate, style: .relative)
-                        .font(.caption)
+                    Text(note.modifiedDate.quickMeta)
+                        .font(Q.F.data(12, .regular))
                         .foregroundStyle(.secondary)
+                        .lineLimit(1)
                     if let schedule, !schedule.isEmpty {
                         ScheduleBadge(schedule: schedule)
                     }

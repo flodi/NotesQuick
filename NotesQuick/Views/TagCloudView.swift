@@ -4,6 +4,14 @@ struct TagCloudView: View {
     let tags: [String]
     let onTagTap: (String) -> Void
 
+    #if os(macOS)
+    private static let fontSize: CGFloat = 11.5
+    private static let height: CGFloat = 22
+    #else
+    private static let fontSize: CGFloat = 13
+    private static let height: CGFloat = 30
+    #endif
+
     var body: some View {
         if !tags.isEmpty {
             VStack(alignment: .leading, spacing: 0) {
@@ -14,11 +22,11 @@ struct TagCloudView: View {
                             onTagTap(tag)
                         } label: {
                             Text("#\(tag)")
-                                .font(.caption)
-                                .padding(.horizontal, 10)
-                                .padding(.vertical, 4)
-                                .background(Color.accentColor.opacity(0.15))
-                                .foregroundStyle(Color.accentColor)
+                                .font(.system(size: TagCloudView.fontSize, weight: .medium))
+                                .padding(.horizontal, 8)
+                                .frame(height: TagCloudView.height)
+                                .background(Q.C.fill1)
+                                .foregroundStyle(.primary)
                                 .clipShape(Capsule())
                         }
                         .buttonStyle(.plain)

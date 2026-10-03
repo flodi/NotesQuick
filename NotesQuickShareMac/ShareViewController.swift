@@ -5,7 +5,7 @@ import UniformTypeIdentifiers
 /// NotesQuick folder, then dismisses.
 final class ShareViewController: NSViewController {
 
-    private let label = NSTextField(labelWithString: "Saving to NotesQuick…")
+    private let label = NSTextField(labelWithString: "Salvataggio in NotesQuick…")
 
     override func loadView() {
         let container = NSView(frame: NSRect(x: 0, y: 0, width: 460, height: 160))

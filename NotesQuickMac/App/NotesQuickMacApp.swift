@@ -12,21 +12,21 @@ struct NotesQuickMacApp: App {
         }
         .menuBarExtraStyle(.window)
 
-        Window("Preferences", id: "settings") {
+        Window("Preferenze", id: "settings") {
             SettingsView()
                 .environmentObject(viewModel)
         }
         .defaultSize(width: 450, height: 260)
         .windowResizability(.contentSize)
 
-        WindowGroup("Note Editor", id: "note-editor", for: String.self) { $noteId in
+        WindowGroup("Nota", id: "note-editor", for: String.self) { $noteId in
             NoteEditorView(noteId: noteId)
                 .environmentObject(viewModel)
         }
         .defaultSize(width: 600, height: 400)
         .commands {
             CommandGroup(replacing: .saveItem) {
-                Button("Save") {
+                Button("Salva") {
                     NotificationCenter.default.post(name: .saveCurrentNote, object: nil)
                 }
                 .keyboardShortcut("s")

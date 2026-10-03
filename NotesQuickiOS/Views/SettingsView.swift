@@ -15,44 +15,44 @@ struct SettingsView: View {
 
     var body: some View {
         Form {
-            Section("Notes Folder") {
+            Section("Cartella delle note") {
                 HStack {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(folderDisplayName)
                             .font(.body)
                         Text(viewModel.notesFolderPath)
-                            .font(.caption2)
+                            .font(Q.F.data(11, .regular))
                             .foregroundStyle(.secondary)
                             .lineLimit(2)
                     }
                     Spacer()
-                    Button("Change") {
+                    Button("Cambia") {
                         showFolderPicker = true
                     }
                 }
 
-                Text("Choose a folder from Files to store your notes. Supports iCloud Drive, Dropbox, and other providers.")
+                Text("Scegli da File la cartella in cui salvare le note. Funziona con iCloud Drive, Dropbox e altri provider.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
 
-            Section("File Extension") {
-                Picker("Extension", selection: $viewModel.fileExtension) {
+            Section("Estensione dei file") {
+                Picker("Estensione", selection: $viewModel.fileExtension) {
                     Text(".md").tag("md")
                     Text(".markdown").tag("markdown")
                     Text(".txt").tag("txt")
                 }
                 .pickerStyle(.segmented)
 
-                Text("Changing extension will only show files matching the new extension.")
+                Text("Cambiando estensione compaiono solo i file con la nuova estensione.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
 
-            Section("Tags") {
-                Toggle("Hide tags in editor", isOn: $viewModel.hideTagsInEditor)
+            Section("Tag") {
+                Toggle("Nascondi i tag nell'editor", isOn: $viewModel.hideTagsInEditor)
 
-                Text("When enabled, #tags are hidden in the editor text and only shown in the tag cloud.")
+                Text("Se attivo, i #tag sono nascosti nel testo e compaiono solo nella nuvola dei tag.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }

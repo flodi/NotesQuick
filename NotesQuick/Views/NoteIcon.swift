@@ -1,20 +1,13 @@
 import SwiftUI
 
-/// SF Symbol + tint for a list item, by kind and (for files) file type.
+/// SF Symbol for a list item, by kind and (for files) file type.
+/// The glyph alone tells the kinds apart: colour is reserved for accent and states.
 enum NoteIcon {
     static func symbol(for note: Note) -> String {
         switch note.kind {
         case .text: return "note.text"
         case .link: return "link"
         case .file: return symbolForFile(note.fileURL)
-        }
-    }
-
-    static func color(for note: Note) -> Color {
-        switch note.kind {
-        case .text: return .secondary
-        case .link: return .blue
-        case .file: return .orange
         }
     }
 

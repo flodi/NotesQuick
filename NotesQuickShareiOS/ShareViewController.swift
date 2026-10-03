@@ -12,11 +12,11 @@ final class ShareViewController: UIViewController {
         view.backgroundColor = .clear
         let card = UIView()
         card.backgroundColor = UIColor.secondarySystemBackground
-        card.layer.cornerRadius = 14
+        card.layer.cornerRadius = 12
         card.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(card)
 
-        label.text = "Saving to NotesQuick…"
+        label.text = "Salvataggio in NotesQuick…"
         label.font = .preferredFont(forTextStyle: .headline)
         label.textColor = .label
         label.translatesAutoresizingMaskIntoConstraints = false

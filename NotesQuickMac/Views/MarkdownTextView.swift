@@ -285,7 +285,7 @@ struct MarkdownTextView: NSViewRepresentable {
             ) else { return }
 
             let nsText = text as NSString
-            let linkColor = NSColor.linkColor
+            let linkColor = NSColor(named: "AccentColor") ?? .controlAccentColor
 
             regex.enumerateMatches(in: text, range: NSRange(location: 0, length: nsText.length)) { match, _, _ in
                 guard let match = match else { return }
@@ -307,7 +307,7 @@ struct MarkdownTextView: NSViewRepresentable {
             ) else { return }
 
             let nsText = text as NSString
-            let bulletColor = NSColor.systemOrange
+            let bulletColor = NSColor.secondaryLabelColor
 
             regex.enumerateMatches(in: text, range: NSRange(location: 0, length: nsText.length)) { match, _, _ in
                 guard let match = match else { return }
@@ -320,7 +320,7 @@ struct MarkdownTextView: NSViewRepresentable {
         private func highlightTags(storage: NSTextStorage, text: String) {
             guard let regex = try? NSRegularExpression(pattern: "(?<!\\w)(#\\w+)") else { return }
             let nsText = text as NSString
-            let tagColor = NSColor.systemPurple
+            let tagColor = NSColor(named: "AccentColor") ?? .controlAccentColor
 
             regex.enumerateMatches(in: text, range: NSRange(location: 0, length: nsText.length)) { match, _, _ in
                 guard let match = match else { return }

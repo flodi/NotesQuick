@@ -18,7 +18,7 @@ struct NoteEditorView: View {
             .components(separatedBy: .newlines)
             .first(where: { !$0.trimmingCharacters(in: .whitespaces).isEmpty }) ?? ""
         let stripped = firstLine.strippingMarkdown()
-        return stripped.isEmpty ? "New Note" : stripped
+        return stripped.isEmpty ? "Nuova nota" : stripped
     }
 
     private var tags: [String] {
@@ -45,10 +45,10 @@ struct NoteEditorView: View {
 
                         if hasUnsavedChanges {
                             Circle()
-                                .fill(.orange)
+                                .fill(Q.C.accent)
                                 .frame(width: 8, height: 8)
                                 .padding(12)
-                                .help("Unsaved changes — Cmd+S to save")
+                                .help("Modifiche non salvate. ⌘S per salvare")
                         }
                     }
 
@@ -56,27 +56,18 @@ struct NoteEditorView: View {
                     if let tag = tagQuery {
                         VStack(spacing: 0) {
                             Divider()
-                            HStack {
-                                Text("Notes with #\(tag)")
-                                    .font(.caption.bold())
-                                    .foregroundStyle(.secondary)
-                                Spacer()
-                                Button {
-                                    tagQuery = nil
-                                } label: {
-                                    Image(systemName: "xmark.circle.fill")
-                                        .foregroundStyle(.secondary)
-                                }
-                                .buttonStyle(.plain)
+                            QSectionHeader(title: "Note con #\(tag)", count: tagResults.count) {
+                                QIconButton(symbol: "xmark", kind: .plain, help: "Chiudi") { tagQuery = nil }
                             }
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 6)
+                            .padding(.leading, 12)
+                            .padding(.trailing, 4)
+                            .padding(.vertical, 2)
 
                             if tagResults.isEmpty {
-                                Text("No other notes found")
-                                    .font(.caption)
-                                    .foregroundStyle(.secondary)
-                                    .padding(8)
+                                Text("Nessun'altra nota con questo tag")
+                                    .font(Q.F.body)
+                                    .foregroundStyle(.tertiary)
+                                    .padding(.bottom, 10)
                             } else {
                                 ScrollView {
                                     VStack(spacing: 0) {
@@ -86,11 +77,11 @@ struct NoteEditorView: View {
                                             } label: {
                                                 HStack {
                                                     Text(note.title)
-                                                        .font(.caption)
+                                                        .font(Q.F.body)
                                                         .lineLimit(1)
                                                     Spacer()
-                                                    Text(note.modifiedDate, style: .relative)
-                                                        .font(.caption2)
+                                                    Text(note.modifiedDate.quickMeta)
+                                                        .font(Q.F.data(10.5, .regular))
                                                         .foregroundStyle(.secondary)
                                                 }
                                                 .padding(.horizontal, 12)
@@ -98,14 +89,13 @@ struct NoteEditorView: View {
                                                 .contentShape(Rectangle())
                                             }
                                             .buttonStyle(.plain)
-                                            Divider().padding(.leading, 12)
                                         }
                                     }
                                 }
                                 .frame(maxHeight: 150)
                             }
                         }
-                        .background(Color(nsColor: .controlBackgroundColor))
+                        .background(Q.C.band)
                     }
 
                     TagCloudView(tags: tags) { tag in
@@ -113,15 +103,8 @@ struct NoteEditorView: View {
                     }
                 }
             } else {
-                VStack(spacing: 12) {
-                    Image(systemName: "note.text")
-                        .font(.system(size: 48))
-                        .foregroundColor(.secondary)
-                    Text("Select a note to edit")
-                        .font(.title3)
-                        .foregroundColor(.secondary)
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                QEmptyState(symbol: "note.text", title: "Nessuna nota aperta",
+                            message: "La nota che apri dalla barra dei menu compare qui.")
             }
         }
         .navigationTitle(currentNote.map { $0.isText ? displayTitle : $0.title } ?? displayTitle)

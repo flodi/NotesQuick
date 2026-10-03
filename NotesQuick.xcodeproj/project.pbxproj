@@ -25,11 +25,14 @@
 		59A462689C48B04A6F4DFA42 /* FolderBookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE1C9858D6EB2209BD55FDB /* FolderBookmark.swift */; };
 		5E36ED1816D92CD842B21663 /* FolderBookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE1C9858D6EB2209BD55FDB /* FolderBookmark.swift */; };
 		5EFE6AD80F2A5AA3A14298D7 /* NotesQuickShareMac.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7EF395336DAF337BF1EDBD84 /* NotesQuickShareMac.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		609BB913963CD3A77B341A00 /* QuickComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B9D1DB6AC23FC163F8933D8 /* QuickComponents.swift */; };
+		670D6BF426A2840CFF6EAF74 /* QuickDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 502C989DEAAA70B202D18F6F /* QuickDesign.swift */; };
 		68C281DF06BFEBFDDC9B3CBB /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C36E16789984C81537378D3 /* SettingsView.swift */; };
 		6D3C8C1F2A3E80064FAEA34B /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3EA99213527D5E1A929E82 /* AppGroup.swift */; };
 		6E06ED5178B983BB639FC9B7 /* TagCloudView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6BD6996FEDD7EF53F72D /* TagCloudView.swift */; };
 		70853041A62D63E522C1B230 /* SchedulePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F6E2E35780963B1EF52875 /* SchedulePicker.swift */; };
 		78419870A4175693B11E7208 /* NoteEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DD7D11C0941CE19DA728AEC /* NoteEditorView.swift */; };
+		79B583B1A5CEB008EA645272 /* QuickDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 502C989DEAAA70B202D18F6F /* QuickDesign.swift */; };
 		838B7ADCA04360D1270F1942 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B905D914973F3E294BAA19 /* AppDelegate.swift */; };
 		97A54C46B66121B10002960C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCCDA45AC032E87137F27FD6 /* Assets.xcassets */; };
 		9E43F76EA9A8432FEF9B8A85 /* ItemSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2763E58A7FAE4111549300 /* ItemSchedule.swift */; };
@@ -45,6 +48,7 @@
 		BEC813B680F203E0B3921934 /* NotesQuickiOSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CAB4527796BD5F18D0482DB /* NotesQuickiOSApp.swift */; };
 		C52495ABE8AC1A5FC637260B /* NoteEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 642EE110F9D5794733D76BED /* NoteEditorView.swift */; };
 		C60D67E72B4B67FD82689F43 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A55226004833A809322D534 /* ShareViewController.swift */; };
+		CCA6BB74BA28720725037BA3 /* QuickComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B9D1DB6AC23FC163F8933D8 /* QuickComponents.swift */; };
 		CFEC04649E03C1D4B5F9AB00 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06CF89BEEC4084C35A601C48 /* ContentView.swift */; };
 		D3337623291EBC19E9A720FF /* Reminders.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77DE5CD5E30769DA939113B /* Reminders.swift */; };
 		D4B0601695E3B422CBC284BC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE947392D9463BE63162DECA /* Assets.xcassets */; };
@@ -110,11 +114,13 @@
 		23C99638ED6409A078996744 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		2B63E39FFC0DB9AE3B4B2348 /* NoteIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteIcon.swift; sourceTree = "<group>"; };
 		2F3EA99213527D5E1A929E82 /* AppGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppGroup.swift; sourceTree = "<group>"; };
+		502C989DEAAA70B202D18F6F /* QuickDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickDesign.swift; sourceTree = "<group>"; };
 		5A55226004833A809322D534 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		5E007851C97006C190214D1D /* NotesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesViewModel.swift; sourceTree = "<group>"; };
 		642EE110F9D5794733D76BED /* NoteEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteEditorView.swift; sourceTree = "<group>"; };
 		76B905D914973F3E294BAA19 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7AA59557153AD1E1077D8459 /* MarkdownTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownTextView.swift; sourceTree = "<group>"; };
+		7B9D1DB6AC23FC163F8933D8 /* QuickComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickComponents.swift; sourceTree = "<group>"; };
 		7C87E27F207A0A2330EC9845 /* NotesQuickMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NotesQuickMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7EE1C9858D6EB2209BD55FDB /* FolderBookmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderBookmark.swift; sourceTree = "<group>"; };
 		7EF395336DAF337BF1EDBD84 /* NotesQuickShareMac.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = NotesQuickShareMac.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -233,6 +239,8 @@
 			isa = PBXGroup;
 			children = (
 				2B63E39FFC0DB9AE3B4B2348 /* NoteIcon.swift */,
+				7B9D1DB6AC23FC163F8933D8 /* QuickComponents.swift */,
+				502C989DEAAA70B202D18F6F /* QuickDesign.swift */,
 				E176AD29615E837CB866A2EA /* QuickLookPreview.swift */,
 				81F6E2E35780963B1EF52875 /* SchedulePicker.swift */,
 				DE5E6BD6996FEDD7EF53F72D /* TagCloudView.swift */,
@@ -480,6 +488,8 @@
 				023B06C89DF8C3DC2AD1550B /* NoteListView.swift in Sources */,
 				DCFFC74E63C52C7B20C0F760 /* NotesQuickMacApp.swift in Sources */,
 				EDAE3F67404CD500028D5B9F /* NotesViewModel.swift in Sources */,
+				CCA6BB74BA28720725037BA3 /* QuickComponents.swift in Sources */,
+				670D6BF426A2840CFF6EAF74 /* QuickDesign.swift in Sources */,
 				2FBE44A435346F94F3FC8EC8 /* QuickLookPreview.swift in Sources */,
 				D3337623291EBC19E9A720FF /* Reminders.swift in Sources */,
 				3E4F8EB6FCAFD62F70F4E428 /* SchedulePicker.swift in Sources */,
@@ -517,6 +527,8 @@
 				D59B833FD1306A6393F83A32 /* NoteIcon.swift in Sources */,
 				BEC813B680F203E0B3921934 /* NotesQuickiOSApp.swift in Sources */,
 				EDE392C193462E268F8AED8F /* NotesViewModel.swift in Sources */,
+				609BB913963CD3A77B341A00 /* QuickComponents.swift in Sources */,
+				79B583B1A5CEB008EA645272 /* QuickDesign.swift in Sources */,
 				24A51B442179747C4B45269E /* QuickLookPreview.swift in Sources */,
 				34839DB8778A40F479114EF0 /* Reminders.swift in Sources */,
 				70853041A62D63E522C1B230 /* SchedulePicker.swift in Sources */,
@@ -638,6 +650,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = NotesQuickiOS.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -667,6 +680,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = NotesQuickiOS.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -784,6 +798,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = NotesQuickMac.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -861,6 +876,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = NotesQuickMac.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;

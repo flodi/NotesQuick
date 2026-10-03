@@ -8,38 +8,102 @@ struct NoteListView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // Search bar
+            // Toolbar: view on the left, content commands on the right.
+            HStack(spacing: 6) {
+                QWordmark()
+
+                if viewModel.snoozedCount > 0 || viewModel.showSnoozed {
+                    QIconButton(
+                        symbol: viewModel.showSnoozed ? "moon.zzz.fill" : "moon.zzz",
+                        kind: viewModel.showSnoozed ? .tinted : .plain,
+                        help: viewModel.showSnoozed ? "Nascondi sospesi" : "Mostra sospesi (\(viewModel.snoozedCount))"
+                    ) { viewModel.showSnoozed.toggle() }
+                    .padding(.leading, 4)
+                }
+
+                Spacer(minLength: 0)
+
+                Menu {
+                    Button {
+                        let note = viewModel.createNote()
+                        openWindow(id: "note-editor", value: note.id)
+                        NSApplication.shared.activate(ignoringOtherApps: true)
+                    } label: { Label("Nuova nota", systemImage: "note.text") }
+                    Button { addLink() } label: { Label("Aggiungi link…", systemImage: "link") }
+                    Button { addFile() } label: { Label("Aggiungi file…", systemImage: "doc") }
+                } label: {
+                    menuLabel("plus", primary: true)
+                }
+                .menuStyle(.button)
+                .buttonStyle(.plain)
+                .menuIndicator(.hidden)
+                .fixedSize()
+                .help("Nuovo elemento")
+                .accessibilityLabel("Nuovo elemento")
+
+                Menu {
+                    Button {
+                        openWindow(id: "settings")
+                        NSApplication.shared.activate(ignoringOtherApps: true)
+                    } label: { Label("Preferenze…", systemImage: "gear") }
+                    Button { showAbout() } label: { Label("Informazioni su NotesQuick", systemImage: "info.circle") }
+                    Divider()
+                    Button { NSApplication.shared.terminate(nil) } label: { Label("Esci", systemImage: "power") }
+                } label: {
+                    menuLabel("ellipsis", primary: false)
+                }
+                .menuStyle(.button)
+                .buttonStyle(.plain)
+                .menuIndicator(.hidden)
+                .fixedSize()
+                .help("Altro")
+                .accessibilityLabel("Altro")
+            }
+            .padding(.leading, 12)
+            .padding(.trailing, 8)
+            .padding(.top, 10)
+            .padding(.bottom, 8)
+
+            // Search field
             HStack(spacing: 6) {
                 Image(systemName: "magnifyingglass")
-                    .foregroundColor(.secondary)
-                TextField("Search...", text: $viewModel.searchText)
+                    .font(.system(size: 12))
+                    .foregroundStyle(.tertiary)
+                TextField("Cerca", text: $viewModel.searchText)
                     .textFieldStyle(.plain)
+                    .font(Q.F.body)
                 if !viewModel.searchText.isEmpty {
                     Button { viewModel.searchText = "" } label: {
                         Image(systemName: "xmark.circle.fill")
-                            .foregroundColor(.secondary)
+                            .font(.system(size: 12))
+                            .foregroundStyle(.tertiary)
                     }
                     .buttonStyle(.plain)
+                    .help("Cancella ricerca")
+                    .accessibilityLabel("Cancella ricerca")
                 }
             }
-            .padding(10)
+            .padding(.horizontal, 9)
+            .frame(height: 28)
+            .background(RoundedRectangle(cornerRadius: Q.R.control).fill(Q.C.fill1))
+            .padding(.horizontal, 10)
 
-            Divider()
+            QSectionHeader(title: "Elementi", count: viewModel.filteredNotes.count) { EmptyView() }
+                .padding(.horizontal, 14)
+                .padding(.top, 12)
+                .padding(.bottom, 4)
 
             // Items list
             if viewModel.filteredNotes.isEmpty {
-                VStack(spacing: 8) {
-                    Image(systemName: "tray")
-                        .font(.system(size: 32))
-                        .foregroundColor(.secondary)
-                    Text(viewModel.searchText.isEmpty ? "Nothing here yet" : "No results")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
+                if viewModel.searchText.isEmpty {
+                    QEmptyState(title: "Nessun elemento",
+                                message: "Le note, i link e i file che aggiungi compaiono qui.")
+                } else {
+                    QEmptyState(symbol: "magnifyingglass", title: "Nessun risultato")
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 ScrollView {
-                    LazyVStack(spacing: 0) {
+                    LazyVStack(spacing: 1) {
                         ForEach(viewModel.filteredNotes) { note in
                             NoteRow(note: note, schedule: viewModel.schedule(for: note)) {
                                 open(note)
@@ -48,61 +112,12 @@ struct NoteListView: View {
                             } onSchedule: {
                                 scheduleTarget = note
                             }
-                            Divider()
                         }
                     }
+                    .padding(.horizontal, 6)
+                    .padding(.bottom, 6)
                 }
             }
-
-            Divider()
-
-            // Bottom bar
-            HStack {
-                Menu {
-                    Button {
-                        let note = viewModel.createNote()
-                        openWindow(id: "note-editor", value: note.id)
-                        NSApplication.shared.activate(ignoringOtherApps: true)
-                    } label: { Label("New Note", systemImage: "note.text") }
-                    Button { addLink() } label: { Label("Add Link…", systemImage: "link") }
-                    Button { addFile() } label: { Label("Add File…", systemImage: "doc") }
-                } label: {
-                    Label("New", systemImage: "plus")
-                }
-                .menuStyle(.borderlessButton)
-                .fixedSize()
-
-                Spacer()
-
-                if viewModel.snoozedCount > 0 || viewModel.showSnoozed {
-                    Button { viewModel.showSnoozed.toggle() } label: {
-                        Image(systemName: viewModel.showSnoozed ? "moon.zzz.fill" : "moon.zzz")
-                    }
-                    .buttonStyle(.plain)
-                    .help(viewModel.showSnoozed ? "Nascondi sospesi" : "Mostra sospesi (\(viewModel.snoozedCount))")
-                }
-
-                Button { showAbout() } label: {
-                    Image(systemName: "info.circle")
-                }
-                .buttonStyle(.plain)
-
-                Button {
-                    openWindow(id: "settings")
-                    NSApplication.shared.activate(ignoringOtherApps: true)
-                } label: {
-                    Image(systemName: "gear")
-                }
-                .buttonStyle(.plain)
-
-                Button {
-                    NSApplication.shared.terminate(nil)
-                } label: {
-                    Image(systemName: "power")
-                }
-                .buttonStyle(.plain)
-            }
-            .padding(10)
         }
         .frame(width: 300, height: 400)
         .onAppear {
@@ -112,6 +127,16 @@ struct NoteListView: View {
             SchedulePicker(note: note)
                 .environmentObject(viewModel)
         }
+    }
+
+    /// Same look as `QIconButton`, for the label of a `Menu`.
+    private func menuLabel(_ symbol: String, primary: Bool) -> some View {
+        Image(systemName: symbol)
+            .font(.system(size: 13, weight: .semibold))
+            .foregroundStyle(primary ? Color.white : Color.secondary)
+            .frame(width: Q.Size.action.width, height: Q.Size.action.height)
+            .background(RoundedRectangle(cornerRadius: Q.R.control).fill(primary ? Q.C.accent : Color.clear))
+            .contentShape(Rectangle())
     }
 
     private func open(_ note: Note) {
@@ -125,13 +150,13 @@ struct NoteListView: View {
 
     private func addLink() {
         let alert = NSAlert()
-        alert.messageText = "Add Link"
-        alert.informativeText = "Paste a URL to save it as a note."
+        alert.messageText = "Aggiungi link"
+        alert.informativeText = "Incolla un URL per salvarlo tra gli elementi."
         let field = NSTextField(frame: NSRect(x: 0, y: 0, width: 300, height: 24))
         field.placeholderString = "https://example.com"
         alert.accessoryView = field
-        alert.addButton(withTitle: "Add")
-        alert.addButton(withTitle: "Cancel")
+        alert.addButton(withTitle: "Aggiungi")
+        alert.addButton(withTitle: "Annulla")
         if alert.runModal() == .alertFirstButtonReturn {
             let text = field.stringValue.trimmingCharacters(in: .whitespacesAndNewlines)
             let normalized = text.contains("://") ? text : "https://\(text)"
@@ -147,7 +172,7 @@ struct NoteListView: View {
         panel.canChooseFiles = true
         panel.canChooseDirectories = false
         panel.allowsMultipleSelection = true
-        panel.message = "Choose file(s) to add"
+        panel.message = "Scegli i file da aggiungere"
         if panel.runModal() == .OK {
             for url in panel.urls {
                 viewModel.importFile(at: url)
@@ -156,17 +181,15 @@ struct NoteListView: View {
     }
 
     private func showAbout() {
+        let info = Bundle.main.infoDictionary
+        let version = info?["CFBundleShortVersionString"] as? String ?? ""
+        let build = info?["CFBundleVersion"] as? String ?? ""
         let alert = NSAlert()
         alert.messageText = "NotesQuick"
         alert.informativeText = """
-        Version 1.0.0
+        Versione \(version) (\(build))
 
-        A menu bar app for quick notes, links and files with live Markdown editing.
-
-        App Icon: "Bloc Notes SZ" by Fmaunier
-        Licensed under Creative Commons Attribution-ShareAlike 3.0 (CC BY-SA 3.0)
-        https://creativecommons.org/licenses/by-sa/3.0/
-        Source: Wikimedia Commons
+        Note, link e file a portata di barra dei menu, con Markdown in tempo reale.
         """
         alert.icon = NSImage(named: "AppIcon")
         alert.addButton(withTitle: "OK")
@@ -175,11 +198,11 @@ struct NoteListView: View {
 
     private func confirmDelete(note: Note) {
         let alert = NSAlert()
-        alert.messageText = "Delete"
-        alert.informativeText = "Are you sure you want to delete '\(note.title)'?"
+        alert.messageText = "Elimina"
+        alert.informativeText = "Vuoi eliminare «\(note.title)»?"
         alert.alertStyle = .warning
-        alert.addButton(withTitle: "Delete")
-        alert.addButton(withTitle: "Cancel")
+        alert.addButton(withTitle: "Elimina")
+        alert.addButton(withTitle: "Annulla")
 
         if alert.runModal() == .alertFirstButtonReturn {
             viewModel.deleteNote(note)
@@ -199,21 +222,22 @@ struct NoteRow: View {
     @State private var isHovering = false
 
     var body: some View {
-        HStack(spacing: 8) {
+        HStack(spacing: 4) {
             Button(action: onTap) {
                 HStack(spacing: 8) {
                     Image(systemName: NoteIcon.symbol(for: note))
-                        .font(.body)
-                        .foregroundColor(NoteIcon.color(for: note))
+                        .font(.system(size: 13))
+                        .foregroundStyle(.secondary)
                         .frame(width: 18)
                     VStack(alignment: .leading, spacing: 2) {
                         Text(note.title)
-                            .font(.headline)
+                            .font(Q.F.body)
                             .lineLimit(1)
                         HStack(spacing: 8) {
-                            Text(note.modifiedDate, style: .relative)
-                                .font(.caption)
-                                .foregroundColor(.secondary)
+                            Text(note.modifiedDate.quickMeta)
+                                .font(Q.F.data(10.5, .regular))
+                                .foregroundStyle(.secondary)
+                                .lineLimit(1)
                             if let schedule, !schedule.isEmpty {
                                 ScheduleBadge(schedule: schedule)
                             }
@@ -221,31 +245,21 @@ struct NoteRow: View {
                     }
                     Spacer(minLength: 0)
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .frame(maxWidth: .infinity, minHeight: Q.Size.action.height, alignment: .leading)
                 .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
 
+            // Desktop: row actions appear on hover only.
             if isHovering {
-                Button(action: onSchedule) {
-                    Image(systemName: "clock")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
-                .buttonStyle(.plain)
-                .help("Pianifica (nascondi / ricorda)")
-
-                Button(action: onDelete) {
-                    Image(systemName: "trash")
-                        .font(.caption)
-                        .foregroundColor(.red)
-                }
-                .buttonStyle(.plain)
+                QIconButton(symbol: "clock", kind: .plain, help: "Pianifica", action: onSchedule)
+                QIconButton(symbol: "trash", kind: .plain, help: "Elimina", action: onDelete)
             }
         }
-        .padding(.horizontal, 10)
-        .padding(.vertical, 6)
-        .background(isHovering ? Color.primary.opacity(0.05) : Color.clear)
+        .padding(.leading, 8)
+        .padding(.trailing, isHovering ? 2 : 8)
+        .padding(.vertical, 4)
+        .background(RoundedRectangle(cornerRadius: Q.R.row).fill(isHovering ? Color(hex: 0x787880, alpha: 0.10) : Color.clear))
         .onHover { hovering in
             isHovering = hovering
         }
