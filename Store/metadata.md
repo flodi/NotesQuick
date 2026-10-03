@@ -93,6 +93,13 @@ python3 Tools/compose-mac-shots.py build/shots/it Store/screenshots it
 3. ~~Screenshot iPhone, iPad e Mac, it e en-US~~
 4. ~~Pagine di supporto e privacy online su quickmac.in/notes/~~
 5. ~~Build 33 (bilingue, manifest privacy) su TestFlight, nel gruppo interno~~
-6. Questionario privacy nel sito: «Nessun dato raccolto», da pubblicare
-7. Prova della build 33 da TestFlight
-8. Invio in revisione: `python3 scripts/asc_listing.py submit 33`
+6. ~~Questionario privacy nel sito: «Nessun dato raccolto», pubblicato~~
+7. ~~Build 33 provata da TestFlight~~
+8. ~~Inviate in revisione iOS e macOS 1.0.0 (build 33)~~ — 3 ottobre 2026, rilascio automatico dopo
+   l'approvazione (invii `d27d688e-e458-4810-911b-f0574e47ba4b` iOS e
+   `c5f4b615-b4e0-4c98-b08d-08f81f45e824` macOS)
+
+Dopo l'invio: se App Review risponde con domande, rispondere dal Centro risoluzione **e poi
+premere «Invia di nuovo al team di verifica»**, altrimenti la risposta resta ferma. Dopo
+l'approvazione controllare che l'app compaia davvero nello store
+(`https://itunes.apple.com/lookup?id=6788065433&country=it`): la propagazione può richiedere un giorno.
