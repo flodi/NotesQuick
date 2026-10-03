@@ -117,9 +117,3 @@ Uploading requires an App Store Connect API key at `~/.appstoreconnect/private_k
 ## Sandbox & privacy
 
 Both apps run sandboxed and request only **user‑selected read/write** file access (`com.apple.security.files.user-selected.read-write`). All notes stay in the folder you choose — nothing is sent anywhere; there is no network access and no analytics.
-
----
-
-## Credits
-
-App icon: *"Bloc Notes SZ"* by Fmaunier, licensed under [CC BY‑SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/), via Wikimedia Commons.
