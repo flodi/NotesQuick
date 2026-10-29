@@ -115,7 +115,12 @@ if $UPLOAD; then
     # Uploaded builds do not reach the testers until they are added to the internal group.
     echo ""
     echo "==> Waiting for processing and adding build $NEW_BUILD to the internal testers..."
-    python3 scripts/asc.py finalize "$NEW_BUILD"
+    # The system python3 has no 'cryptography': use the first python3 that does.
+    PY=python3
+    for candidate in /opt/homebrew/bin/python3 /usr/local/bin/python3 python3; do
+        if "$candidate" -c "import cryptography" 2>/dev/null; then PY="$candidate"; break; fi
+    done
+    "$PY" scripts/asc.py finalize "$NEW_BUILD"
 
     echo ""
     echo "==> Both apps uploaded to TestFlight!"
