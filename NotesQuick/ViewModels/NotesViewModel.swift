@@ -74,7 +74,7 @@ class NotesViewModel: ObservableObject {
                 dest = notesFolder.appendingPathComponent(name)
                 counter += 1
             }
-            if (try? fm.moveItem(at: src, to: dest)) == nil {
+            if !CoordinatedFile.move(src, to: dest) {
                 try? fm.removeItem(at: src)  // give up on this one, don't loop on it
             }
         }
@@ -193,9 +193,9 @@ class NotesViewModel: ObservableObject {
         let pruned = schedules.filter { !$0.value.isEmpty }
         schedules = pruned
         if pruned.isEmpty {
-            try? FileManager.default.removeItem(at: scheduleIndexURL)
+            CoordinatedFile.delete(scheduleIndexURL)
         } else if let data = ScheduleIndex.encode(pruned) {
-            try? data.write(to: scheduleIndexURL, options: .atomic)
+            CoordinatedFile.write(data, to: scheduleIndexURL)
         }
         reconcileReminders()
     }
@@ -267,7 +267,7 @@ class NotesViewModel: ObservableObject {
             counter += 1
         }
 
-        try? content.write(to: fileURL, atomically: true, encoding: .utf8)
+        CoordinatedFile.write(content, to: fileURL)
         let note = Note(fileURL: fileURL, content: content, modifiedDate: Date(), isText: true)
         notes.insert(note, at: 0)
         return note
@@ -295,7 +295,7 @@ class NotesViewModel: ObservableObject {
             counter += 1
         }
 
-        guard (try? fm.copyItem(at: sourceURL, to: dest)) != nil else { return nil }
+        guard CoordinatedFile.copy(sourceURL, to: dest) else { return nil }
         let note = Note(fileURL: dest, content: "", modifiedDate: Date(), isText: false)
         notes.insert(note, at: 0)
         return note
@@ -320,7 +320,7 @@ class NotesViewModel: ObservableObject {
             // disk yet, so there's nothing to move — we just write straight to the
             // title-based name instead of leaving an "Untitled" file behind.
             if fm.fileExists(atPath: note.fileURL.path) {
-                try? fm.moveItem(at: note.fileURL, to: newURL)
+                CoordinatedFile.move(note.fileURL, to: newURL)
             }
             targetURL = newURL
         }
@@ -334,7 +334,7 @@ class NotesViewModel: ObservableObject {
         let unchanged = (try? String(contentsOf: targetURL, encoding: .utf8)) == content
 
         if !unchanged {
-            try? content.write(to: targetURL, atomically: true, encoding: .utf8)
+            CoordinatedFile.write(content, to: targetURL)
         }
 
         // Keep the in-memory model in sync (the file may have been renamed above,
@@ -364,7 +364,7 @@ class NotesViewModel: ObservableObject {
     func deleteNote(_ note: Note) {
         startFolderAccess()
         defer { stopFolderAccess() }
-        try? FileManager.default.removeItem(at: note.fileURL)
+        CoordinatedFile.delete(note.fileURL)
         notes.removeAll { $0.fileURL == note.fileURL }
         let name = note.fileURL.lastPathComponent
         if schedules[name] != nil {

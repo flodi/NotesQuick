@@ -3,6 +3,7 @@ import SwiftUI
 struct NoteEditorView: View {
     let note: Note
     @EnvironmentObject var viewModel: NotesViewModel
+    @Environment(\.scenePhase) private var scenePhase
     @State private var content: String = ""
     @State private var currentNote: Note?
     @State private var loadedContent: String = ""
@@ -49,6 +50,14 @@ struct NoteEditorView: View {
             currentNote = note
             content = note.content
             loadedContent = note.content
+        }
+        .onChange(of: scenePhase) { _, phase in
+            // Leaving the app does not close the editor: save now, or the text is lost if
+            // iOS later terminates the app in the background.
+            if phase != .active, hasUnsavedChanges,
+               !content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                save()
+            }
         }
         .onDisappear {
             guard let note = currentNote else { return }

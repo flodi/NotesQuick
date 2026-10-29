@@ -20,6 +20,7 @@
 		34839DB8778A40F479114EF0 /* Reminders.swift in Sources */ = {isa = PBXBuildFile; fileRef = E77DE5CD5E30769DA939113B /* Reminders.swift */; };
 		35D7AACB396A40639853B8F6 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8FEC69F1E923353DC1EB43E /* Constants.swift */; };
 		37350CEFEECAED4524DACB53 /* FolderWatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF96CF89A426C7E574D5B61 /* FolderWatcher.swift */; };
+		38DA0092447DF46F8BA8583B /* CoordinatedFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1707580BA9F493AAD497DF /* CoordinatedFile.swift */; };
 		3E4F8EB6FCAFD62F70F4E428 /* SchedulePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F6E2E35780963B1EF52875 /* SchedulePicker.swift */; };
 		417ACBC176350AC685F3D50C /* MarkdownTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47959E470164A13579C15BD /* MarkdownTextView.swift */; };
 		4463D1332426C46685BB7486 /* Note.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173D7D67955444C3EE210A0C /* Note.swift */; };
@@ -28,6 +29,7 @@
 		5E36ED1816D92CD842B21663 /* FolderBookmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EE1C9858D6EB2209BD55FDB /* FolderBookmark.swift */; };
 		5EFE6AD80F2A5AA3A14298D7 /* NotesQuickShareMac.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 7EF395336DAF337BF1EDBD84 /* NotesQuickShareMac.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		609BB913963CD3A77B341A00 /* QuickComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B9D1DB6AC23FC163F8933D8 /* QuickComponents.swift */; };
+		63184DA9F3717A0D80AFDD21 /* CoordinatedFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1707580BA9F493AAD497DF /* CoordinatedFile.swift */; };
 		670D6BF426A2840CFF6EAF74 /* QuickDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 502C989DEAAA70B202D18F6F /* QuickDesign.swift */; };
 		68C281DF06BFEBFDDC9B3CBB /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C36E16789984C81537378D3 /* SettingsView.swift */; };
 		69E209EA5641E5DEFABB321B /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = EF018B1B62BA0ECCCB0CD717 /* Localizable.xcstrings */; };
@@ -132,6 +134,7 @@
 		5E007851C97006C190214D1D /* NotesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesViewModel.swift; sourceTree = "<group>"; };
 		642EE110F9D5794733D76BED /* NoteEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteEditorView.swift; sourceTree = "<group>"; };
 		76B905D914973F3E294BAA19 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		7A1707580BA9F493AAD497DF /* CoordinatedFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatedFile.swift; sourceTree = "<group>"; };
 		7AA59557153AD1E1077D8459 /* MarkdownTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownTextView.swift; sourceTree = "<group>"; };
 		7B9D1DB6AC23FC163F8933D8 /* QuickComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickComponents.swift; sourceTree = "<group>"; };
 		7C87E27F207A0A2330EC9845 /* NotesQuickMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NotesQuickMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -242,6 +245,7 @@
 			children = (
 				2F3EA99213527D5E1A929E82 /* AppGroup.swift */,
 				C8FEC69F1E923353DC1EB43E /* Constants.swift */,
+				7A1707580BA9F493AAD497DF /* CoordinatedFile.swift */,
 				7EE1C9858D6EB2209BD55FDB /* FolderBookmark.swift */,
 				FFF96CF89A426C7E574D5B61 /* FolderWatcher.swift */,
 				8F20D589FF0015FA1312B11A /* Localization.swift */,
@@ -528,6 +532,7 @@
 				838B7ADCA04360D1270F1942 /* AppDelegate.swift in Sources */,
 				AD1BA80C0C11130A22293B9B /* AppGroup.swift in Sources */,
 				A2E24C05B2C1F541BA58CBCA /* Constants.swift in Sources */,
+				63184DA9F3717A0D80AFDD21 /* CoordinatedFile.swift in Sources */,
 				59A462689C48B04A6F4DFA42 /* FolderBookmark.swift in Sources */,
 				FD862EF3010D1EB612A0A7CD /* FolderWatcher.swift in Sources */,
 				9E43F76EA9A8432FEF9B8A85 /* ItemSchedule.swift in Sources */,
@@ -570,6 +575,7 @@
 				6D3C8C1F2A3E80064FAEA34B /* AppGroup.swift in Sources */,
 				35D7AACB396A40639853B8F6 /* Constants.swift in Sources */,
 				CFEC04649E03C1D4B5F9AB00 /* ContentView.swift in Sources */,
+				38DA0092447DF46F8BA8583B /* CoordinatedFile.swift in Sources */,
 				5E36ED1816D92CD842B21663 /* FolderBookmark.swift in Sources */,
 				37350CEFEECAED4524DACB53 /* FolderWatcher.swift in Sources */,
 				B763F11E3E1FC72AB0770870 /* ItemSchedule.swift in Sources */,
