@@ -10,30 +10,34 @@ Credentials never live in this repository:
                             internal TestFlight groups; without this step a build is uploaded but never
                             reaches the testers
 """
-import base64, glob, json, os, re, socket, sys, time, urllib.error, urllib.request
+import base64, glob, json, os, re, socket, subprocess, sys, time, urllib.error, urllib.request
 
 API = "https://api.appstoreconnect.apple.com"
-
-try:
-    from cryptography.hazmat.primitives import hashes
-    from cryptography.hazmat.primitives.asymmetric import ec
-    from cryptography.hazmat.primitives.asymmetric.utils import decode_dss_signature
-    from cryptography.hazmat.primitives.serialization import load_pem_private_key
-except ImportError:
-    sys.exit("Needs 'cryptography' (pip3 install cryptography)")
-
 
 def b64(d):
     return base64.urlsafe_b64encode(d).rstrip(b"=")
 
 
+def der_to_raw(der):
+    """ECDSA signature: ASN.1 DER SEQUENCE{r, s} -> the 64-byte r||s that JWT ES256 wants."""
+    i = 2 if der[1] < 0x80 else 2 + (der[1] & 0x7F)
+    parts = []
+    for _ in range(2):
+        length = der[i + 1]
+        parts.append(int.from_bytes(der[i + 2:i + 2 + length], "big"))
+        i += 2 + length
+    return b"".join(n.to_bytes(32, "big") for n in parts)
+
+
 def make_token(kid, path):
+    """ES256 JWT signed with openssl, so no Python package is needed."""
     issuer = os.environ.get("ASC_API_ISSUER") or sys.exit("Set ASC_API_ISSUER to your App Store Connect Issuer ID")
-    key = load_pem_private_key(open(path, "rb").read(), password=None)
     header = b64(json.dumps({"alg": "ES256", "kid": kid, "typ": "JWT"}).encode())
     payload = b64(json.dumps({"iss": issuer, "exp": int(time.time()) + 1200, "aud": "appstoreconnect-v1"}).encode())
-    r, s = decode_dss_signature(key.sign(header + b"." + payload, ec.ECDSA(hashes.SHA256())))
-    return (header + b"." + payload + b"." + b64(r.to_bytes(32, "big") + s.to_bytes(32, "big"))).decode()
+    signing_input = header + b"." + payload
+    der = subprocess.run(["openssl", "dgst", "-sha256", "-sign", path], input=signing_input,
+                         capture_output=True, check=True).stdout
+    return (signing_input + b"." + b64(der_to_raw(der))).decode()
 
 
 def api(token, method, path, body=None, tries=6):
