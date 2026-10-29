@@ -99,6 +99,11 @@ python3 Tools/compose-mac-shots.py build/shots/it Store/screenshots it
    l'approvazione (invii `d27d688e-e458-4810-911b-f0574e47ba4b` iOS e
    `c5f4b615-b4e0-4c98-b08d-08f81f45e824` macOS)
 
+9. ~~Approvata: iOS e macOS 1.0.0 in vendita~~ (stato READY_FOR_SALE, verificato il 29 ottobre 2026;
+   presente nel catalogo pubblico). Link: <https://apps.apple.com/app/id6788065433>
+10. 1.0.1 (build 34) su TestFlight: scritture coordinate con iCloud Drive e salvataggio su iOS
+    quando l'app va in background. Da inviare come aggiornamento.
+
 Dopo l'invio: se App Review risponde con domande, rispondere dal Centro risoluzione **e poi
 premere «Invia di nuovo al team di verifica»**, altrimenti la risposta resta ferma. Dopo
 l'approvazione controllare che l'app compaia davvero nello store
