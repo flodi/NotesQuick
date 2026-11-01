@@ -70,8 +70,9 @@ Stanno in `Store/screenshots/`, italiani e inglesi, con contenuti dimostrativi s
   le compone sulla tela 2880×1800.
 
 ```sh
-Tools/mac-store-shots.sh <cartella-demo> it "Riunione" build/shots/it
-python3 Tools/compose-mac-shots.py build/shots/it Store/screenshots it
+python3.14 Tools/make-demo-notes.py build/demo/it it [--pins]   # serve Pillow (non c'è nel Python 3.15 di Homebrew)
+Tools/mac-store-shots.sh build/demo/it it "Riunione" build/shots/it [-groupByKind YES]
+python3.14 Tools/compose-mac-shots.py build/shots/it Store/screenshots it
 ```
 
 ## Cosa si è copiato da OrgQuick e FolderQuick
@@ -102,7 +103,9 @@ python3 Tools/compose-mac-shots.py build/shots/it Store/screenshots it
 9. ~~Approvata: iOS e macOS 1.0.0 in vendita~~ (stato READY_FOR_SALE, verificato il 29 ottobre 2026;
    presente nel catalogo pubblico). Link: <https://apps.apple.com/app/id6788065433>
 10. 1.0.1 (build 34) su TestFlight: scritture coordinate con iCloud Drive e salvataggio su iOS
-    quando l'app va in background. Da inviare come aggiornamento.
+    quando l'app va in background.
+11. 1.0.1 (build 35) su TestFlight: elementi fissati in cima, ordine dell'elenco nelle impostazioni,
+    raggruppamento per tipo, filtro per tipo nel pannello Mac. Da inviare come aggiornamento.
 
 Dopo l'invio: se App Review risponde con domande, rispondere dal Centro risoluzione **e poi
 premere «Invia di nuovo al team di verifica»**, altrimenti la risposta resta ferma. Dopo
