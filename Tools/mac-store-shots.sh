@@ -1,6 +1,7 @@
 #!/bin/bash
 # Mac store screenshots without launching NotesQuick: compiles the Mac views into a windowless
-# renderer and snapshots them off screen. Usage: Tools/mac-store-shots.sh <demo-folder> <lang: it|en> <note-title> <out-dir>
+# renderer and snapshots them off screen.
+# Usage: Tools/mac-store-shots.sh <demo-folder> <lang: it|en> <note-title> <out-dir> [-defaultsKey value …]
 set -e
 cd "$(dirname "$0")/.."
 DEMO="$1"; LANG_="$2"; NOTE="$3"; OUT="$4"
@@ -29,4 +30,4 @@ P
 # A private home: the renderer never touches the real preferences or Documents.
 cp -Rp "$DEMO" "$W/home/Documents/NotesQuick"
 LOC=it_IT; [[ "$LANG_" == en ]] && LOC=en_US
-CFFIXED_USER_HOME="$W/home" "$B/MacOS/Shots" "$OUT" "$NOTE" -screenshotMode YES -AppleLanguages "($LANG_)" -AppleLocale "$LOC"
+CFFIXED_USER_HOME="$W/home" "$B/MacOS/Shots" "$OUT" "$NOTE" -screenshotMode YES -AppleLanguages "($LANG_)" -AppleLocale "$LOC" "${@:5}"

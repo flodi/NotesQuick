@@ -41,5 +41,5 @@ MainActor.assumeIsolated {
         render(NoteEditorView(noteId: note.id), size: CGSize(width: 620, height: 470), name: "editor")
         render(SchedulePicker(note: note), size: CGSize(width: 360, height: 340), name: "schedule")
     }
-    render(SettingsView(), size: CGSize(width: 450, height: 520), name: "settings")
+    render(SettingsView(), size: CGSize(width: 470, height: 640), name: "settings")
 }

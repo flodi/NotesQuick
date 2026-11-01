@@ -1,12 +1,16 @@
 import Foundation
 
-/// Optional per-item scheduling: a "hide until" date (snooze — the item is hidden
-/// from the list until then) and a "remind me on" date (a local notification).
+/// Optional per-item metadata: a "hide until" date (snooze — the item is hidden
+/// from the list until then), a "remind me on" date (a local notification) and
+/// whether the item is pinned to the top of the list.
 struct ItemSchedule: Codable, Equatable {
     var hideUntil: Date?
     var remindAt: Date?
+    /// Optional so index files written before pins existed still decode.
+    var pinned: Bool?
 
-    var isEmpty: Bool { hideUntil == nil && remindAt == nil }
+    var isPinned: Bool { pinned == true }
+    var isEmpty: Bool { hideUntil == nil && remindAt == nil && !isPinned }
 
     /// Whether the item should currently be hidden from the main list.
     func isHidden(now: Date = Date()) -> Bool {

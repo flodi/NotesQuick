@@ -56,6 +56,8 @@ struct SettingsView: View {
                     .foregroundColor(.secondary)
             }
 
+            ListOrderSettings()
+
             Section("Tag") {
                 Toggle("Nascondi i tag nell'editor", isOn: $viewModel.hideTagsInEditor)
 
@@ -65,7 +67,7 @@ struct SettingsView: View {
             }
         }
         .formStyle(.grouped)
-        .frame(width: 450, height: 520)
+        .frame(width: 470, height: 640)
     }
 
     private func chooseFolder() {

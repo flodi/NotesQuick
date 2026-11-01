@@ -2,6 +2,22 @@
   "sourceLanguage": "it",
   "version": "1.0",
   "strings": {
+    "%@ · %lld": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · %lld"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · %lld"
+          }
+        }
+      }
+    },
     "Aggiungi": {
       "localizations": {
         "en": {
@@ -78,6 +94,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "Aggiungi link…"
+          }
+        }
+      }
+    },
+    "Altri elementi": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Other items"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Altri elementi"
           }
         }
       }
@@ -258,6 +290,22 @@
         }
       }
     },
+    "Elementi in cima": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pinned items"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elementi in cima"
+          }
+        }
+      }
+    },
     "Elimina": {
       "localizations": {
         "en": {
@@ -354,6 +402,22 @@
         }
       }
     },
+    "File": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Files"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "File"
+          }
+        }
+      }
+    },
     "Fine": {
       "localizations": {
         "en": {
@@ -366,6 +430,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "Fine"
+          }
+        }
+      }
+    },
+    "Fissa in cima": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pin to top"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fissa in cima"
           }
         }
       }
@@ -386,6 +466,22 @@
         }
       }
     },
+    "Gli elementi fissati stanno sempre in cima. Con il raggruppamento, gli altri sono divisi per tipo in quest'ordine.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pinned items always stay on top. With grouping on, the others are split by kind in this order."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gli elementi fissati stanno sempre in cima. Con il raggruppamento, gli altri sono divisi per tipo in quest'ordine."
+          }
+        }
+      }
+    },
     "Impostazioni": {
       "localizations": {
         "en": {
@@ -398,6 +494,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "Impostazioni"
+          }
+        }
+      }
+    },
+    "In cima": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pinned"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In cima"
           }
         }
       }
@@ -514,6 +626,54 @@
         }
       }
     },
+    "Link": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Links"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Link"
+          }
+        }
+      }
+    },
+    "Modifica, prima i meno recenti": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last change, oldest first"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modifica, prima i meno recenti"
+          }
+        }
+      }
+    },
+    "Modifica, prima i più recenti": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Last change, newest first"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Modifica, prima i più recenti"
+          }
+        }
+      }
+    },
     "Modifiche non salvate. ⌘S per salvare": {
       "localizations": {
         "en": {
@@ -558,6 +718,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "Mostra sospesi (%@)"
+          }
+        }
+      }
+    },
+    "Mostra tutto": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show all"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostra tutto"
           }
         }
       }
@@ -722,6 +898,22 @@
         }
       }
     },
+    "Note": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notes"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Note"
+          }
+        }
+      }
+    },
     "Note con #%@": {
       "localizations": {
         "en": {
@@ -818,6 +1010,22 @@
         }
       }
     },
+    "Ordine dell'elenco": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "List order"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ordine dell'elenco"
+          }
+        }
+      }
+    },
     "Pianifica": {
       "localizations": {
         "en": {
@@ -878,6 +1086,22 @@
           "stringUnit": {
             "state": "translated",
             "value": "Preferenze…"
+          }
+        }
+      }
+    },
+    "Raggruppa per tipo": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Group by kind"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Raggruppa per tipo"
           }
         }
       }
@@ -1042,6 +1266,86 @@
         }
       }
     },
+    "Solo file": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Files only"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solo file"
+          }
+        }
+      }
+    },
+    "Solo link": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Links only"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solo link"
+          }
+        }
+      }
+    },
+    "Solo note": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notes only"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solo note"
+          }
+        }
+      }
+    },
+    "Sposta giù": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Move down"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sposta giù"
+          }
+        }
+      }
+    },
+    "Sposta su": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Move up"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sposta su"
+          }
+        }
+      }
+    },
     "Tag": {
       "localizations": {
         "en": {
@@ -1054,6 +1358,54 @@
           "stringUnit": {
             "state": "translated",
             "value": "Tag"
+          }
+        }
+      }
+    },
+    "Titolo, dalla A alla Z": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Title, A to Z"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Titolo, dalla A alla Z"
+          }
+        }
+      }
+    },
+    "Titolo, dalla Z alla A": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Title, Z to A"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Titolo, dalla Z alla A"
+          }
+        }
+      }
+    },
+    "Togli dalla cima": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unpin"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Togli dalla cima"
           }
         }
       }

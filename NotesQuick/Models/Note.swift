@@ -22,7 +22,7 @@ struct Note: Identifiable, Hashable {
         return .text
     }
 
-    enum Kind { case text, link, file }
+    enum Kind: String, CaseIterable { case text, link, file }
 
     /// If this text note is essentially a single link (a shared URL is stored as a
     /// one-line `[title](url)` or a bare URL), returns that URL.

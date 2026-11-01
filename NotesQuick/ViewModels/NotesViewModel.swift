@@ -10,6 +10,8 @@ class NotesViewModel: ObservableObject {
     @Published var schedules: [String: ItemSchedule] = [:]
     /// When true, snoozed ("hide until") items are shown too.
     @Published var showSnoozed: Bool = false
+    /// When set, only items of this kind (note, link, file) are listed.
+    @Published var kindFilter: Note.Kind? = nil
 
     @Published var notesFolderPath: String {
         didSet {
@@ -31,6 +33,25 @@ class NotesViewModel: ObservableObject {
         didSet {
             UserDefaults.standard.set(hideTagsInEditor, forKey: "hideTagsInEditor")
         }
+    }
+
+    /// Order of the pinned items (default: title, A to Z).
+    @Published var pinnedSort: ListSort {
+        didSet { UserDefaults.standard.set(pinnedSort.rawValue, forKey: "pinnedSort") }
+    }
+
+    /// Order of the other items (default: last change first).
+    @Published var otherSort: ListSort {
+        didSet { UserDefaults.standard.set(otherSort.rawValue, forKey: "otherSort") }
+    }
+
+    /// When on, the list is split by kind, in `kindOrder`.
+    @Published var groupByKind: Bool {
+        didSet { UserDefaults.standard.set(groupByKind, forKey: "groupByKind") }
+    }
+
+    @Published var kindOrder: [Note.Kind] {
+        didSet { UserDefaults.standard.set(kindOrder.map(\.rawValue), forKey: "kindOrder") }
     }
 
     var notesFolder: URL {
@@ -80,16 +101,69 @@ class NotesViewModel: ObservableObject {
         }
     }
 
+    /// The visible items in display order (pinned first), flattened from `sections`.
     var filteredNotes: [Note] {
+        sections.flatMap(\.notes)
+    }
+
+    /// Pinned items on top, then the others, one part per kind when grouping is on.
+    var sections: [NoteSection] {
+        let items = visibleNotes
+        let pinned = items.filter { isPinned($0) }
+        let others = items.filter { !isPinned($0) }
+        var result: [NoteSection] = []
+        if !pinned.isEmpty {
+            result.append(NoteSection(id: "pinned", title: L("In cima"), notes: ordered(pinned, by: pinnedSort)))
+        }
+        if groupByKind {
+            for kind in kindOrder {
+                let part = others.filter { $0.kind == kind }
+                if !part.isEmpty {
+                    result.append(NoteSection(id: kind.rawValue, title: kind.groupTitle, notes: part.sorted(by: otherSort.areInOrder)))
+                }
+            }
+        } else if !others.isEmpty {
+            result.append(NoteSection(id: "all", title: L("Elementi"), notes: others.sorted(by: otherSort.areInOrder)))
+        }
+        return result
+    }
+
+    /// Sorted, and with grouping on also ordered by kind (pinned items stay in one part).
+    private func ordered(_ items: [Note], by sort: ListSort) -> [Note] {
+        guard groupByKind else { return items.sorted(by: sort.areInOrder) }
+        return kindOrder.flatMap { kind in items.filter { $0.kind == kind }.sorted(by: sort.areInOrder) }
+    }
+
+    func isPinned(_ note: Note) -> Bool {
+        schedule(for: note)?.isPinned ?? false
+    }
+
+    func togglePin(_ note: Note) {
+        var item = schedule(for: note) ?? ItemSchedule()
+        item.pinned = item.isPinned ? nil : true
+        storeSchedule(item, for: note)
+    }
+
+    func moveKind(_ kind: Note.Kind, by offset: Int) {
+        guard let i = kindOrder.firstIndex(of: kind) else { return }
+        let j = i + offset
+        guard kindOrder.indices.contains(j) else { return }
+        kindOrder.swapAt(i, j)
+    }
+
+    /// Items that pass the snooze, kind and search filters, in no particular order.
+    private var visibleNotes: [Note] {
         let now = Date()
         var items = notes
         // Hide snoozed items whose "hide until" is still in the future.
         if !showSnoozed {
             items = items.filter { !(schedule(for: $0)?.isHidden(now: now) ?? false) }
         }
-        let sorted = items.sorted { $0.modifiedDate > $1.modifiedDate }
-        guard !searchText.isEmpty else { return sorted }
-        return sorted.filter {
+        if let kindFilter {
+            items = items.filter { $0.kind == kindFilter }
+        }
+        guard !searchText.isEmpty else { return items }
+        return items.filter {
             $0.title.localizedCaseInsensitiveContains(searchText) ||
             $0.content.localizedCaseInsensitiveContains(searchText) ||
             $0.fileURL.lastPathComponent.localizedCaseInsensitiveContains(searchText)
@@ -113,6 +187,12 @@ class NotesViewModel: ObservableObject {
         self.notesFolderPath = AppGroup.defaults.string(forKey: AppGroup.pathKey) ?? defaultPath
         self.fileExtension = AppGroup.defaults.string(forKey: AppGroup.extensionKey) ?? "md"
         self.hideTagsInEditor = UserDefaults.standard.bool(forKey: "hideTagsInEditor")
+        let std = UserDefaults.standard
+        self.pinnedSort = std.string(forKey: "pinnedSort").flatMap(ListSort.init) ?? .titleAscending
+        self.otherSort = std.string(forKey: "otherSort").flatMap(ListSort.init) ?? .modifiedDescending
+        self.groupByKind = std.bool(forKey: "groupByKind")
+        let savedOrder = (std.stringArray(forKey: "kindOrder") ?? []).compactMap(Note.Kind.init)
+        self.kindOrder = Set(savedOrder) == Set(Note.Kind.allCases) ? savedOrder : [.text, .file, .link]
         ensureFolderExists()
         loadNotes()
         startWatching()
@@ -206,7 +286,14 @@ class NotesViewModel: ObservableObject {
     }
 
     /// Set (or clear) the schedule for an item and persist it.
+    /// Sets the dates from the schedule sheet; the pin is kept as it is.
     func setSchedule(_ schedule: ItemSchedule, for note: Note) {
+        var item = schedule
+        item.pinned = self.schedule(for: note)?.pinned
+        storeSchedule(item, for: note)
+    }
+
+    private func storeSchedule(_ schedule: ItemSchedule, for note: Note) {
         let name = note.fileURL.lastPathComponent
         if schedule.isEmpty {
             schedules.removeValue(forKey: name)

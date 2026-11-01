@@ -23,6 +23,8 @@ struct NoteListView: View {
 
                 Spacer(minLength: 0)
 
+                KindFilterBar(selection: $viewModel.kindFilter)
+
                 Menu {
                     Button {
                         let note = viewModel.createNote()
@@ -87,15 +89,11 @@ struct NoteListView: View {
             .frame(height: 28)
             .background(RoundedRectangle(cornerRadius: Q.R.control).fill(Q.C.fill1))
             .padding(.horizontal, 10)
-
-            QSectionHeader(title: L("Elementi"), count: viewModel.filteredNotes.count) { EmptyView() }
-                .padding(.horizontal, 14)
-                .padding(.top, 12)
-                .padding(.bottom, 4)
+            .padding(.bottom, 4)
 
             // Items list
             if viewModel.filteredNotes.isEmpty {
-                if viewModel.searchText.isEmpty {
+                if viewModel.searchText.isEmpty && viewModel.kindFilter == nil {
                     QEmptyState(title: L("Nessun elemento"),
                                 message: L("Le note, i link e i file che aggiungi compaiono qui."))
                 } else {
@@ -103,14 +101,23 @@ struct NoteListView: View {
                 }
             } else {
                 ScrollView {
-                    LazyVStack(spacing: 1) {
-                        ForEach(viewModel.filteredNotes) { note in
-                            NoteRow(note: note, schedule: viewModel.schedule(for: note)) {
-                                open(note)
-                            } onDelete: {
-                                confirmDelete(note: note)
-                            } onSchedule: {
-                                scheduleTarget = note
+                    LazyVStack(alignment: .leading, spacing: 1) {
+                        ForEach(viewModel.sections) { section in
+                            QSectionHeader(title: section.title, count: section.notes.count) { EmptyView() }
+                                .padding(.horizontal, 8)
+                                .padding(.top, 10)
+                                .padding(.bottom, 3)
+                            ForEach(section.notes) { note in
+                                NoteRow(note: note, schedule: viewModel.schedule(for: note),
+                                        isPinned: viewModel.isPinned(note)) {
+                                    open(note)
+                                } onDelete: {
+                                    confirmDelete(note: note)
+                                } onSchedule: {
+                                    scheduleTarget = note
+                                } onTogglePin: {
+                                    withAnimation(Q.anim) { viewModel.togglePin(note) }
+                                }
                             }
                         }
                     }
@@ -207,14 +214,55 @@ struct NoteListView: View {
     }
 }
 
+// MARK: - Kind Filter
+
+/// Compact segmented group of icon toggles (note / link / file).
+/// Clicking the active one again clears the filter and shows everything.
+struct KindFilterBar: View {
+    @Binding var selection: Note.Kind?
+
+    private let items: [(kind: Note.Kind, symbol: String, help: String)] = [
+        (.text, "note.text", L("Solo note")),
+        (.link, "link", L("Solo link")),
+        (.file, "doc", L("Solo file")),
+    ]
+
+    var body: some View {
+        HStack(spacing: 1) {
+            ForEach(items, id: \.symbol) { item in
+                let isOn = selection == item.kind
+                Button {
+                    withAnimation(Q.anim) { selection = isOn ? nil : item.kind }
+                } label: {
+                    Image(systemName: item.symbol)
+                        .font(.system(size: 11.5, weight: .semibold))
+                        .foregroundStyle(isOn ? Q.C.accent : Color.secondary)
+                        .frame(width: 24, height: 22)
+                        .background(RoundedRectangle(cornerRadius: Q.R.control - 2)
+                            .fill(isOn ? Q.C.accentSoft : Color.clear))
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .help(isOn ? L("Mostra tutto") : item.help)
+                .accessibilityLabel(item.help)
+                .accessibilityAddTraits(isOn ? .isSelected : [])
+            }
+        }
+        .padding(2)
+        .background(RoundedRectangle(cornerRadius: Q.R.control).fill(Q.C.fill1))
+    }
+}
+
 // MARK: - Note Row
 
 struct NoteRow: View {
     let note: Note
     let schedule: ItemSchedule?
+    let isPinned: Bool
     let onTap: () -> Void
     let onDelete: () -> Void
     let onSchedule: () -> Void
+    let onTogglePin: () -> Void
 
     @State private var isHovering = false
 
@@ -249,6 +297,8 @@ struct NoteRow: View {
 
             // Desktop: row actions appear on hover only.
             if isHovering {
+                QIconButton(symbol: isPinned ? "pin.slash" : "pin", kind: .plain,
+                            help: isPinned ? L("Togli dalla cima") : L("Fissa in cima"), action: onTogglePin)
                 QIconButton(symbol: "clock", kind: .plain, help: L("Pianifica"), action: onSchedule)
                 QIconButton(symbol: "trash", kind: .plain, help: L("Elimina"), action: onDelete)
             }
@@ -261,6 +311,9 @@ struct NoteRow: View {
             isHovering = hovering
         }
         .contextMenu {
+            Button { onTogglePin() } label: {
+                isPinned ? Label("Togli dalla cima", systemImage: "pin.slash") : Label("Fissa in cima", systemImage: "pin")
+            }
             Button { onSchedule() } label: { Label("Pianifica…", systemImage: "clock") }
             Button(role: .destructive) { onDelete() } label: { Label("Elimina", systemImage: "trash") }
         }

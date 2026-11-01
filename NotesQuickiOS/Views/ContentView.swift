@@ -20,28 +20,16 @@ struct ContentView: View {
 
     var body: some View {
         NavigationSplitView(columnVisibility: $columnVisibility) {
-            List(viewModel.filteredNotes, selection: $selectedNoteID) { note in
-                NoteRow(note: note, schedule: viewModel.schedule(for: note))
-                    .tag(note.id)
-                    .swipeActions(edge: .trailing, allowsFullSwipe: true) {
-                        Button(role: .destructive) {
-                            if selectedNoteID == note.id { selectedNoteID = nil }
-                            viewModel.deleteNote(note)
-                        } label: {
-                            Label("Elimina", systemImage: "trash")
+            List(selection: $selectedNoteID) {
+                ForEach(viewModel.sections) { section in
+                    Section {
+                        ForEach(section.notes) { note in
+                            row(note)
                         }
+                    } header: {
+                        Text("\(section.title) · \(section.notes.count)")
                     }
-                    .swipeActions(edge: .leading) {
-                        Button {
-                            scheduleTarget = note
-                        } label: {
-                            Label("Pianifica", systemImage: "clock")
-                        }
-                        .tint(Q.C.accent)
-                    }
-                    .contextMenu {
-                        Button { scheduleTarget = note } label: { Label("Pianifica…", systemImage: "clock") }
-                    }
+                }
             }
             .searchable(text: $viewModel.searchText, prompt: "Cerca")
             .navigationTitle("NotesQuick")
@@ -170,6 +158,42 @@ struct ContentView: View {
         .onChange(of: scenePhase) { _, phase in
             if phase == .active { viewModel.loadNotes() }
         }
+    }
+}
+
+extension ContentView {
+    func row(_ note: Note) -> some View {
+        let pinned = viewModel.isPinned(note)
+        return NoteRow(note: note, schedule: viewModel.schedule(for: note))
+            .tag(note.id)
+            .swipeActions(edge: .trailing, allowsFullSwipe: true) {
+                Button(role: .destructive) {
+                    if selectedNoteID == note.id { selectedNoteID = nil }
+                    viewModel.deleteNote(note)
+                } label: {
+                    Label("Elimina", systemImage: "trash")
+                }
+            }
+            .swipeActions(edge: .leading) {
+                Button {
+                    withAnimation(Q.anim) { viewModel.togglePin(note) }
+                } label: {
+                    pinned ? Label("Togli dalla cima", systemImage: "pin.slash") : Label("Fissa in cima", systemImage: "pin")
+                }
+                .tint(Q.C.accent)
+                Button {
+                    scheduleTarget = note
+                } label: {
+                    Label("Pianifica", systemImage: "clock")
+                }
+                .tint(.gray)
+            }
+            .contextMenu {
+                Button { withAnimation(Q.anim) { viewModel.togglePin(note) } } label: {
+                    pinned ? Label("Togli dalla cima", systemImage: "pin.slash") : Label("Fissa in cima", systemImage: "pin")
+                }
+                Button { scheduleTarget = note } label: { Label("Pianifica…", systemImage: "clock") }
+            }
     }
 }
 

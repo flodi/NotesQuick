@@ -49,6 +49,8 @@ struct SettingsView: View {
                     .foregroundStyle(.secondary)
             }
 
+            ListOrderSettings()
+
             Section("Tag") {
                 Toggle("Nascondi i tag nell'editor", isOn: $viewModel.hideTagsInEditor)
 
