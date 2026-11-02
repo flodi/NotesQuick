@@ -45,11 +45,13 @@
 		79B583B1A5CEB008EA645272 /* QuickDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 502C989DEAAA70B202D18F6F /* QuickDesign.swift */; };
 		838B7ADCA04360D1270F1942 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B905D914973F3E294BAA19 /* AppDelegate.swift */; };
 		894B59C0460D8059D5F9EDC8 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 26BD954362CF97D1F4266405 /* PrivacyInfo.xcprivacy */; };
+		946B4606AAE76500F74BFA91 /* KindFilterBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F888DE667F8782B43E2368ED /* KindFilterBar.swift */; };
 		97A54C46B66121B10002960C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCCDA45AC032E87137F27FD6 /* Assets.xcassets */; };
 		9E43F76EA9A8432FEF9B8A85 /* ItemSchedule.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF2763E58A7FAE4111549300 /* ItemSchedule.swift */; };
 		9E7492A929C06F727F5AC269 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 058D8EC08A6D8B14D2F85ED5 /* SettingsView.swift */; };
 		A2A71334CC9739220529B09E /* NoteFolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D4E9F03C3C2BAC33AE9B792 /* NoteFolder.swift */; };
 		A2E24C05B2C1F541BA58CBCA /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8FEC69F1E923353DC1EB43E /* Constants.swift */; };
+		A30C2704249E154C243633C2 /* KindFilterBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F888DE667F8782B43E2368ED /* KindFilterBar.swift */; };
 		AA1024229B254B1198BB04EE /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = EF018B1B62BA0ECCCB0CD717 /* Localizable.xcstrings */; };
 		AAF025933BB20D1C230F20AD /* TagCloudView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5E6BD6996FEDD7EF53F72D /* TagCloudView.swift */; };
 		AD1BA80C0C11130A22293B9B /* AppGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F3EA99213527D5E1A929E82 /* AppGroup.swift */; };
@@ -166,6 +168,7 @@
 		E78B74475BDF9724CCBD114D /* String+Markdown.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Markdown.swift"; sourceTree = "<group>"; };
 		EF018B1B62BA0ECCCB0CD717 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		F47959E470164A13579C15BD /* MarkdownTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownTextView.swift; sourceTree = "<group>"; };
+		F888DE667F8782B43E2368ED /* KindFilterBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KindFilterBar.swift; sourceTree = "<group>"; };
 		FFF96CF89A426C7E574D5B61 /* FolderWatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderWatcher.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -274,6 +277,7 @@
 		B33D29AF7BC971D20534B998 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				F888DE667F8782B43E2368ED /* KindFilterBar.swift */,
 				DF9E05EACF59217DFF336974 /* ListOrderSettings.swift */,
 				2B63E39FFC0DB9AE3B4B2348 /* NoteIcon.swift */,
 				7B9D1DB6AC23FC163F8933D8 /* QuickComponents.swift */,
@@ -544,6 +548,7 @@
 				59A462689C48B04A6F4DFA42 /* FolderBookmark.swift in Sources */,
 				FD862EF3010D1EB612A0A7CD /* FolderWatcher.swift in Sources */,
 				9E43F76EA9A8432FEF9B8A85 /* ItemSchedule.swift in Sources */,
+				A30C2704249E154C243633C2 /* KindFilterBar.swift in Sources */,
 				062BAD3F4975988910054EB8 /* ListOrder.swift in Sources */,
 				6BCB8111AE303FA300CDA948 /* ListOrderSettings.swift in Sources */,
 				23E7D8D9B2BDCC705F6726EA /* Localization.swift in Sources */,
@@ -589,6 +594,7 @@
 				5E36ED1816D92CD842B21663 /* FolderBookmark.swift in Sources */,
 				37350CEFEECAED4524DACB53 /* FolderWatcher.swift in Sources */,
 				B763F11E3E1FC72AB0770870 /* ItemSchedule.swift in Sources */,
+				946B4606AAE76500F74BFA91 /* KindFilterBar.swift in Sources */,
 				EF572868B31DA19D608FDDA1 /* ListOrder.swift in Sources */,
 				09ABAFDBC4533CC0B44AF1AD /* ListOrderSettings.swift in Sources */,
 				6A5B3B00548498240889B80E /* Localization.swift in Sources */,

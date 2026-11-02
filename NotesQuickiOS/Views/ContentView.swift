@@ -34,7 +34,12 @@ struct ContentView: View {
             .searchable(text: $viewModel.searchText, prompt: "Cerca")
             .navigationTitle("NotesQuick")
             .toolbar {
-                ToolbarItem(placement: .primaryAction) {
+                ToolbarItem(placement: .topBarTrailing) {
+                    KindFilterBar(selection: $viewModel.kindFilter,
+                                  size: CGSize(width: 32, height: 28), glyph: 14,
+                                  showsBackground: false)
+                }
+                ToolbarItem(placement: .topBarTrailing) {
                     Menu {
                         Button {
                             let note = viewModel.createNote()
