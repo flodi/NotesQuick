@@ -12,7 +12,7 @@ app.setActivationPolicy(.prohibited)
 app.appearance = NSAppearance(named: .aqua)
 
 let viewModel = NotesViewModel()
-viewModel.loadNotes()
+RunLoop.current.run(until: Date().addingTimeInterval(1.5))   // the folder loads in the background
 
 @MainActor
 func render<V: View>(_ view: V, size: CGSize, name: String, scale: CGFloat = 3) {

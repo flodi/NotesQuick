@@ -145,12 +145,15 @@ struct ContentView: View {
             #if DEBUG
             if UserDefaults.standard.bool(forKey: "screenshotMode") { columnVisibility = .all }
             // Store screenshots: `-screenshotNote <title>` opens that item, `-screenshotSchedule YES` its schedule sheet.
-            if let wanted = UserDefaults.standard.string(forKey: "screenshotNote"),
-               let note = viewModel.notes.first(where: { $0.title.localizedCaseInsensitiveContains(wanted) }) {
-                if UserDefaults.standard.bool(forKey: "screenshotSchedule") {
-                    scheduleTarget = note
-                } else {
-                    selectedNoteID = note.id
+            // The folder loads in the background: wait for it.
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                if let wanted = UserDefaults.standard.string(forKey: "screenshotNote"),
+                   let note = viewModel.notes.first(where: { $0.title.localizedCaseInsensitiveContains(wanted) }) {
+                    if UserDefaults.standard.bool(forKey: "screenshotSchedule") {
+                        scheduleTarget = note
+                    } else {
+                        selectedNoteID = note.id
+                    }
                 }
             }
             #endif

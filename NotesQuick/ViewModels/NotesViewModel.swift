@@ -73,26 +73,25 @@ class NotesViewModel: ObservableObject {
     }
 
     /// Move any items the Share extension staged in the App Group Inbox into the
-    /// user's notes folder. Runs before every load so shared items appear.
-    private func drainInbox() {
+    /// user's notes folder. Runs on the I/O queue before every load so shared items appear.
+    private static func drainInbox(into folder: URL) {
         guard let inbox = AppGroup.inboxURL() else { return }
         let fm = FileManager.default
         guard let files = try? fm.contentsOfDirectory(
             at: inbox, includingPropertiesForKeys: nil, options: [.skipsHiddenFiles]
         ), !files.isEmpty else { return }
 
-        startFolderAccess()
-        defer { stopFolderAccess() }
-        ensureFolderExists()
-
+        if !fm.fileExists(atPath: folder.path) {
+            try? fm.createDirectory(at: folder, withIntermediateDirectories: true)
+        }
         for src in files {
             let base = src.deletingPathExtension().lastPathComponent
             let ext = src.pathExtension
-            var dest = notesFolder.appendingPathComponent(src.lastPathComponent)
+            var dest = folder.appendingPathComponent(src.lastPathComponent)
             var counter = 2
             while fm.fileExists(atPath: dest.path) {
                 let name = ext.isEmpty ? "\(base) \(counter)" : "\(base) \(counter).\(ext)"
-                dest = notesFolder.appendingPathComponent(name)
+                dest = folder.appendingPathComponent(name)
                 counter += 1
             }
             if !CoordinatedFile.move(src, to: dest) {
@@ -199,27 +198,63 @@ class NotesViewModel: ObservableObject {
         Reminders.requestAuthorization()
     }
 
+    /// On the I/O queue, like every other access to the folder at launch (see `loadNotes`).
     func ensureFolderExists() {
-        startFolderAccess()
-        defer { stopFolderAccess() }
-        let fm = FileManager.default
-        if !fm.fileExists(atPath: notesFolderPath) {
-            try? fm.createDirectory(at: notesFolder, withIntermediateDirectories: true)
+        let folder = notesFolder
+        ioQueue.async {
+            let scoped = FolderBookmark.beginAccess()
+            defer { FolderBookmark.endAccess(scoped) }
+            let fm = FileManager.default
+            if !fm.fileExists(atPath: folder.path) {
+                try? fm.createDirectory(at: folder, withIntermediateDirectories: true)
+            }
         }
     }
 
+    /// Reads the folder on a background queue and publishes the result on the main thread.
+    /// Never on the main thread: in an iCloud Drive folder, reading a file that is not
+    /// downloaded yet (or waiting for the file provider) can take long enough for iOS to
+    /// kill the app at launch, before the list is ever shown.
     func loadNotes() {
-        drainInbox()
-        startFolderAccess()
-        defer { stopFolderAccess() }
+        if isLoading { loadAgain = true; return }
+        isLoading = true
+        let folder = notesFolder
+        ioQueue.async { [weak self] in
+            let scoped = FolderBookmark.beginAccess()
+            Self.drainInbox(into: folder)
+            let scan = Self.scan(folder)
+            FolderBookmark.endAccess(scoped)
+            DispatchQueue.main.async {
+                guard let self else { return }
+                self.apply(scan)
+                self.isLoading = false
+                if self.loadAgain {
+                    self.loadAgain = false
+                    self.loadNotes()
+                }
+            }
+        }
+    }
+
+    private let ioQueue = DispatchQueue(label: "com.notesquick.io", qos: .userInitiated)
+    private var isLoading = false
+    private var loadAgain = false
+
+    private struct FolderScan {
+        var notes: [Note]?
+        var schedules: [String: ItemSchedule]
+    }
+
+    private static func scan(_ folder: URL) -> FolderScan {
         let fm = FileManager.default
+        let index = (try? Data(contentsOf: folder.appendingPathComponent(ScheduleIndex.fileName)))
+            .map(ScheduleIndex.decode) ?? [:]
         guard let files = try? fm.contentsOfDirectory(
-            at: notesFolder,
+            at: folder,
             includingPropertiesForKeys: [.contentModificationDateKey],
             options: [.skipsHiddenFiles]
         ) else {
-            notes = []
-            return
+            return FolderScan(notes: nil, schedules: index)
         }
 
         let loaded = files.compactMap { url -> Note? in
@@ -240,31 +275,29 @@ class NotesViewModel: ObservableObject {
                 return Note(fileURL: url, content: "", modifiedDate: modDate, isText: false)
             }
         }
+        return FolderScan(notes: loaded, schedules: index)
+    }
+
+    private func apply(_ scan: FolderScan) {
+        guard let loaded = scan.notes else {
+            notes = []
+            schedules = [:]
+            return
+        }
         // Preserve brand-new notes that live only in memory (no file on disk yet),
         // so a folder-watch reload doesn't wipe an unsaved new note.
         let pending = notes.filter { !FileManager.default.fileExists(atPath: $0.fileURL.path) }
         notes = pending + loaded.filter { l in !pending.contains(where: { $0.fileURL == l.fileURL }) }
-        loadSchedules()
+        // Drop entries for items that no longer exist, then reconcile reminders.
+        let names = Set(notes.map { $0.fileURL.lastPathComponent })
+        schedules = scan.schedules.filter { names.contains($0.key) }
+        reconcileReminders()
     }
 
     // MARK: - Schedules (hide-until / remind-at)
 
     private var scheduleIndexURL: URL {
         notesFolder.appendingPathComponent(ScheduleIndex.fileName)
-    }
-
-    private func loadSchedules() {
-        startFolderAccess()
-        defer { stopFolderAccess() }
-        if let data = try? Data(contentsOf: scheduleIndexURL) {
-            schedules = ScheduleIndex.decode(data)
-        } else {
-            schedules = [:]
-        }
-        // Drop entries for items that no longer exist, then reconcile reminders.
-        let names = Set(notes.map { $0.fileURL.lastPathComponent })
-        schedules = schedules.filter { names.contains($0.key) }
-        reconcileReminders()
     }
 
     private func saveSchedules() {
@@ -281,7 +314,7 @@ class NotesViewModel: ObservableObject {
     }
 
     private func reconcileReminders() {
-        let titles = Dictionary(uniqueKeysWithValues: notes.map { ($0.fileURL.lastPathComponent, $0.title) })
+        let titles = Dictionary(notes.map { ($0.fileURL.lastPathComponent, $0.title) }, uniquingKeysWith: { first, _ in first })
         Reminders.sync(schedules) { name in titles[name] ?? name }
     }
 
