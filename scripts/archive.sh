@@ -16,6 +16,13 @@ API_KEY="${ASC_API_KEY:?Set ASC_API_KEY to your App Store Connect Key ID}"
 API_ISSUER="${ASC_API_ISSUER:?Set ASC_API_ISSUER to your App Store Connect Issuer ID}"
 API_KEY_PATH="${ASC_API_KEY_PATH:-$HOME/.appstoreconnect/private_keys/AuthKey_${API_KEY}.p8}"
 
+# Signing also uses the API key, so it works without an Apple ID account in Xcode
+# (an Xcode update or switch can drop the account: "No Accounts / No profiles").
+AUTH=(-allowProvisioningUpdates
+      -authenticationKeyPath "$API_KEY_PATH"
+      -authenticationKeyID "$API_KEY"
+      -authenticationKeyIssuerID "$API_ISSUER")
+
 if [[ "$1" == "--upload" ]]; then
     UPLOAD=true
 fi
@@ -50,7 +57,7 @@ xcodebuild -project "$PROJECT" \
     -scheme NotesQuickMac \
     -configuration Release \
     -archivePath "$ARCHIVE_DIR/NotesQuickMac-$NEW_BUILD.xcarchive" \
-    -allowProvisioningUpdates \
+    "${AUTH[@]}" \
     archive
 
 echo "==> Mac archive complete"
@@ -63,7 +70,7 @@ xcodebuild -project "$PROJECT" \
     -configuration Release \
     -destination 'generic/platform=iOS' \
     -archivePath "$ARCHIVE_DIR/NotesQuickiOS-$NEW_BUILD.xcarchive" \
-    -allowProvisioningUpdates \
+    "${AUTH[@]}" \
     archive
 
 echo "==> iOS archive complete"
@@ -79,7 +86,7 @@ if $UPLOAD; then
         -archivePath "$ARCHIVE_DIR/NotesQuickMac-$NEW_BUILD.xcarchive" \
         -exportOptionsPlist scripts/ExportOptions-Mac.plist \
         -exportPath "$EXPORT_DIR/Mac" \
-        -allowProvisioningUpdates
+        "${AUTH[@]}"
 
     echo ""
     echo "==> Exporting iOS..."
@@ -87,7 +94,7 @@ if $UPLOAD; then
         -archivePath "$ARCHIVE_DIR/NotesQuickiOS-$NEW_BUILD.xcarchive" \
         -exportOptionsPlist scripts/ExportOptions-iOS.plist \
         -exportPath "$EXPORT_DIR/iOS" \
-        -allowProvisioningUpdates
+        "${AUTH[@]}"
 
     # altool sometimes times out while looking the app up: retry instead of failing the whole run.
     upload() {

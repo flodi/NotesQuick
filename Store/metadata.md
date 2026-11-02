@@ -16,7 +16,8 @@ export ASC_API_KEY=…           # Key ID, serve solo a scripts/archive.sh
 export ASC_REVIEW_PHONE="+39 …" # telefono del contatto per la revisione, serve solo a `metadata`
 ```
 
-La chiave `.p8` sta in `~/.appstoreconnect/private_keys/`; `scripts/asc.py` prova quelle presenti
+La chiave `.p8` sta in `~/.appstoreconnect/private_keys/` e serve anche alla firma (`archive.sh` la passa a
+xcodebuild, così non serve un account Apple in Xcode); `scripts/asc.py` prova quelle presenti
 e usa la prima valida per il team.
 
 ## Procedura
@@ -105,7 +106,9 @@ python3.14 Tools/compose-mac-shots.py build/shots/it Store/screenshots it
 10. 1.0.1 (build 34) su TestFlight: scritture coordinate con iCloud Drive e salvataggio su iOS
     quando l'app va in background.
 11. 1.0.1 (build 35) su TestFlight: elementi fissati in cima, ordine dell'elenco nelle impostazioni,
-    raggruppamento per tipo, filtro per tipo nel pannello Mac. Da inviare come aggiornamento.
+    raggruppamento per tipo, filtro per tipo nel pannello Mac. Su iPhone si chiudeva all'avvio.
+12. 1.0.1 (build 36) su TestFlight: la cartella si legge in background, non più all'avvio sul thread
+    principale (iOS chiudeva l'app quando iCloud Drive la faceva aspettare). Da inviare come aggiornamento.
 
 Dopo l'invio: se App Review risponde con domande, rispondere dal Centro risoluzione **e poi
 premere «Invia di nuovo al team di verifica»**, altrimenti la risposta resta ferma. Dopo
