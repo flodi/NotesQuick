@@ -126,19 +126,21 @@ struct NoteListView: View {
                 }
             }
         }
-        .frame(width: 300, height: 400)
-        .onAppear {
-            viewModel.loadNotes()
-        }
+        // The panel background is translucent: hide the list while scheduling.
+        .opacity(scheduleTarget == nil ? 1 : 0)
+        .allowsHitTesting(scheduleTarget == nil)
         // Inline, not a sheet: a sheet is a separate window, and clicking it
         // makes the menu bar panel lose focus and close.
         .overlay {
             if let note = scheduleTarget {
                 SchedulePicker(note: note) { withAnimation(Q.anim) { scheduleTarget = nil } }
                     .environmentObject(viewModel)
-                    .background(.background)
-                    .transition(.move(edge: .bottom))
+                    .transition(.opacity)
             }
+        }
+        .frame(width: 300, height: 400)
+        .onAppear {
+            viewModel.loadNotes()
         }
     }
 
