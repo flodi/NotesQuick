@@ -114,7 +114,7 @@ struct NoteListView: View {
                                 } onDelete: {
                                     confirmDelete(note: note)
                                 } onSchedule: {
-                                    scheduleTarget = note
+                                    withAnimation(Q.anim) { scheduleTarget = note }
                                 } onTogglePin: {
                                     withAnimation(Q.anim) { viewModel.togglePin(note) }
                                 }
@@ -130,9 +130,15 @@ struct NoteListView: View {
         .onAppear {
             viewModel.loadNotes()
         }
-        .sheet(item: $scheduleTarget) { note in
-            SchedulePicker(note: note)
-                .environmentObject(viewModel)
+        // Inline, not a sheet: a sheet is a separate window, and clicking it
+        // makes the menu bar panel lose focus and close.
+        .overlay {
+            if let note = scheduleTarget {
+                SchedulePicker(note: note) { withAnimation(Q.anim) { scheduleTarget = nil } }
+                    .environmentObject(viewModel)
+                    .background(.background)
+                    .transition(.move(edge: .bottom))
+            }
         }
     }
 

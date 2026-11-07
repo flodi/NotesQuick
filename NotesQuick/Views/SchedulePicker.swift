@@ -3,6 +3,8 @@ import SwiftUI
 /// Sheet to set the two per-item dates: "hide until" (snooze) and "remind me on".
 struct SchedulePicker: View {
     let note: Note
+    /// Set when shown inline (Mac menu bar panel) instead of as a sheet.
+    var onClose: (() -> Void)? = nil
     @EnvironmentObject var viewModel: NotesViewModel
     @Environment(\.dismiss) private var dismiss
 
@@ -27,11 +29,11 @@ struct SchedulePicker: View {
                 Spacer(minLength: 8)
                 QIconButton(symbol: "checkmark", kind: .primary, help: L("Salva")) { save() }
                     .keyboardShortcut(.defaultAction)
-                QIconButton(symbol: "xmark", kind: .gray, help: L("Annulla")) { dismiss() }
+                QIconButton(symbol: "xmark", kind: .gray, help: L("Annulla")) { close() }
                     .keyboardShortcut(.cancelAction)
                 QIconButton(symbol: "trash", kind: .plain, help: L("Cancella pianificazione")) {
                     viewModel.setSchedule(ItemSchedule(), for: note)
-                    dismiss()
+                    close()
                 }
                 .disabled(!hideOn && !remindOn)
                 .opacity(!hideOn && !remindOn ? 0.4 : 1)
@@ -49,6 +51,7 @@ struct SchedulePicker: View {
                         DatePicker("", selection: $hideDate, in: Date()...,
                                    displayedComponents: [.date, .hourAndMinute])
                             .labelsHidden()
+                            .modifier(PanelSafeDatePicker())
                     }
                 } footer: {
                     Text("L'elemento resta nascosto dalla lista fino a questa data.")
@@ -60,6 +63,7 @@ struct SchedulePicker: View {
                         DatePicker("", selection: $remindDate, in: Date()...,
                                    displayedComponents: [.date, .hourAndMinute])
                             .labelsHidden()
+                            .modifier(PanelSafeDatePicker())
                     }
                 } footer: {
                     Text("Ricevi una notifica a questa data.")
@@ -67,8 +71,12 @@ struct SchedulePicker: View {
             }
             .formStyle(.grouped)
         }
-        .frame(minWidth: 360, minHeight: 340)
+        .frame(minWidth: onClose == nil ? 360 : nil, minHeight: onClose == nil ? 340 : nil)
         .onAppear(perform: load)
+    }
+
+    private func close() {
+        if let onClose { onClose() } else { dismiss() }
     }
 
     private func load() {
@@ -86,7 +94,19 @@ struct SchedulePicker: View {
             remindAt: remindOn ? remindDate : nil
         )
         viewModel.setSchedule(schedule, for: note)
-        dismiss()
+        close()
+    }
+}
+
+/// On the Mac the calendar popover is another window: opening it from the menu bar
+/// panel could close the panel. The stepper field stays inside the panel.
+private struct PanelSafeDatePicker: ViewModifier {
+    func body(content: Content) -> some View {
+        #if os(macOS)
+        content.datePickerStyle(.stepperField)
+        #else
+        content
+        #endif
     }
 }
 
